@@ -1,2 +1,0 @@
-# zjzx-pc
-ZhiJiZhenXiang PC
