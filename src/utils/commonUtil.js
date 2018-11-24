@@ -1,4 +1,3 @@
-import $ from 'jquery'
 const util ={}
 
 util.ajaxAsync = function(url,params){

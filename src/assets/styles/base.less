@@ -24,14 +24,6 @@
 @statusBarHeight:.44rem;/*手机顶部状态栏*/
 @statusBarBg:#aaa;
 
-/*font-szie*/
-.mix-font-Size(@size){
-  font-size:@size*100/375vw;
-  @media (min-width: 450px) {
-    font-size:~"@{size}px";
-  }
-}
-
 /* 1px解决方案 */
 .mix-1px (@top, @right, @bottom, @left, @color:@C9) {
   position: relative;
@@ -65,13 +57,6 @@
     & when (@left > 0) {
       border-left-width: 1px;
     }
-  }
-}
-
-/* 清除1px */
-.mix-1px-clear () {
-  &:before {
-    display: none;
   }
 }
 

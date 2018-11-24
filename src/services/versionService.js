@@ -1,5 +1,4 @@
-import config from '@/assets/js/config'
-import axios from 'axios'
+import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
 const controller =config.successServer+'/version';
 const service ={}
@@ -14,18 +13,6 @@ service.compareVersion = function(historyVersion,call){
 		return;
 	}
 	let resMap = commonUtil.ajaxAsync(controller+'/compareVersion',params);
-
-	return resMap;
-}
-// 获取最新版本下载地址
-service.getNewVersion = function(call){
-	let params = {
-	}
-	if (call) {
-		commonUtil.ajax(controller+'/getNewVersion',params,call);
-		return;
-	}
-	let resMap = commonUtil.ajaxAsync(controller+'/getNewVersion',params);
 
 	return resMap;
 }

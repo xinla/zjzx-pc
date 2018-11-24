@@ -1,5 +1,4 @@
-import config from '@/assets/js/config'
-import axios from 'axios'
+import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
 const controller =config.successServer+'/user';
 const service ={}
@@ -9,28 +8,22 @@ const userid =  localStorage.getItem('id');
 
 //获取手机验证码
 service.getCode = function(mobile,call){
-	// debugger;
-	axios.get(controller+'/getCode',{params:{
-		mobile:mobile
-	}}).then(function(res){
-		call(res.data);
-	})
+	var params = {
+		mobile,
+	};
+	
+	commonUtil.ajax(controller+'/getCode',params,call);
 }
 
 //手机号登录
 service.loginByMobile = function(mobile,code,call){
+	var params = {
+		mobile,
+		code,
+	};
+	
+	commonUtil.ajax(controller+'/loginByMobile',params,call);
 
-	axios.get(controller+'/loginByMobile',{params:{
-		mobile:mobile,
-		code:code
-	}}).then(function(res){
-		if (call) {
-			call(res.data);			
-		}
-		// console.log(res.data);
-	}).catch(function(error){
-		console.log(error);
-	})
 }
 //微信登录
 service.loginByWx = function(params,call) {
@@ -137,10 +130,9 @@ service.logOut = function(){
  */
 service.testUserName = function(username){
 	let params = {
-		username,
-	}
+		username
+	};
 	let resMap = commonUtil.ajaxAsync(controller+'/testUserName',params);
-
 	return resMap;
 }
 /**
@@ -156,5 +148,31 @@ service.testMobile = function(mobile){
 
 	return resMap;
 }
+
+// 获取用户排行
+service.getUserPh = function (call) {
+  let params={};
+  if(call){
+    commonUtil.ajax(controller+'/getUserPh',params,call);
+    return;
+  }
+  let  resMap = commonUtil.ajaxAsync(controller+'/getUserPh',params);
+  return resMap;
+}
+
+// 根据用户id获取用户排行
+service.getUserPhByUserid = function(userid,call){
+  var params = {
+    userid,
+  };
+  if (call) {
+    commonUtil.ajax(controller+'/getUserPhByUserid',params,call);
+    return;
+  }
+  var resMap = commonUtil.ajaxAsync(controller+'/getUserPhByUserid',params);
+
+  return resMap;
+};
+
 export default service
 

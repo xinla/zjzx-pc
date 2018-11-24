@@ -1,5 +1,4 @@
-import config from '@/assets/js/config'
-import axios from 'axios'
+import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
 const controller =config.successServer+'/message';
 const service ={}

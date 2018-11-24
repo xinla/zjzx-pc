@@ -1,5 +1,4 @@
-import config from '@/assets/js/config'
-import axios from 'axios'
+import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
 const controller =config.successServer+'/article';
 const service ={}
@@ -20,7 +19,6 @@ service.publishArticle = function(record,record_file) {
 	let resArticle = commonUtil.ajaxAsync(controller+'/publishArticle',params);
 	return resArticle;
 }
-
 // 获取用户的文章
 service.getArticleByUser = function(userid,page,size,type){
 
@@ -73,6 +71,27 @@ service.articlePage = function(page,size,classify,type){
 		// publisharea:"",//:"发布地区" code
 	}
 
+	let resArticlePage = commonUtil.ajaxAsync(controller+'/articlePage',params);
+
+	return resArticlePage;
+}
+// 获取视频文章列表
+service.articleVideoPage = function(page,size,classify,type,call){
+	let params = {
+		page,
+		size,
+		classify,//:"文章分类"
+		type,//："文章类型" //1：图文，2:视屏
+		state:"3",//  审核通过
+		// keyword:"",// 根据 title或者content 进行模糊匹配
+		// author:"",//:"发布人id",
+		// authorname:"",//:"发布人姓名" //模糊匹配
+		// publisharea:"",//:"发布地区" code
+	}
+	 if (call) {
+	 	commonUtil.ajax(controller+'/articlePage',params,call);
+	 	return;
+	 }
 	let resArticlePage = commonUtil.ajaxAsync(controller+'/articlePage',params);
 
 	return resArticlePage;

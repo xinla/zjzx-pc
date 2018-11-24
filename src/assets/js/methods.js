@@ -1,4 +1,4 @@
-// import config from './config'
+import config from '@/assets/configs/config'
 const tool = {
   //前往某一个页面
   goPage(p) {
@@ -93,21 +93,20 @@ const tool = {
   headerImgFilter(url){
     let reg = /^http/i;
     if (!reg.test(url)) {
-      url = url ? config.fileRoot + '/' + url : require('../assets/user_head.jpg');
+      url = url ? config.fileRoot + '/' + url : require('@/assets/images/user_head.jpg');
     }
     return url;
   },
   // 未登录提示 
   loginPrompt(back){
-    GoTruth.$vux.confirm.show({
-      content:"您还没登录哦！",
-      onConfirm () {
-        GoTruth.$Tool.goPage({name:'login',query:{title:'用户登录'}});
-      },
-      onCancel () {
-        if (back) {
-          GoTruth.$Tool.goBack();
-        }
+    GoTruth.MessageBox.confirm('您还没登录哦！',{
+      type: 'warning',
+      center: true
+    }).then(()=>{
+      GoTruth.$Tool.goPage({name:'login',query:{title:'用户登录'}});
+    }).catch(()=>{
+      if (back) {
+        GoTruth.$Tool.goBack();
       }
     })
   },

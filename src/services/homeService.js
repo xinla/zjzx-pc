@@ -1,4 +1,4 @@
-import config from '@/assets/js/config'
+import config from '@/assets/configs/config'
 const controller =config.successServer+'/home';
 const service ={
 	// test: controller+'/test'
