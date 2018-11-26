@@ -13,8 +13,7 @@ object, embed, video {  max-width: 100%; }
 a:link,a:active,a:visited,a:hover{ text-decoration: none; }
 table{ border-collapse: collapse;border-spacing: 0; }
 img { border: 0;max-width: 100%;vertical-align: middle; }/*解决父级底部多余空白*/ 
-small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
-legend { color:#000; }/*for ie6*/                                                                       
+small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */                                                                      
 fieldset{ border: 0; } 
 li{ list-style: none; }
 a{ color:inherit; }
@@ -39,22 +38,19 @@ input:-ms-input-placeholder,textarea:-ms-input-placeholder,input::-webkit-input-
 ::-webkit-scrollbar {display: none;/*隐藏滚轮*/}
 /*phone*/
 /*给IOS系统里cursor不为pointer的元素添加事件时会不同程度受影响，加上cursor: pointer可解决*/
-select,input[type=button], input[type=submit], input[type=file],input[type=checkbox],input[type=radio], button { cursor: pointer;}
-img {width:auto\9;/*ie8*/-ms-interpolation-mode:bicubic;/*为了照顾ie图片缩放失真*/border: none;pointer-events: none;/*阻止图片在微信里被点击放大*/}
-/*禁止文本缩放 字体设置 取消touch高亮效果*/
+/*  select,input[type=button], input[type=submit], input[type=file],input[type=checkbox],input[type=radio], button { cursor: pointer;}
+img {width:auto\9;ie8-ms-interpolation-mode:bicubic;为了照顾ie图片缩放失真border: none;pointer-events: none;阻止图片在微信里被点击放大}
+禁止文本缩放 字体设置 取消touch高亮效果
 html,body { -webkit-text-size-adjust: 100% !important;-ms-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 html {overflow-x: hidden;height: 100%;font-size: 50px;-webkit-tap-highlight-color: transparent;}
 body {font-family:Microsoft YaHei,"宋体", arial,-apple-system, "PingFang SC","Helvetica Neue", Helvetica,'DejaVu Sans','Lucida Grande',Tahoma,'Hiragino Sans GB',STHeiti,SimSun,sans-serif;color: #333;
 font-size: .28em;line-height: 1;-webkit-text-size-adjust: none;}
-/*兼容微信端滑动到顶部或底部出现的问题*/
-/*body::before{ width: 100%;height: 100%;content:'';position: fixed;z-index: -1;top: 0;left: 0; }*/
-/*去掉点击链接和文本框对象时默认的灰色半透明覆盖层(iOS)或者虚框(Android)*/
+兼容微信端滑动到顶部或底部出现的问题
+body::before{ width: 100%;height: 100%;content:'';position: fixed;z-index: -1;top: 0;left: 0; }
+去掉点击链接和文本框对象时默认的灰色半透明覆盖层(iOS)或者虚框(Android)
 a,button,input,textarea{ -webkit-tap-highlight-color:rgba(0,0,0,0);}
-/*禁用长按页面时的弹出菜单(iOS下有效) ,img和a标签都要加*/
-img,a{-webkit-touch-callout:none;}
-
-/* other */
- /* iconfont*/
+禁用长按页面时的弹出菜单(iOS下有效) ,img和a标签都要加
+img,a{-webkit-touch-callout:none;}  */
 
 /* common class */
 /*bfc model*/
@@ -125,6 +121,9 @@ img,a{-webkit-touch-callout:none;}
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.cp{
+  cursor: pointer;
+}
 .oya{
   overflow-y: auto; 
 }
@@ -139,12 +138,5 @@ img,a{-webkit-touch-callout:none;}
 }
 .clearfix:after,.clearfix:before{content:"";display:table;/*创建匿名的表格单元，触发bfc*/}
 .clearfix:after{clear:both;/*清除浮动*/}
-.clearfix{zoom:1;/*为IE6，7的兼容性设置*/}
 
-/*[data-dpr="2"] body{
-  font-size: 28px;
-}
-[data-dpr="3"] body{
-  font-size: 42px;
-}*/
 /*init end*/

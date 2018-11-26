@@ -35,8 +35,7 @@
 							<video-player class="video-player vjs-custom-skin"
 								ref="videoPlayer"
 							 	:playsinline="true"
-							  	:options="playerOptions"
-							  	@play="onPlayerPlay()">
+							  	:options="playerOptions">
 							</video-player>
 						</div>
 					</div>
@@ -78,8 +77,20 @@
 				<li :class="{current:current == 3}" @click="handleSwitch(3)">点赞</li>
 			</ul>
 
-			<div class="hot-comment" v-if="ifSwitchB">
-				<div class="hot-title">热门评论</div>
+			<div class="comment-wrap" v-if="ifSwitchB">
+				<div class="comment-all-num">
+					共<em class="all-num">{{commentNum}}</em>条评论				
+				</div>
+				<div>
+					<!-- <div class="fl">
+						<img class="myphoto" :src="$Tool.headerImgFilter()" alt="">
+					</div> -->
+					<!-- 一级评论框 -->
+					<div class="comment-writer-wrap">
+						<input type="text" class="input-commnet-content" v-model.trim="commentCon" maxlength="100" placeholder="留下你的高见，一百字以内">
+						<input type="button" @click="comment(1)" class="submit-comment cp" value="评论">
+					</div>
+				</div>
 				<div class="hot-content">
 					<ul class="hot-list">
 						<li class="hot-item clearfix" v-for="(item,index) in commentList">
@@ -89,7 +100,7 @@
 							<div class="hot-wrap fl">
 								<div class="hot-header clearfix">
 									<h5 class="fl">{{item.username}}</h5>
-									<p class="hot-fabulous fr" :class="{'likeActive':item.ifLike}" @click="handleFabulous(2,item.id,index)">
+									<p class="hot-fabulous fr cp" :class="{'likeActive':item.ifLike}" @click="handleFabulous(2,item.id,index)">
 										<var class="hot-count">{{item.likeNum}}</var>
 										<like :likeStatus="index==curLike?ifLike:0"></like>
 									</p>
@@ -104,61 +115,70 @@
 									<div class="fl">
 										<span class="hot-time">{{$Tool.publishTimeFormat(item.commenttime)}}</span>
 										<span class="hot-point">•</span>
-										<span class="hot-reply" @click="handleFirstReply(item.douserid,item.id,index)">
-											<var>{{item.replyCount}}</var>回复
+										<span class="cp" @click='showReplyInput($event,item.douserid,item.id,index),commentConAdd = ""'>回复</span>-
+										<span class="hot-reply cp" @click="handleFirstReply(item.douserid,item.id,index)">
+											<var>{{item.replyCount}}</var>回复<i class="iconfont icon-down"></i>
 										</span>
 									</div>
-									<!-- <span class="hot-report fr">举报</span> -->
-									<span class="hot-report fr"  v-if="item.douserid == userId" @click="handleDelete(item.id, index, 1)" >删除</span>
-								</div>
+									<span class="hot-report fr cp">举报</span>
+									<span class="hot-report fr cp"  v-if="item.douserid == userId" @click="deleteCommon(item.id,index,1)" >删除</span>
+								</div>								
+								<!-- 二级回复 -->
+								<ul class="hot-list" v-if="commentList[index].replyShow">
+									<li class="hot-item clearfix" v-for="(unit,sign) in replyList[index]">
+										<div class="hot-userphoto fl">
+											<img :src="$Tool.headerImgFilter(unit.imageurl)">
+										</div>
+										<div class="hot-wrap fl">
+											<div class="hot-header clearfix">
+												<h5 class="fl">{{unit.username}}</h5>
+											</div>
+											<div class="hot-body clearfix">
+												<p class="hot-text">
+													{{unit.content}}
+												</p>
+											</div>
+											<div class="hot-footer clearfix">
+												<div class="fl">
+													<span class="hot-time">{{$Tool.publishTimeFormat(unit.commenttime)}}</span>
+													<span class="hot-point">•</span>
+													<span @click='showReplyInput($event,item.douserid,item.id,index),commentConAdd = unit.username'>回复</span>
+												</div>
+												<span class="hot-report fr cp"  v-if="unit.douserid == userId" @click="deleteCommon(unit.id,index,2,sign)" >删除</span>
+											</div>
+										</div>
+									</li>
+								</ul>
 							</div>
 						</li>
 					</ul>
-					<!-- <load-more :show-loading="false" :tip="loadText" v-show="ifLoadMore"></load-more> -->	
 				</div>
 			</div>
-			<memberList v-else :list="listMember" :mes="proMes"></memberList>
-		</div>
-		<div class="pop-mask" v-show="popMask" @click="handleCancel">
-		</div>
-		<div class="transdom">
-				<div class="popup-wrap">
-					<div class="popup-area">
-						<textarea
-							:placeholder="popList.placeholder" 
-							v-model.trim="popList.desc"
-							@input="handleDesc"
-							ref="popFocus"></textarea>
-					</div>
-					<div class="popup-btn clearfix">
-						<button type="button" class="popup-cancel fl" @click="handleCancel">取消</button>
-						<button type="button" class="popup-send fr" :class="{popupActive:popList.popupActive}" @click="handleSend">发布</button>
-					</div>
-				</div>
+			<!-- <memberList v-else :list="listMember" :mes="proMes"></memberList> -->
 		</div>
 		<!-- 举报框 -->
 		<div>
-				<div class="report-wrap">
-					<div class="report-header">
-						<h2>举报</h2>
-					</div>
-					<div class="report-body">
-						<ul class="report-list">
-							<li class="report-item clearfix" v-for="(item,index) in reportList" :key="item.id" @click="handleChooseReport(item,index)">
-							<span class="fl">{{item.desc}}</span>
-							<i v-show="item.show" class="iconfont icon-warning-circle fr"></i>
-						</li>
-
-						<!-- 	<li class="report-item">
-								其它：
-								<input type="text" placeholder="我有话说">
-							</li -->
-						</ul>
-					</div>
-					<div class="report-footer" @click="handleSendReport">
-						完成
-					</div>
+			<div class="report-wrap">
+				<div class="report-header">
+					<h2>举报</h2>
 				</div>
+				<div class="report-body">
+					<ul class="report-list">
+						<li class="report-item clearfix" v-for="(item,index) in reportList" :key="item.id" @click="handleChooseReport(item,index)">
+						<span class="fl">{{item.desc}}</span>
+						<i v-show="item.show" class="iconfont icon-warning-circle fr"></i>
+					</li>
+					</ul>
+				</div>
+				<div class="report-footer" @click="handleSendReport">
+					完成
+				</div>
+			</div>
+		</div>
+		<!-- 二/三级回复评论框 -->
+		<div class="comment-writer-wrap" ref="test" v-show="isReplyInput">
+			<input type="text" class="input-commnet-content" v-model.trim="replyCon" maxlength="100" placeholder="留下你的高见，一百字以内">
+			<input type="button" @click="comment(2)" class="submit-comment" value="评论">
 		</div>
 	</div>
 </template>
@@ -188,30 +208,24 @@ export default {
 	},
 	data(){
 		return {
-			badgeShow:false,
+			// badgeShow:false,
 			sourceShow:false,
 			reportToggle:true,
 			reportShow:false,
 			popMask:false,
-			noZan:false,
-			hasZan:false,
-			noComment:false,
-			hasComment:false,
-			noReply:false,
-			hasReply:false,
-			replyShow:false,
+			// noZan:false,
+			// hasZan:false,
+			// noComment:false,
+			// hasComment:false,
+			// noReply:false,
+			// hasReply:false,
+			// replyShow:false,
 			collectToggle:{
 				notcollect:true,
 				collected:false
 			},
 			shareShow:false,
 			inputToggle:true,
-			popList:{
-				show:false,
-				desc:'',
-				placeholder:'请文明发言，遵守评论规则...',
-				popupActive:false
-			},
 			ifLoadMore:false,
 			userId:localStorage.id,
 			id:0,//文章id =>article.id
@@ -233,13 +247,18 @@ export default {
 				imageurl:'',
 			},
 			ArticleFile:[],
+			// 评论列表
 			commentList:[],
+			// 回复评论列表，二维数组
 			replyList:[],
 			proFail1:false,
 			proFail2:false,
 			failMes1:"获取内容失败",
 			failMes2:"获取评论失败",
+			// 评论内容
 			commentCon:'',
+			// 回复内容
+			replyCon:'',
 			//三级回复@的用户名
 			commentConAdd:'',
 			//底部评论框状态切换
@@ -247,17 +266,15 @@ export default {
 			//评论回复显隐切换
 			ifReply:false,
 			//回复评论的id
-			replyCommentId:Number,
+			replyCommentId:0,
 			//回复评论人的id
-			replyUserId:Number,
+			replyUserId:0,
 			//回复评论人的关注状态
 			replyUserFocusState:false,
 			//指定评论数组中某条评论的索引值 //展开评论回复是顶部当前索引使用
 			commentIndex:Number,
-			//评论类型：1评论，2回复
-			commentType:1,
 			//点赞
-			curLike:Number,
+			curLike:0,
 			//点赞动画
 			ifLike:false,
 			//评论删除
@@ -272,6 +289,8 @@ export default {
 			likeStatus:false,
 			//举报显隐
 			ifReport:false,
+			//二三级回复框显隐
+			isReplyInput:false,
 			//举报数组
 			reportList:[
 				{id: 1, desc: "淫秽色情", show:false},
@@ -432,6 +451,7 @@ export default {
 			});
 			//用户是否给文章点赞
 			praiseService.testPraise(this.id,1,(data)=>{
+					console.log(data)
 				if (data && data.status == "success") {
 					if (data.result == 1) {
 						this.likeStatus = true;
@@ -444,11 +464,11 @@ export default {
 			articleCommentService.getArticleCommentCount(this.id,(data)=>{
 				if (data.status == "success") {
 					this.commentNum = this.$Tool.numConvertText(data.result.count);
-					if(this.commentNum == 0) {
-						this.badgeShow = false;
-					}else{
-						this.badgeShow = true;
-					}
+					// if(this.commentNum == 0) {
+					// 	this.badgeShow = false;
+					// }else{
+					// 	this.badgeShow = true;
+					// }
 				}
 			});
 
@@ -471,8 +491,6 @@ export default {
 			//评论滚动近底部，自动加载 一屏1080
 			this.loadComment();
 			this.ifLoad = false;
-
-
 		},
 		// 弹出评论框
 	    ended(){
@@ -516,26 +534,9 @@ export default {
 	    },
 		handleOpenInput(){
 			this.textShow();
-			if(this.replyShow){
-				this.popMask = true;
-			}
-			this.popList.placeholder = "请文明发言，遵守评论规则...";
-		},
-		// 取消评论框
-		handleCancel(){
-			this.popList.show = false;
-			this.popMask = false;
-			this.shareShow = false;
-			this.reportShow = false;
-		},
-
-		// 评论框input事件
-		handleDesc(){
-			if(this.popList.desc) {
-				this.popList.popupActive = true;
-			}else{
-				this.popList.popupActive = false;
-			}
+			// if(this.replyShow){
+			// 	this.popMask = true;
+			// }
 		},
 		// 关注--取消关注
 		handleFocus(userId,type){
@@ -597,7 +598,7 @@ export default {
 				// 评论点赞
 				let resDoPraise = praiseService.doPraise(itemid,2);
 				if(resDoPraise && resDoPraise.status == "success") {
-					console.log(resDoPraise);
+					// console.log(resDoPraise);
 					if(resDoPraise.result.code == 1) {
 						this.curLike = index;
 						this.ifLike = true;
@@ -612,34 +613,31 @@ export default {
 						this.commentList[index].ifLike = false;
 					}
 
-					if(resDoPraise.result.count <= 0){
-						this.noZan = false;
-						this.hasZan = true;
-					}else{
-						this.hasZan = false;
-						this.noZan = true;
-					}
+					// if(resDoPraise.result.count <= 0){
+					// 	this.noZan = false;
+					// 	this.hasZan = true;
+					// }else{
+					// 	this.hasZan = false;
+					// 	this.noZan = true;
+					// }
 				}
 			}
 		},
-		// 发布评论
-		handleSend(type){
-			this.badgeShow = true;
-			if(!this.popList.desc) {
-				this.popList.show = false;
-				this.popMask = false;
-				return;
-			}
+		/**
+		 * 发布评论
+		 * @param  type 1:评论 2：回复
+		 */
+		comment(type){
+			// this.badgeShow = true;
 			if(!localStorage.id){
 				this.$Tool.loginPrompt();
 				return;
 			}
 			let userId = localStorage.id;
-			if(this.popList.desc && this.$Tool.checkInput(this.popList.desc)) {
-				if(this.commentType == 1) {
-
+			if(type == 1) {
+				if(this.commentCon && this.$Tool.checkInput(this.commentCon)) {
 					// 执行发送评论
-					let resArticleComment = articleCommentService.articleComment(this.id,this.popList.desc,userId,this.article.author,1);
+					let resArticleComment = articleCommentService.articleComment(this.id,this.commentCon,userId,this.article.author,1);
 					if(resArticleComment && resArticleComment.status == "success") {
 						this.lock = false;
 						this.pageNum1 = 1;
@@ -650,25 +648,26 @@ export default {
 						// 		text: '发布成功'
 						// 	});
 						// },500);
-						this.popList.desc = "";
+						this.commentCon = "";
 						this.commentNum++;
-						this.popList.show = false;
-						this.popList.popupActive = false;
-
 						// 给发布人发送消息
 						messageService.sendMessage(this.article.author,"reply",this.id,1);
-						let dis = $(".detail").scrollTop() + $(".article-change").offset().top -100;
-						$(".detail").animate({scrollTop:dis},100);
+						return;
 					}else{
-						/*this.$vux.alert.show({
-							content:'评论失败，请重试'
-						});
-						setTimeout(()=>{
-							this.$vux.alert.hide();
-						},1000);*/
+						this.$message({
+				          message: '评论失败，请重试！',
+				          center: true
+				        });
 					}
 				}else{
-					let comment = this.commentConAdd?(this.popList.desc + this.commentConAdd):this.popList.desc;
+					this.$message({
+			          message: '内容不合法，请修改后提交！',
+			          center: true
+			        });
+				}
+			}else if (type == 2){
+				if (this.replyCon && this.$Tool.checkInput(this.replyCon)) {
+					let comment = this.commentConAdd?(this.replyCon + " //@" + this.commentConAdd):this.replyCon;
 					// 执行发送评论回复
 					let resACommentReply = articleCommentService.articleComment(this.id,comment,userId,this.replyUserId,2,this.replyCommentId);
 					if(resACommentReply && resACommentReply.status == "success") {
@@ -678,40 +677,35 @@ export default {
 								text: '发布成功'
 							});
 						},500);*/
-						this.popList.desc = "";
-						this.commentConAdd = "";
-						this.popList.show = false;
+						this.replyCon = "";
+						// this.commentConAdd = "";
 						this.popMask = false;
-						this.popList.popupActive = false;
 						this.commentList[this.commentIndex].replyCount ++;
-
 						// 给评论人发送消息
-						messageService.sendMessage(this.replyUserId,'reply',this.replyCommentId,2);
 						this.loadReply();
-						$(".reply-wrap").animate({scrollTop:0},100);
+						this.commentList[this.commentIndex].replyShow = true;
+						messageService.sendMessage(this.replyUserId,'reply',this.replyCommentId,2);
+						return;
 					}else{
-						/*this.$vux.alert.show({
-							content:'评论失败，请重试'
-						});
-						setTimeout(()=>{
-							this.$vux.alert.hide();
-						},1000);*/
+						this.$message({
+				          message: '评论失败，请重试！',
+				          center: true
+				        });
 					}
+				}else{
+					this.$message({
+			          message: '内容不合法，请修改后提交！',
+			          center: true
+			        });
 				}
-			}else{
-				/*this.$vux.alert.show({
-					content:'内容不合法，请修改后提交'
-				});
-				setTimeout(()=>{
-					this.$vux.alert.hide();
-				},1000);*/
+				
 			}
 		},
 
 		// 删除评论
-		handleDelete(itemid, index, type){
+		deleteCommon(itemid,index,type,sign){
 			const thiz = this;
-			this.MessageBox.confirm('确认删除评论？','提示',{
+			this.$messageBox.confirm('确认删除评论？','提示',{
 				type: 'warning',
 	          	center: true
           	}).then(()=>{
@@ -720,22 +714,22 @@ export default {
           			if(type == 1) {
 						thiz.commentList.splice(index,1);
 						thiz.commentNum --;
-						if(thiz.commentList.length <= 0) {
+						/*if(thiz.commentList.length <= 0) {
 							thiz.proFail2 = true;
 							thiz.ifLoadMore = false;
-							thiz.badgeShow = false;
-						}
+							// thiz.badgeShow = false;
+						}*/
 					}else{
-						thiz.replyList.splice(index,1);
+						thiz.replyList[index].splice(sign,1);
 						thiz.commentList[thiz.commentIndex].replyCount --;
-						let resReplyList = articleCommentService.getReplyList(thiz.replyCommentId,1,10)
-						if(resReplyList.recordPage.list.length <= 0){
-							thiz.noComment = true;
-							thiz.hasComment = false;
+						// let resReplyList = articleCommentService.getReplyList(thiz.replyCommentId,1,10)
+						/*if(resReplyList.recordPage.list.length <= 0){
+							// thiz.noComment = true;
+							// thiz.hasComment = false;
 						}else{
-							thiz.hasComment = true;
-							thiz.noComment = false;
-						}
+							// thiz.hasComment = true;
+							// thiz.noComment = false;
+						}*/
 					}
           		}
           	}).catch(()=>{
@@ -762,9 +756,9 @@ export default {
 		// 分享
 		handleShare(){
 			this.shareShow= true;
-			if(this.replyShow){
-				this.popMask = true;
-			}
+			// if(this.replyShow){
+			// 	this.popMask = true;
+			// }
 			//分享内容对象
 			let reg = /[^\u4e00-\u9fa5]+/g;
 			let tempContent = this.article.content.replace(reg,"");
@@ -814,9 +808,16 @@ export default {
 		},
 		//首次回复
 		handleFirstReply(replyUserId,commentid,commentIndex){
-			this.replyShow = true;
-			this.commentType = 2;
 			this.replyUserId = replyUserId;	//回复评论人id
+			this.replyCommentId = commentid; //回复评论的id
+			this.commentIndex = commentIndex;//指定评论数组中某条评论的索引值
+			if (this.replyList[commentIndex] === undefined) {
+				this.loadReply();
+				console.log(this.replyList[commentIndex][0])				
+			}
+			this.$set(this.commentList[commentIndex],'replyShow',!this.commentList[commentIndex].replyShow);
+			// this.replyShow = true;
+			/*this.replyUserId = replyUserId;	//回复评论人id
 			this.replyCommentId = commentid; //回复评论的id
 			this.commentIndex = commentIndex;//指定评论数组中某条评论的索引值
 			//展开评论回复是顶部当前索引使用
@@ -839,31 +840,29 @@ export default {
 						this.replyUserFocusState = false;
 					}
 				}
-			}
+			}*/
 			// 获取文章评论回复列表
-			this.loadReply();
 		},
 
 		//二级三级回复
-		handleAllReply(userName){
+		/*handleAllReply(userName){
 			this.textShow();
 			this.popMask = true;
-			this.popList.placeholder = "回复 "  + userName + ":"
+			// this.popList.placeholder = "回复 "  + userName + ":"
 			this.commentConAdd = " //@" + userName;
-		},
+		},*/
 
 		// 关闭回复框
-		handleCloseRelpy(){
-			this.replyShow = false;
-			this.commentType = 1;
-		},
+		// handleCloseRelpy(){
+		// 	this.replyShow = false;
+		// },
 
 		// 点击消息滚动
-		handleComment(){
-			let dis = $(".detail").scrollTop() + $(".article-change").offset().top -100;
-			$(".detail").animate({scrollTop:dis},100);
-			console.log(dis);
-		},
+		// handleComment(){
+		// 	let dis = $(".detail").scrollTop() + $(".article-change").offset().top -100;
+		// 	$(".detail").animate({scrollTop:dis},100);
+		// 	// console.log(dis);
+		// },
 
 		// 举报
 		handleReport(){
@@ -884,9 +883,7 @@ export default {
 				this.reportShow = false;
 				this.popMask = false;
 			} else {
-				// this.$vux.alert.show({
-				//   content:'感谢您的反馈，我们会着实核查！',
-				// })
+				this.$messageBox.alert('感谢您的反馈，我们会着实核查！');
 				this.reportShow = false;
 				this.popMask = false;
 				this.reportList.show = false;
@@ -954,7 +951,6 @@ export default {
 					if(resGetPraiseCount && resGetPraiseCount.status == "success") {
 						this.$set(item,"likeNum",resGetPraiseCount.result.count);
 					}
-
 					//用户是否给文章一级评论点赞
 					let resTestPraise = praiseService.testPraise(item.id,2)
 					if (resTestPraise && resTestPraise.status == "success") {
@@ -965,19 +961,22 @@ export default {
 						}
 					}
 				});
-				if (this.commentList.length == 0) {
-					this.lock = true;		
-					this.proFail2 = true;
-					this.failMes2 = "暂无评论，来抢第一个沙发吧";
-					this.ifLoadMore = false;
-				} else if (this.commentList.length < 10 || this.commentNum == this.commentList.length ) {
-					this.lock = true;		
-					this.ifLoadMore = true;
-					this.proFail2 = false;
-					this.loadText = "已加载全部";
-				} else {
+				if (this.commentList.length <= 10){
 					this.pageNum1 ++;
 				}
+				// if (this.commentList.length == 0) {
+				// 	this.lock = true;		
+				// 	this.proFail2 = true;
+				// 	this.failMes2 = "暂无评论，来抢第一个沙发吧";
+				// 	this.ifLoadMore = false;
+				// } else if (this.commentList.length < 10 || this.commentNum == this.commentList.length ) {
+				// 	this.lock = true;		
+				// 	this.ifLoadMore = true;
+				// 	this.proFail2 = false;
+				// 	this.loadText = "已加载全部";
+				// } else {
+				// 	this.pageNum1 ++;
+				// }
 			} else {
 				this.proFail2 = true;
 			}
@@ -988,65 +987,46 @@ export default {
 			// 获取文章评论回复列表
 			let resReplyList = articleCommentService.getReplyList(this.replyCommentId,1,10)
 			if (resReplyList && resReplyList.status == "success") {
-				this.replyList = resReplyList.recordPage.list;
+				let temp = resReplyList.recordPage.list;
 				//获取回复人信息
-				for (var i = 0,len = this.replyList.length; i < len; i++) {
-					let resUserInfo = userService.getUserById(this.replyList[i].douserid);
+				for (var i = 0,len = temp.length; i < len; i++) {
+					let resUserInfo = userService.getUserById(temp[i].douserid);
 					if (resUserInfo && resUserInfo.status == "success") {
-						this.replyList[i].imageurl = resUserInfo.result.user.imageurl;
-						this.replyList[i].username = resUserInfo.result.user.username;
+						temp[i].username = resUserInfo.result.user.username;
+						temp[i].imageurl = resUserInfo.result.user.imageurl;
 					}
 				}
+				this.replyList[this.commentIndex] = temp;
 			}
-
-			if(resReplyList.recordPage.list.length <= 0){
-				this.noReply = true;
-				this.hasReply = false;
-				this.noComment = true;
-				this.hasComment = false;
+			/*if(resReplyList.recordPage.list.length <= 0){
+				// this.noReply = true;
+				// this.hasReply = false;
+				// this.noComment = true;
+				// this.hasComment = false;
 			}else{
-				this.hasReply = true;
-				this.noReply = false;
-				this.hasComment = true;
-				this.noComment = false;
+				// this.hasReply = true;
+				// this.noReply = false;
+				// this.hasComment = true;
+				// this.noComment = false;
+			}*/
+		},
+		// show reply input
+		showReplyInput(e,replyUserId,commentid,commentIndex){
+			this.replyUserId = replyUserId;	//回复评论人id
+			this.replyCommentId = commentid; //回复评论的id
+			this.commentIndex = commentIndex;//指定评论数组中某条评论的索引值
+			this.isReplyInput = true;
+			if($(e.target).parent().parent().next("comment-writer-wrap").length==0){
+				$(".hot-footer").find("comment-writer-wrap").remove();
+				$(e.target).parent().parent('.hot-footer').after(this.$refs.test);
 			}
 		},
-
-
 		// 页面加载后渲染函数
 		loadScroll(){
 			if (!this.lock && ($(".detail").scrollTop() + $(".detail").height()) > $(".detail")[0].scrollHeight-350) {
 				this.loadComment();
 			}
-		},  
-		textShow(){
-			this.popList.show = true;
-			// this.$refs.popFocus.focus();
 		},
-		onPlayerPlay(){
-			// if (!this.$store.state.notWifi) {
-			// 	let _this = this,
-			// 		net = {};
-			// 	try{
-			// 		net = netUtil.getNetInfo();
-			// 	}catch(e){
-			// 	}
-			// 	if (net.network !="WiFi网络") {
-			// 		this.pause();
-			// 		this.$vux.confirm.show({
-			// 			title:"温馨提示",
-			// 			content:"当前处于非WIFI网络下，是否继续播放",
-			// 			onConfirm(){
-			// 				_this.$store.state.notWifi = true;
-			// 				//_this.onPlayerPlay();//无效
-			// 			}
-			// 		})
-			// 	}
-			// }
-		},
-		pause(){
-			this.$refs.videoPlayer.player.pause();
-		}
 	},
 	watch:{
 		'$route'(to,from){
@@ -1055,15 +1035,14 @@ export default {
 		id(){
 			// debugger
 			this.ifLoad = true;
-			setTimeout(()=>{
 				this.init();
 				this.ifLoad = false;
-			},450)
+			// setTimeout(()=>{
+			// },450)
 			//注：延迟时长必须在动画大于切换动画（300）
 		}
 	},
 	// beforeRouteEnter(to,from,next){
-
 	// 	next(vm=>{
 	// 		vm.id = to.query.id;	
 	// 		vm.detailType = to.query.detailType || 0;
@@ -1242,9 +1221,9 @@ export default {
 				color: #222;
 			}
 		}
-		.likeActive{
-			color: #f40;
-		}
+	}
+	.likeActive{
+		color: #f40;
 	}
 	.article-menu{
 		line-height: .8rem;
@@ -1260,23 +1239,42 @@ export default {
 			color: #f85959;
 		}
 	}
-	.hot-comment{
+	.comment-all-num {
+	    line-height: 50px;
+	    margin-left: 5px;
+	}
+	.all-num {
+	    font: 22px/24px Georgia;
+	    color: #f40;
+	}
+	.myphoto {
+	    width: 40px;
+	    height: 40px;
+	    border-radius: 50%;
+	}
+	.comment-writer-wrap {
+	    position: relative;
+	    vertical-align: middle;
+	}
+	.comment-wrap input {
+	    line-height: 35px;
+	    height: 35px;
+	}
+	.input-commnet-content {
+	    border: 1px solid #888;
+	    width: 100%;
+	    text-indent: 6px;
+	}
+	.submit-comment {
+	    position: absolute;
+	    width: 100px;
+	    top: 0;
+	    right: 0;
+	    background: #333;
+	    color: #fff;
+	}
+	.comment-wrap{
 		padding-top: .56rem;
-		.hot-title{
-			position: relative;
-			text-indent: .2rem;
-			font-size: .3rem;
-			font-weight: 700;
-			letter-spacing: .02rem;
-			&:before{
-				position: absolute;
-				content:'';
-				display: block;
-				width: .08rem;
-				height: .3rem;
-				background-color: #129aee;
-			}
-		}
 		.hot-content{
 			padding-top: .56rem;
 			.hot-item{
@@ -1299,7 +1297,6 @@ export default {
 				.hot-header{
 					height: .66rem;
 					line-height: .66rem;
-					font-size: .24rem;
 					h5{
 						color: #3e609e;
 					}
@@ -1308,7 +1305,9 @@ export default {
 						color: #999;
 					}
 					.hot-count{
+
 						color: #999;
+						margin-right: 2px;
 						vertical-align: top;
 					}
 				}
@@ -1345,15 +1344,12 @@ export default {
 						color: #999;
 					}
 					.hot-reply{
-						padding: .1rem .2rem;
-						border-radius: .3rem;
-						color: #666;
-						background-color: #f1f1f1;
 						var{
-							margin-right: .04rem;
+							margin-right:2px;
 						}
 					}
 					.hot-report{
+						margin-left: 5px;
 						color: #999;
 					}
 				}
@@ -1436,50 +1432,6 @@ export default {
 				}
 			}
 				
-		}
-	}
-	.popup-wrap {
-		width: 100%;
-		padding: .2rem;
-		background-color: #f4f4f4;
-		.popup-area{
-			width: 100%;
-			height: 1.8rem;
-			margin-bottom: .2rem;
-			textarea{
-				width: 100%;
-				height: 100%;
-				background-color: #fff;
-				border: .02rem solid @borderColor;
-				border-radius: .2rem;
-				padding: .13rem .18rem;
-				font-size: .28rem;
-				resize:  none;
-				&::-webkit-input-placeholder{color:#999;}
-				&:-moz-placeholder{color:#999;}
-				&::-moz-placeholder{color:#999;}
-				&:-ms-input-placeholder{color:#999;}
-			}
-		}
-		.popup-btn{
-			button{
-				width: 1.2rem;
-				height: .6rem;
-				border: .02rem solid transparent;
-				border-radius: .2rem;
-			}
-			.popup-cancel{
-				border-color: #dadada;
-				background-color: #f4f4f4;
-				color: #808080;
-			}
-			.popup-send{
-				background-color: #dadada;
-				color: #fff;
-			}
-			.popupActive{
-				background-color: #f85959;
-			}
 		}
 	}
 	.share-wrap{

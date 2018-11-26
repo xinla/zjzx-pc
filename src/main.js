@@ -17,6 +17,7 @@ Vue.component('LoadingMain',LoadingMain);
 //element-ui
 import { Message,MessageBox,Loading } from 'element-ui';
 Vue.prototype.$message = Message;
+Vue.prototype.$messageBox = MessageBox;
 // 视频插件
 import VideoPlayer from 'vue-video-player'
 require('video.js/dist/video-js.css')
