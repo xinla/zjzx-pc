@@ -12,4 +12,8 @@ export default {
 }
 </script>
 <style lang="less">
+html{
+	font-size: 50px !important;
+	line-height: 1;
+}
 </style>

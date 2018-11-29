@@ -53,7 +53,10 @@ a,button,input,textarea{ -webkit-tap-highlight-color:rgba(0,0,0,0);}
 img,a{-webkit-touch-callout:none;}  */
 
 /* common class */
+/* .iconfont{font-size: inherit;}
+.iconfont::before{font-size: 16px;} */
 /*bfc model*/
+.iconfont{cursor:pointer;}
 .bfc-o { overflow: hidden;position: relative;}
 .bfc-d,.dib { display: inline-block; vertical-align: top;position: relative;}
 .bfc-p { position: absolute; }

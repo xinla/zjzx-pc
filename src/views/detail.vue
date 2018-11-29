@@ -8,24 +8,23 @@
 				<h1 class="article-title">{{ article.title }}</h1>
 				<div class="publisher bfc-o clearfix">
 					<router-link :to="{name:'published',query:{userId:article.author}}">
-						<img :src="$Tool.headerImgFilter(artUser.imageurl)" alt="" class="uphoto uphoto-big fl">
-						<div class="article-time-name fl">
-							<div class="uname">
+						<!-- <img :src="$Tool.headerImgFilter(artUser.imageurl)" alt="" class="uphoto uphoto-big fl"> -->
+						<div class="article-time-name">
 								{{ artUser.username}}
-							</div>
-							<div class="ts utime">
 								<time v-text="$Tool.publishTimeFormat(article.publishtime)"></time>
-								<!-- <span>{{ article.classify }}</span> -->
-							</div>
+							<!-- <div class="uname">
+							</div> -->
+							<!-- <div class="ts utime">
+							</div> -->
 						</div>
 					</router-link>
-					<button type="button" class="focus bfc-p fr" v-if="userId != article.author" @click="handleFocus(article.author,1)">{{focusState?'已关注':'关注'}}</button>
+					<!-- <button type="button" class="focus bfc-p fr" v-if="userId != article.author" @click="handleFocus(article.author,1)">{{focusState?'已关注':'关注'}}</button> -->
 				</div>
 				<div class="content">
-					<div class="article-content">
-		            <p v-html="article.content"></p>
-		          </div>
-					<div class="phone-content">
+					<div class="article-content" v-if="3 === article.type">
+			          <p v-html="article.content"></p>
+			        </div>
+					<div class="phone-content" v-else>
 						<div v-if="1 === article.type" class="phone-img clearfix">
 							<div class="tel-img fl" v-for="(item,index) in ArticleFile">
 								<img  :src="fileRoot + item.url" :alt="item.filename"  v-preview="fileRoot + item.url">
@@ -60,15 +59,30 @@
 				</div> -->
 			</section>
 			<prompt-blank v-if="proFail1" :mes="failMes1"></prompt-blank>
+			<ul class="share-wrap">
+				<li class="share-text"> 分享至 </li>
+				<li class="share-list iconfont icon-weixin1"></li>
+				<li class="share-list iconfont icon-friend-circle"></li>
+				<li class="share-list iconfont icon-qq"></li>
+				<li class="share-list iconfont icon-weibo"></li>
+			</ul>
 			<ul class="article-change clearfix" v-if="!detailType">
 				<li class="item" @click="handleFabulous(1)" :class="{'likeActive':likeStatus}">
-					{{likeNum}}
 					<like :likeStatus="likeStatus"></like>
+					{{likeNum}}
 				</li>
 				<li class="item">
-					<span>不喜欢</span>
-					<i class="iconfont icon-lajixiang"></i>
+					<i class="iconfont" :class="{'icon-not-collection':collectToggle.notcollect,'icon-collected':collectToggle.collected}" @click="handleCollect(id)"></i>
+					<span>收藏</span>
 				</li>
+				<li class="item">
+					<i class="iconfont icon-lajixiang"></i>
+					<span>不喜欢</span>
+				</li>
+				<div class="item" @click="handleReport(1)">
+					<i class="iconfont icon-warning-circle"></i>
+					<span>举报</span>
+				</div>
 			</ul>
 
 			<ul class="article-menu" v-else>
@@ -76,7 +90,6 @@
 				<li :class="{current:current == 2}" @click="handleSwitch(2)">转发</li>
 				<li :class="{current:current == 3}" @click="handleSwitch(3)">点赞</li>
 			</ul>
-
 			<div class="comment-wrap" v-if="ifSwitchB">
 				<div class="comment-all-num">
 					共<em class="all-num">{{commentNum}}</em>条评论				
@@ -116,15 +129,15 @@
 										<span class="hot-time">{{$Tool.publishTimeFormat(item.commenttime)}}</span>
 										<span class="hot-point">•</span>
 										<span class="cp" @click='showReplyInput($event,item.douserid,item.id,index),commentConAdd = ""'>回复</span>-
-										<span class="hot-reply cp" @click="handleFirstReply(item.douserid,item.id,index)">
+										<span class="hot-reply cp" @click="handleFirstReply(item,index)">
 											<var>{{item.replyCount}}</var>回复<i class="iconfont icon-down"></i>
 										</span>
 									</div>
-									<span class="hot-report fr cp">举报</span>
+									<span class="hot-report fr cp" @click="handleReport(2,item)">举报</span>
 									<span class="hot-report fr cp"  v-if="item.douserid == userId" @click="deleteCommon(item.id,index,1)" >删除</span>
 								</div>								
 								<!-- 二级回复 -->
-								<ul class="hot-list" v-if="commentList[index].replyShow">
+								<ul class="hot-list" v-if="item.replyShow">
 									<li class="hot-item clearfix" v-for="(unit,sign) in replyList[index]">
 										<div class="hot-userphoto fl">
 											<img :src="$Tool.headerImgFilter(unit.imageurl)">
@@ -165,8 +178,10 @@
 				<div class="report-body">
 					<ul class="report-list">
 						<li class="report-item clearfix" v-for="(item,index) in reportList" :key="item.id" @click="handleChooseReport(item,index)">
-						<span class="fl">{{item.desc}}</span>
-						<i v-show="item.show" class="iconfont icon-warning-circle fr"></i>
+						<!-- <span class="fl">{{item.desc}}</span>
+						<i v-show="item.show" class="iconfont icon-warning-circle fr"></i> -->
+						<label for="reportInput" class="report-label">{{item.desc}}</label>
+						<input type="radio" id="reportInput">
 					</li>
 					</ul>
 				</div>
@@ -342,13 +357,8 @@ export default {
 					fullscreenToggle: true //全屏按钮
 				}
 			},
-			reportInfo:{
-				reportreasion:'',//"举报原因"，
-				reporttime:'',//"举报时间" ,
-				// itemid:'',//"对象id",
-				// reportuserid:'',//"被举报人id",
-				// type:'',//"类型"  1.文章举报
-			},
+			reportreasion:'',//"举报原因"
+			reportType:0,//举报类型 1:文章，2:评论
 			//转发，点赞列表
 			listMember:[],
 			//转发，点赞提示
@@ -451,7 +461,6 @@ export default {
 			});
 			//用户是否给文章点赞
 			praiseService.testPraise(this.id,1,(data)=>{
-					console.log(data)
 				if (data && data.status == "success") {
 					if (data.result == 1) {
 						this.likeStatus = true;
@@ -807,15 +816,15 @@ export default {
 			this.shareShow = false;
 		},
 		//首次回复
-		handleFirstReply(replyUserId,commentid,commentIndex){
-			this.replyUserId = replyUserId;	//回复评论人id
-			this.replyCommentId = commentid; //回复评论的id
+		handleFirstReply(item,commentIndex){
+			this.replyUserId = item.douserid;	//回复评论人id
+			this.replyCommentId = item.id; //回复评论的id
 			this.commentIndex = commentIndex;//指定评论数组中某条评论的索引值
 			if (this.replyList[commentIndex] === undefined) {
 				this.loadReply();
-				console.log(this.replyList[commentIndex][0])				
 			}
-			this.$set(this.commentList[commentIndex],'replyShow',!this.commentList[commentIndex].replyShow);
+			this.$set(item,'replyShow',!item.replyShow);
+			// this.$set(this.commentList[commentIndex],'replyShow',!this.commentList[commentIndex].replyShow);
 			// this.replyShow = true;
 			/*this.replyUserId = replyUserId;	//回复评论人id
 			this.replyCommentId = commentid; //回复评论的id
@@ -864,29 +873,64 @@ export default {
 		// 	// console.log(dis);
 		// },
 
-		// 举报
-		handleReport(){
+		/**
+		 * 举报
+		 * @param  Number type 举报类型 1:文章，2:评论
+		 * @return {[type]}      [description]
+		 */
+		handleReport(type,item){
 			this.reportShow = true;
 			this.popMask = true;
-			// console.log('举报');
+			this.reportType = type;
+			this.replyobj = item;
 		},
 
-		// 选择举报项
-		handleChooseReport(item,index){
-			item.show = !item.show;
-			this.reportInfo.reportreasion = index;
-		},
-
-		// 提交举报
-		handleSendReport(itemid,reportuserid){
-			if(!this.reportInfo.reportreasion){
-				this.reportShow = false;
-				this.popMask = false;
+		/**
+		 * 提交举报
+		 * @return {[type]}      [description]
+		 */
+		handleSendReport(){
+			/*reportInfo:{
+				reporttime:'',//"举报时间" ,
+				itemid:'',//"对象id",
+				reportuserid:'',//"被举报人id",
+				type:'',//"类型"  1.文章举报
+			},*/
+			if(this.reportreasion){
+				let reportInfo;
+				if (this.reportType === 1) {
+					reportInfo = {
+						type:1,
+						itemid:this.id,
+						reportuserid:this.article.author,
+						reportreasion:this.reportreasion
+					};
+				}else if (this.reportType === 2){
+					reportInfo = {
+						type:2,
+						itemid:this.replyobj.id,
+						reportuserid:this.replyobj.douserid,
+						reportreasion:this.reportreasion
+					};										
+				}
+				// console.log(reportInfo)
+				let res = reportService.doReport(reportInfo);
+				if (res && res.status === "success") {
+					this.$vux.alert.show({
+					  content:'感谢您的反馈，我们会着实核查！',
+					})			
+					this.reportShow = false;
+					this.popMask = false;
+					this.reportreasion = "";
+				}else{
+					this.$vux.alert.show({
+					  content:'提交失败，请稍后再试！',
+					})
+				}
 			} else {
-				this.$messageBox.alert('感谢您的反馈，我们会着实核查！');
 				this.reportShow = false;
 				this.popMask = false;
-				this.reportList.show = false;
+				// this.reportList.show = false;
 			}
 		},
 
@@ -1097,7 +1141,8 @@ export default {
 					margin-right: .2rem;
 				}
 				.article-time-name{
-					width: calc(100% - 2.78rem);
+					color: #aaa;
+					// width: calc(100% - 2.78rem);
 					margin-right: .22rem;
 					.uname{
 						padding-top: .25rem;
@@ -1133,7 +1178,7 @@ export default {
 			.content{
 				padding-bottom: .45rem;
 				.article-content{
-					padding-bottom: .4rem;
+					// padding-bottom: .4rem;
 					line-height: .5rem;
 					p{
             font-size: .34rem;
@@ -1151,7 +1196,7 @@ export default {
 					}
 				}
 				.phone-content{
-					padding-bottom: .4rem;
+					// padding-bottom: .4rem;
 					.phone-img{
 						width: 100%;
 						.tel-img{
@@ -1197,15 +1242,17 @@ export default {
 	.article-change{
 		border-bottom:.02rem solid @borderColor;
 		padding-bottom: .56rem;
-		display: flex;
-		justify-content: center;
+		// display: flex;
+		// justify-content: center;
+		text-align: right;
 		.item{
-			width: 1.84rem;
-			height: .64rem;
-			line-height: .64rem;
-			margin-right: .86rem;
-			border: .02rem solid #d9d9d9;
-			border-radius: .3rem;
+			display: inline-block;
+			width: 60px;
+			// height: .64rem;
+			// line-height: .64rem;
+			// margin-right: .86rem;
+			// border: .02rem solid #d9d9d9;
+			// border-radius: .3rem;
 			text-align: center;
 			&:last-child{
 				margin-right: 0;
@@ -1356,6 +1403,12 @@ export default {
 			}
 		}
 	}
+	.icon-collected{
+		color: #fc0;
+	}
+	.icon-not-collection{
+		color: #222;
+	}
 	.article-tabBar {
 		width: 100%;
 		height: .88rem;
@@ -1404,12 +1457,6 @@ export default {
 					font-size: .4rem;
 					color: #222;
 				}
-				.icon-collected{
-					color: #fc0;
-				}
-				.icon-not-collection{
-					color: #222;
-				}
 			}
 			.msg-item {
 				position: relative;
@@ -1435,18 +1482,32 @@ export default {
 		}
 	}
 	.share-wrap{
+		padding: .53rem .2rem;
+		text-align: center;
+		.share-text{
+			margin-bottom:5px;
+			&::before,&::after{
+				display: inline-block;
+				position: relative;
+				top: -3px;
+				content:"";
+				width: 40%;
+				border-top: 1px solid #ddd;
+				margin:0 10px;
+			}			
+		}
 		.share-list{
-			background-color: #f0f0f0;
-			padding: .53rem .2rem;
-			display: flex;
-			text-align: center;
-			li{
-				flex: 1;
-				margin-right: .24rem;
-				&:last-child{
-					margin-right: 0;
-				}
-				.share-img{
+			background-color: #666;
+			display: inline-block;
+			color: #fff;
+			padding: 5px;
+			border-radius: 50%;
+			margin:0 5px;
+			// &:last-child{
+			// 	margin-right: 0;
+			/* li{
+				} */
+				/* .share-img{
 					margin: 0 auto;
 					width: 1.2rem;
 					height: 1.2rem;
@@ -1458,7 +1519,7 @@ export default {
 						width: .75rem;
 						height: .75rem;
 						margin-top: .225rem;
-
+				
 					}
 				}
 				.share-desc{
@@ -1466,8 +1527,8 @@ export default {
 					padding-top: .2rem;
 					font-size: .24rem;
 					color: #222;
-				}
-			}
+				} */
+			// }
 		}
 		.share-btn{
 			width: 100%;

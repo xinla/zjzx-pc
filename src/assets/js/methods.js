@@ -99,7 +99,7 @@ const tool = {
   },
   // 未登录提示 
   loginPrompt(back){
-    GoTruth.MessageBox.confirm('您还没登录哦！',{
+    GoTruth.$messageBox.confirm('您还没登录哦！',{
       type: 'warning',
       center: true
     }).then(()=>{
