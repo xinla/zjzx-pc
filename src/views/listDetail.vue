@@ -4,9 +4,7 @@
 	   		<mit v-for="(item,index) in arcList" :article="item" :key="index"></mit>  
 	   		<div>loading</div> 
 	    </div> 
-	    <div class="right fr">
-			<arcDetail></arcDetail>
-	    </div>    
+		<arcDetail class="right fr"></arcDetail> 
     </div>
 </template>
 

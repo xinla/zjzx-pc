@@ -12,5 +12,11 @@ module.exports = {
    //         path.resolve(__dirname, "src/common/base.less")
    //     ]
    //   }
-   // }
+   // },
+   // externals: {
+  //   'vue': 'Vue',
+  //   'vue-router': 'VueRouter',
+  //   'vuex': 'Vuex',
+  //   'axios': 'axios'
+  // }
 }

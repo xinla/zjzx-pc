@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<div class="mask" v-show="ifLoad">
+		<div class="mask-current" v-show="ifLoad">
 			<loading-main></loading-main>
 		</div>
-		<div class="detail" @scroll="loadScroll">
+		<div class="detail">
 			<section class="content-wrap" v-if="!proFail1">
 				<h1 class="article-title">{{ article.title }}</h1>
 				<div class="publisher bfc-o clearfix">
-					<router-link :to="{name:'published',query:{userId:article.author}}">
+					<router-link :to="{name:'',query:{userId:article.author}}">
 						<!-- <img :src="$Tool.headerImgFilter(artUser.imageurl)" alt="" class="uphoto uphoto-big fl"> -->
 						<div class="article-time-name">
 								{{ artUser.username}}
@@ -170,24 +170,23 @@
 			<!-- <memberList v-else :list="listMember" :mes="proMes"></memberList> -->
 		</div>
 		<!-- 举报框 -->
-		<div>
-			<div class="report-wrap">
-				<div class="report-header">
-					<h2>举报</h2>
-				</div>
-				<div class="report-body">
-					<ul class="report-list">
-						<li class="report-item clearfix" v-for="(item,index) in reportList" :key="item.id" @click="handleChooseReport(item,index)">
-						<!-- <span class="fl">{{item.desc}}</span>
-						<i v-show="item.show" class="iconfont icon-warning-circle fr"></i> -->
-						<label for="reportInput" class="report-label">{{item.desc}}</label>
-						<input type="radio" id="reportInput">
+		<div class="report-wrap mask" @click="cancleReport" v-if="showReplyInput">
+			<div class="report-body cc">
+				<i class="iconfont icon-close fr" @click="cancleReport"></i>
+				<b class="rep-t">举报</b>
+				<ul class="report-list">
+					<li class="report-item" v-for="(item,index) in reportList" >
+						<label :for="`reportInput_${index}`" class="report-label">{{item}}</label>
+						<input type="radio" name="reportInput" :id="`reportInput_${index}`" v-model="reportreasion.type" :value="item">
 					</li>
-					</ul>
-				</div>
-				<div class="report-footer" @click="handleSendReport">
-					完成
-				</div>
+					<li>
+						<p>举报描述：</p>
+						<textarea name="reportInput" v-model.trim = "reportreasion.desc"></textarea>
+					</li>
+				</ul>
+			<div class="ac" @click="handleSendReport">
+				提交
+			</div>
 			</div>
 		</div>
 		<!-- 二/三级回复评论框 -->
@@ -307,13 +306,7 @@ export default {
 			//二三级回复框显隐
 			isReplyInput:false,
 			//举报数组
-			reportList:[
-				{id: 1, desc: "淫秽色情", show:false},
-				{id: 2, desc: "违法信息", show:false},
-				{id: 3, desc: "营销广告", show:false},
-				{id: 4, desc: "恶意攻击谩骂", show:false},
-				// {id: 5, desc: "其它", show:false},
-			],
+			reportList:['淫秽色情','违法信息','营销广告','恶意攻击谩骂'],
 			//显影分享
 			ifShare:false,
 			//评论加载分页
@@ -357,7 +350,10 @@ export default {
 					fullscreenToggle: true //全屏按钮
 				}
 			},
-			reportreasion:'',//"举报原因"
+			reportreasion:{
+				type:'',
+				desc:''
+			},//"举报原因"
 			reportType:0,//举报类型 1:文章，2:评论
 			//转发，点赞列表
 			listMember:[],
@@ -896,21 +892,22 @@ export default {
 				reportuserid:'',//"被举报人id",
 				type:'',//"类型"  1.文章举报
 			},*/
-			if(this.reportreasion){
+			let reason = this.reportreasion;
+			if(reason.type || reason.desc){
 				let reportInfo;
 				if (this.reportType === 1) {
 					reportInfo = {
 						type:1,
 						itemid:this.id,
 						reportuserid:this.article.author,
-						reportreasion:this.reportreasion
+						reportreasion:reason.type + reason.desc
 					};
 				}else if (this.reportType === 2){
 					reportInfo = {
 						type:2,
 						itemid:this.replyobj.id,
 						reportuserid:this.replyobj.douserid,
-						reportreasion:this.reportreasion
+						reportreasion:reason.type + reason.desc
 					};										
 				}
 				// console.log(reportInfo)
@@ -1065,12 +1062,6 @@ export default {
 				$(e.target).parent().parent('.hot-footer').after(this.$refs.test);
 			}
 		},
-		// 页面加载后渲染函数
-		loadScroll(){
-			if (!this.lock && ($(".detail").scrollTop() + $(".detail").height()) > $(".detail")[0].scrollHeight-350) {
-				this.loadComment();
-			}
-		},
 	},
 	watch:{
 		'$route'(to,from){
@@ -1079,11 +1070,10 @@ export default {
 		id(){
 			// debugger
 			this.ifLoad = true;
+			setTimeout(()=>{
 				this.init();
 				this.ifLoad = false;
-			// setTimeout(()=>{
-			// },450)
-			//注：延迟时长必须在动画大于切换动画（300）
+			},200)
 		}
 	},
 	// beforeRouteEnter(to,from,next){
@@ -1097,20 +1087,11 @@ export default {
 
 <style lang="less" scoped>
 @import url(../assets/styles/base.less);
-	.mask{
+	.mask-current{
 		position: absolute;
-		bottom: initial;
+		width:100%;
+		height:100%;
 		background: #fafafa;
-	}
-	.playAudio{
-		position: absolute;
-		display: inline-block;
-		top: .7rem;
-		right: .3rem;
-		.iconfont{
-			font-size: .46rem;
-			font-weight: 500;
-		}
 	}
 	.detail{
 		position: relative;
@@ -1703,46 +1684,41 @@ export default {
 		}
 	}
 	.report-wrap{
-		padding-top: .2rem;
-		background-color: #f8f8f8;
-		.report-header{
-			text-align: center;
-			line-height: .75rem;
-			h2{
-				font-weight: 500;
-				font-size: .32rem;
-				letter-spacing: .02rem;
-			}
-		}
 		.report-body{
-			padding: 0 .56rem;
-			.report-list{
-				 .report-item{
-				 	line-height: .75rem;
-				 	border-bottom: .02rem solid @borderColor;
-				 	&:last-child{
-				 		border-bottom: none;
-				 	}
-				 	.iconfont{
-				 		color: #f00;
-				 	}
-				 	input{
-				 		display: inline-block;
-				 		width: 70%;
-				 		height: .65rem;
-				 		margin-top: -.06rem;
-				 	}
-				 }
-			}
+			background: #fff;
+		    width: 480px;
+		    max-height: 600px;
+		    padding: 15px;
+	        border-radius: 10px;
+			 .report-item{
+			 	position: relative;
+			 	height: 40px;
+			    line-height: 40px;
+			 	// border-bottom: 1px solid #eee;
+			 }
 		}
-		.report-footer{
-			padding:  0 .56rem;
-			line-height: .8rem;
-			font-size: .32rem;
-			text-align: center;
-			color: #222;
-			border-top: .02rem solid @borderColor;
-			background-color: #fff;
+		input[type=radio] {
+		    float: right;
+		    position: relative;
+		    top: 10px;
+		    width: 15px;
+		    height: 15px;
+		    border: 2px solid #999;
+		}
+		input[type=radio]:checked{
+			border: 2px solid #eee;
+			background: red;
+		    box-shadow: 0 0 4px 1px red;
+		}
+		textarea{
+			margin-top: 10px;
+			width:100%;
+			min-height: 100px;
+			border: 1px solid #bbb;
+			border-radius:6px;
+		}
+		.report-list {
+		    padding: 10px 15px;
 		}
 	}
 	.pop-mask{
