@@ -61,10 +61,13 @@
 			<prompt-blank v-if="proFail1" :mes="failMes1"></prompt-blank>
 			<ul class="share-wrap">
 				<li class="share-text"> 分享至 </li>
-				<li class="share-list iconfont icon-weixin1"></li>
-				<li class="share-list iconfont icon-friend-circle"></li>
-				<li class="share-list iconfont icon-qq"></li>
-				<li class="share-list iconfont icon-weibo"></li>
+				<li class="share-list iconfont icon-weixin1" @click="share('wechat')">
+					<canvas class="qr-code" v-if="isWechatCode" ref="QRCode"></canvas>
+				</li>
+				<li class="share-list iconfont icon-qq" @click="share('qq')"></li>
+				<li class="share-list iconfont icon-qzone" @click="share('qzone')"></li>
+				<li class="share-list iconfont icon-weibo" @click="share('weibo')"></li>
+				<!-- <li ><canvas ref="QRCode"></canvas></li> -->
 			</ul>
 			<ul class="article-change clearfix" v-if="!detailType">
 				<li class="item" @click="handleFabulous(1)" :class="{'likeActive':likeStatus}">
@@ -170,9 +173,9 @@
 			<!-- <memberList v-else :list="listMember" :mes="proMes"></memberList> -->
 		</div>
 		<!-- 举报框 -->
-		<div class="report-wrap mask" @click="cancleReport" v-if="showReplyInput">
-			<div class="report-body cc">
-				<i class="iconfont icon-close fr" @click="cancleReport"></i>
+		<div class="report-wrap mask" @click="cancleReport($event)" v-if="reportShow">
+			<div class="report-body cc" @click="$event.stopPropagation()">
+				<i class="iconfont icon-close fr" @click="cancleReport($event)"></i>
 				<b class="rep-t">举报</b>
 				<ul class="report-list">
 					<li class="report-item" v-for="(item,index) in reportList" >
@@ -200,7 +203,7 @@
 <script>
 import config from '@/assets/configs/config'
 import like from '@/components/like'
-// import share from '@/components/common/share'
+import QRCode from 'qrcode'
 // import memberList from '@/components/common/memberList'
 import listUtil from '@/utils/listUtil'
 import userService from '@/services/userService'
@@ -212,7 +215,6 @@ import readHistoryService from '@/services/readHistoryService'
 import articleFileService from '@/services/article_fileService'
 import articleCommentService from '@/services/article_commentService'
 import articleCollectService from '@/services/articleCollectService'
-import shareService from '@/services/shareService'
 import messageService from '@/services/messageService'
 import transmitService from '@/services/transmitService'
 
@@ -369,18 +371,14 @@ export default {
 				title:'',
 				content:'',
 				thumbs:[]
-			}
+			},
+			isWechatCode:false
 		}
 	},
 	mounted(){
 		this.id = this.$route.query.id;
 		this.detailType = this.$route.query.detailType || 0;
 		this.init();
-		try{
-			shareService.init();
-		}catch(e){
-
-		}
 	},
 	methods:{
 		init(){
@@ -758,58 +756,75 @@ export default {
 				}
 			}
 		},
-		// 分享
-		handleShare(){
-			this.shareShow= true;
-			// if(this.replyShow){
-			// 	this.popMask = true;
-			// }
-			//分享内容对象
-			let reg = /[^\u4e00-\u9fa5]+/g;
-			let tempContent = this.article.content.replace(reg,"");
-			this.shareDesc = {
-				href:config.domain + location.href.substring(location.href.indexOf('/',10)),
-				title: this.article.title,
-				content: tempContent.substring(0,80)
-			};
-			if (this.article.type == 3) {
+		/**
+		 * 分享到第三方
+		 * @return {[type]} [description]
+		 */
+		share(whi){
+		    //获取文章标题,图片链接,内容
+		    let reg = /[^\u4e00-\u9fa5]+/g,
+		    	title = this.article.title,
+		     	thumbs = '',
+		     	content = this.article.content.replace(reg,"").substring(0,180);
+		    //获取网页中内容的第一张图片
+		    if (this.article.type == 3) {
 				let temp = this.$Tool.extractImg(this.article.content,1);
-				this.shareDesc['thumbs'] = temp[0];
+				thumbs = temp[0];
 			}else if(this.ArticleFile.length) {
-				this.shareDesc['thumbs'] = [this.fileRoot + this.ArticleFile[0]['url']];
+				thumbs = [this.fileRoot + this.ArticleFile[0]['url']];
 			}else{
-				this.shareDesc['thumbs'] = [this.fileRoot + this.playerOptions.poster];
+				thumbs = [this.fileRoot + this.playerOptions.poster];
 			}
-		},
-
-		//分享到第三方
-		handleGiveShare(type){
-			if(type == 1) {
-				shareService.shareToWxHy(this.shareDesc,(data)=>{
-					console.log(this.shareDesc);
-
-				})
+			if (!thumbs) {
+				thumbs = require('@/assets/images/logo-icon.png');
 			}
-			else if(type == 2) {
-				shareService.shareToWxPyq(this.shareDesc,(data)=>{
-					console.log(this.shareDesc);
-				})
+			switch(whi){
+				// qq空间接口的传参
+				case 'qzone':window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + location.href+'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content);
+				break;
+				// 新浪微博接口的传参
+				case 'sina':window.open('http://service.weibo.com/share/share.php?url=' + location.href+'?sharesource=weibo&title='+ title +'&pic='+ thumbs +'&appkey=1715625583');
+				break;
+				// qq好友接口的传参
+				case 'qq':window.open('http://connect.qq.com/widget/shareqq/index.html?url='+location.href+'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content +'&desc=直击真相：多一个人看到，就少一个人受骗！');
+				break;
+				// 生成二维码给微信扫描分享
+				case 'wechat':
+				this.isWechatCode = !this.isWechatCode ;
+				if (!this.isWechatCode) {
+					return;
+				}
+				this.$nextTick(()=>{
+					creatQRCode.call(this);
+				}) 
+				break;
+				dafault:;
 			}
-			else if(type == 3) {
-				shareService.shareToWxPyq(this.shareDesc,(data)=>{
-					console.log(this.shareDesc);
-				})
-			}
-			else{
-				shareService.shareToXl(this.shareDesc,data=>{
-					console.log(this.shareDesc);
-				})
-			}
-
-		},
-		//关闭分享弹框
-		handleCancelShare(){
-			this.shareShow = false;
+			// 动态生成二维码
+		    function creatQRCode(){ 
+		      	// 生成的二维码内容，添加变量
+				let canvas = this.$refs.QRCode;
+		        QRCode.toCanvas(canvas, 'http://www.baidu.com', function (error) {
+		        // if (error) console.error(error);
+		        })
+		    }
+		    /*//qq空间接口的传参
+		    if(whi=='qzone'){
+		        window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + location.href+'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content);
+		    }
+		    //新浪微博接口的传参
+		    if(whi=='sina'){
+		        window.open('http://service.weibo.com/share/share.php?url=' + location.href+'?sharesource=weibo&title='+ title +'&pic='+ thumbs +'&appkey=1715625583');
+		    }
+		    //qq好友接口的传参
+		    if(whi == 'qq'){
+		        window.open('http://connect.qq.com/widget/shareqq/index.html?url='+location.href+'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content +'&desc=直击真相：多一个人看到，就少一个人受骗！');
+		    }
+		    //生成二维码给微信扫描分享
+		    if(whi == 'wechat'){
+		        window.open('http://zixuephp.net/inc/qrcode_img.php?url=http://zixuephp.net/article-1.html');
+		    }*/
+		    
 		},
 		//首次回复
 		handleFirstReply(item,commentIndex){
@@ -930,7 +945,10 @@ export default {
 				// this.reportList.show = false;
 			}
 		},
-
+		cancleReport(e){
+			this.reportShow = false;
+			e.stopPropagation();
+		},
 		// 个人中心所能看到的switch
 		handleSwitch(v){;
 			if(v == 1) {
@@ -1478,6 +1496,7 @@ export default {
 			}			
 		}
 		.share-list{
+			position: relative;
 			background-color: #666;
 			display: inline-block;
 			color: #fff;
@@ -1754,6 +1773,11 @@ export default {
 	.red{
 		color:#f00;
 		font-weight: 600;
+	}
+	.qr-code {
+	    position: absolute;
+	    top: -45%;
+	    right: 30px;
 	}
 </style>
 

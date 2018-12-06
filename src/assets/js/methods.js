@@ -17,6 +17,15 @@ const tool = {
       GoTruth.$router.back();
     }
   },
+  //手机号识别并返回
+  isPhoneNumber(num) {
+    if (!num) { return false };
+    let str = num.toString();
+    let val = str.replace(/[^0-9]/ig, "");
+    if (val.length !== 11) { return false };
+    var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})|(19[0-9]{1})|)+\d{8})$/;
+    if (!myreg.test(val)) { return false } else { return val }
+  },
   //输入区内容合法验证
   checkInput(val){
     val = String(val);
