@@ -4,7 +4,7 @@
 			<ul>
 				<li class="error-tip ac" v-show="errorTip">{{errorTip}}</li>
 				<li class="login-li">
-					<i class="iconfont icon-icon-copy"></i>
+					<i class="iconfont icon-iphone"></i>
 					<input type="text" class="input"
 					v-model.trim="mobile"
 					@focus="focusMobile"
@@ -12,7 +12,7 @@
 					maxlength="11">
 				</li>
 				<li class="login-li">
-					<i class="iconfont icon-icon-copy"></i>
+					<i class="iconfont icon-yanzhengma"></i>
 					<input type="text" class="input" 
 					v-model.trim="verifyCode"
 					@focus="focusCode"
@@ -21,7 +21,7 @@
 					<span class="fr verify-code" :class="{'disabled':timer}" @click="getVerifyCode">{{getCodeDesc}}</span>
 				</li>
 				<li class="login-li">
-					<i class="iconfont icon-icon-copy"></i>
+					<i class="iconfont icon-suo"></i>
 					<input type="text" class="input" 
 					v-model.trim="password"
 					@focus="focusPassword"
@@ -37,10 +37,10 @@
 			</ul>
 			<ul class="ac">
 				<li class="login-author"> 一键登录 </li>
-				<li class="author-li iconfont icon-weixin1" @click="authLogin('wechat')">
+				<li class="author-li iconfont icon-wechat" @click="authLogin('wechat')">
 				</li>
 				<li class="author-li iconfont icon-qq" @click="authLogin('qq')"></li>
-				<li class="author-li iconfont icon-qzone" @click="authLogin('qzone')"></li>
+				<li class="author-li iconfont icon-kongjian" @click="authLogin('qzone')"></li>
 				<li class="author-li iconfont icon-weibo" @click="authLogin('weibo')"></li>
 			</ul>
 		</div>
@@ -271,31 +271,5 @@ export default {
 			padding: 5px;
 			border-radius: 50%;
 			margin:0 5px;
-			// &:last-child{
-			// 	margin-right: 0;
-			/* li{
-				} */
-				/* .share-img{
-					margin: 0 auto;
-					width: 1.2rem;
-					height: 1.2rem;
-					border-radius: 50%;
-					text-align: center;
-					background-color: #fff;
-					img{
-						display: inline-block;
-						width: .75rem;
-						height: .75rem;
-						margin-top: .225rem;
-				
-					}
-				}
-				.share-desc{
-					display: block;
-					padding-top: .2rem;
-					font-size: .24rem;
-					color: #222;
-				} */
-			// }
 		}
 </style>

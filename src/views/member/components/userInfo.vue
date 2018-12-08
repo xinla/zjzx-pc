@@ -73,6 +73,10 @@
     .user-desc{
         position: relative;
         top: -55px;
+        padding-bottom: 10px;
+        border: 1px solid #e8e8e8;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
         text-align: center;
         .user-head{
             width: 111px;

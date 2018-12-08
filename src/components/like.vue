@@ -1,8 +1,8 @@
 <template>
 	<div class="bfc-d">
-		<i class="iconfont icon-heart"></i>
+		<i class="iconfont icon-no-love"></i>
 		<transition name="like-up">		
-			<i class="iconfont icon-heart like-animate" v-show="!likeStatus"></i>	
+			<i class="iconfont icon-no-love like-animate" v-show="!likeStatus"></i>
 		</transition>	
 	</div>
 </template>

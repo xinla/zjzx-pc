@@ -26,7 +26,7 @@
         </div>
         <span class="video-time">{{publishtime}}</span>
         <div class="video-del" @click="$emit('delete',[article.id,whi,$event])" v-if="ifDel">
-          <i class="iconfont icon-remove"></i>
+          <i class="iconfont icon-close"></i>
         </div>
       </div>
     </div>
