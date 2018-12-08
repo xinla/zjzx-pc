@@ -293,10 +293,96 @@
             <div class="user-right fr">
                 <div class="side-title">
                     <span class="title">风闻专区</span>
-
+                    <i class="iconfont icon-arrow-down"></i>
 
                 </div>
-
+                <div class="side-content">
+                    <div class="side-item">
+                        <div class="side-user clearfix">
+                            <img src="@/assets/images/user_head.jpg" class="side-userPhoto fl" alt="">
+                            <span class="name fl">用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名</span>
+                        </div>
+                        <h4 class="side-tit">D&G辱华，意大利小姐姐都看不</h4>
+                        <div class="side-desc">
+                            <p>
+                                为了撇清和D&G的关系，她拿出买过的品牌围巾直接上
+                                剪刀，而弹幕就流口水江东父老都是交了水电费是的而弹幕就流口水江东父老都是交了水电费是的而弹幕就流
+                            </p>
+                        </div>
+                        <div class="side-footer">
+                            <span>评论 100</span>
+                            <span>赞 100</span>
+                        </div>
+                    </div>
+                    <div class="side-item">
+                        <div class="side-user clearfix">
+                            <img src="@/assets/images/user_head.jpg" class="side-userPhoto fl" alt="">
+                            <span class="name fl">用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名</span>
+                        </div>
+                        <h4 class="side-tit">D&G辱华，意大利小姐姐都看不</h4>
+                        <div class="side-desc">
+                            <p>
+                                为了撇清和D&G的关系，她拿出买过的品牌围巾直接上
+                                剪刀，而弹幕就流口水江东父老都是交了水电费是的而弹幕就流口水江东父老都是交了水电费是的而弹幕就流
+                            </p>
+                        </div>
+                        <div class="side-footer">
+                            <span>评论 100</span>
+                            <span>赞 100</span>
+                        </div>
+                    </div>
+                    <div class="side-item">
+                        <div class="side-user clearfix">
+                            <img src="@/assets/images/user_head.jpg" class="side-userPhoto fl" alt="">
+                            <span class="name fl">用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名</span>
+                        </div>
+                        <h4 class="side-tit">D&G辱华，意大利小姐姐都看不</h4>
+                        <div class="side-desc">
+                            <p>
+                                为了撇清和D&G的关系，她拿出买过的品牌围巾直接上
+                                剪刀，而弹幕就流口水江东父老都是交了水电费是的而弹幕就流口水江东父老都是交了水电费是的而弹幕就流
+                            </p>
+                        </div>
+                        <div class="side-footer">
+                            <span>评论 100</span>
+                            <span>赞 100</span>
+                        </div>
+                    </div>
+                    <div class="side-item">
+                        <div class="side-user clearfix">
+                            <img src="@/assets/images/user_head.jpg" class="side-userPhoto fl" alt="">
+                            <span class="name fl">用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名</span>
+                        </div>
+                        <h4 class="side-tit">D&G辱华，意大利小姐姐都看不</h4>
+                        <div class="side-desc">
+                            <p>
+                                为了撇清和D&G的关系，她拿出买过的品牌围巾直接上
+                                剪刀，而弹幕就流口水江东父老都是交了水电费是的而弹幕就流口水江东父老都是交了水电费是的而弹幕就流
+                            </p>
+                        </div>
+                        <div class="side-footer">
+                            <span>评论 100</span>
+                            <span>赞 100</span>
+                        </div>
+                    </div>
+                    <div class="side-item">
+                        <div class="side-user clearfix">
+                            <img src="@/assets/images/user_head.jpg" class="side-userPhoto fl" alt="">
+                            <span class="name fl">用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名</span>
+                        </div>
+                        <h4 class="side-tit">D&G辱华，意大利小姐姐都看不</h4>
+                        <div class="side-desc">
+                            <p>
+                                为了撇清和D&G的关系，她拿出买过的品牌围巾直接上
+                                剪刀，而弹幕就流口水江东父老都是交了水电费是的而弹幕就流口水江东父老都是交了水电费是的而弹幕就流
+                            </p>
+                        </div>
+                        <div class="side-footer">
+                            <span>评论 100</span>
+                            <span>赞 100</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -479,14 +565,77 @@
     .user-right{
         width: 360px;
         height: 1000px;
+        margin-top: 50px;
         .side-title{
             width: 100%;
             line-height: 32px;
+            position: relative;
             font-size: 18px;
             color: #fff;
             letter-spacing: 1px;
             text-align: center;
             background: url("../../../assets/images/title-bg.png") 0 0 repeat-x;
+            .iconfont{
+                width: 17px;
+                display: block;
+                position: absolute;
+                left: 50%;
+                margin-left: -7px;
+                bottom: -15px;
+                font-size: 13px;
+                cursor: default;
+            }
+        }
+        .side-content{
+            padding: 30px 10px;
+            border: 1px solid #f00;
+            border-top: none;
+            .side-item{
+                margin-bottom: 28px;
+                .side-user{
+                    .side-userPhoto{
+                        display: block;
+                        width: 36px;
+                        height: 36px;
+                        margin-right: 12px;
+                        border-radius: 50%;
+                    }
+                    .name{
+                        width: 200px;
+                        max-width: 200px;
+                        line-height: 36px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                    }
+                }
+                .side-tit{
+                    padding: 8px 0;
+                    line-height: 28px;
+                    font-size: 18px;
+                    overflow: hidden;
+                    text-overflow:ellipsis;
+                    display:-webkit-box;
+                    -webkit-box-orient:vertical;
+                    -webkit-line-clamp:2;
+                }
+                .side-desc{
+                    margin-bottom: 15px;
+                    line-height: 20px;
+                    overflow: hidden;
+                    text-overflow:ellipsis;
+                    display:-webkit-box;
+                    -webkit-box-orient:vertical;
+                    -webkit-line-clamp:4;
+                }
+                .side-footer{
+                    font-size: 12px;
+                    color: #262626;
+                    span{
+                        margin-right: 16px;
+                    }
+                }
+            }
         }
     }
 </style>
