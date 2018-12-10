@@ -111,7 +111,7 @@ img,a{-webkit-touch-callout:none;}  */
   cursor: pointer;
 }*/
 /*triangle*/
-.triangle{
+/* .triangle{
   position: absolute;
   display: inline-block;
   width: 0;
@@ -120,7 +120,7 @@ img,a{-webkit-touch-callout:none;}  */
   left: -16px;
   margin-top: -8px;
   transition: all 0.5s;
-}
+} */
 /*t-o-h-e*/
 .oe{
   white-space: nowrap;
@@ -135,12 +135,12 @@ img,a{-webkit-touch-callout:none;}  */
 }
 /* pc 外体框架 */
 .wrapper,.header-wrap{
-  position: relative;
+  /*position: relative;*/
   max-width: 1300px;
   min-width: 1020px;
   margin: 0 auto;
   padding: 0 15px;
-  overflow: hidden;
+  /*overflow-y: hidden;*/
 }
 .clearfix:after,.clearfix:before{content:"";display:table;/*创建匿名的表格单元，触发bfc*/}
 .clearfix:after{clear:both;/*清除浮动*/}

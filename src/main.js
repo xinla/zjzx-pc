@@ -1,11 +1,11 @@
+import '@/assets/styles/reset.css';
+import '@/assets/styles/base.less';
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import $ from 'jquery'
 window.$ = $;
-import '@/assets/styles/reset.css';
-import '@/assets/styles/base.less';
 //配置文件
 import config from '@/assets/configs/config'
 //工具函数
@@ -15,10 +15,12 @@ Vue.use(Tool);
 import LoadingMain from '@/components/loadingMain'
 Vue.component('LoadingMain',LoadingMain);
 //element-ui
-import { Message,MessageBox,Loading,Tabs } from 'element-ui';
+import { Message,MessageBox,Loading,Tabs,Carousel,CarouselItem } from 'element-ui';
 Vue.prototype.$message = Message;
 Vue.prototype.$messageBox = MessageBox;
 Vue.prototype.$Tabs = Tabs;
+Vue.component('carousel',Carousel);
+Vue.component('carousel-item',CarouselItem);
 // 视频插件
 import VideoPlayer from 'vue-video-player'
 require('video.js/dist/video-js.css')
