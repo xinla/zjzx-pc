@@ -50,11 +50,11 @@
                 width: 27px;
                 height: 100%;
                 border-radius: 0 16px 16px 0;
-                i{
+                .iconfont{
                     position: relative;
                     top: -14px;
                     left: 0;
-                    font-size: 16px;
+                    font-size: 20px;
                 }
             }
         }

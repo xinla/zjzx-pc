@@ -14,6 +14,7 @@
     import UserInfo from "./components/userInfo";
     import UserList from "./components/userList";
     import BackTop from "../../components/backTop";
+
     export default {
         name: "personalCenter",
         components: {BackTop, UserList, UserInfo, UserSearch, UserHeader}

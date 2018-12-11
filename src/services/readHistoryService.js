@@ -45,6 +45,14 @@ service.clearHistory = function(ids,call){
 
 	return resDelete;
 
+};
+service.getReadCount = function(articleid,call){
+    var params = {
+        articleid,
+    };
+
+    commonUtil.ajax(controller+'/getReadCount',params,call);
+
 }
 
 export default service

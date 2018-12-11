@@ -8,8 +8,12 @@
                 </li>
             </ul>
             <ul class="header-right fr clearfix">
-                <router-link :to="{path:'login'}" class="item" tag="li">登录</router-link>
-                <router-link :to="{path:'login'}" class="item" tag="li">注册</router-link>
+                <router-link :to="{path:'login'}" class="item" tag="li" v-if="noLogin">登录</router-link>
+                <router-link :to="{path:'login'}" class="item" tag="li" v-if="noLogin">注册</router-link>
+                <li class="item" v-if="logined">
+                    <img :src="userPhoto">
+                    <span class="username">{{username}}</span>
+                </li>
                 <li class="item">反馈</li>
                 <li class="item">投诉</li>
             </ul>
@@ -25,6 +29,10 @@
             return{
                 classifyList:[],
                 classifyIndex:0,
+                noLogin:false,
+                logined:false,
+                username:'',
+                userPhoto:''
             }
         },
         mounted(){
@@ -38,6 +46,15 @@
                    this.classifyList = Object.freeze(JSON.parse(localStorage.classify));
                }
             });
+            if(!localStorage.id) {
+                this.noLogin = true;
+                this.logined = false;
+            }else{
+                this.noLogin = false;
+                this.logined = true;
+                this.username = localStorage.userName;
+                this.userPhoto = localStorage.userImg;
+            }
         }
     }
 </script>
@@ -53,6 +70,12 @@
                 float: left;
                 color: #fff;
                 cursor: pointer;
+                img{
+                    width: 28px;
+                    height: 28px;
+                    margin-right: 10px;
+                    border-radius: 50%;
+                }
             }
             .header-left{
                 .item{

@@ -41,13 +41,14 @@
 
 <style lang="less" scoped>
     .back-top{
-        width: 56px;
-        height: 56px;
+        width: 70px;
+        height: 70px;
         position: fixed;
         right: 94px;
         bottom: 215px;
         text-align: center;
         background-color: #b3b2b2;
+        border-radius: 8px;
         color: #fff;
         cursor: pointer;
         .iconfont{
@@ -56,7 +57,7 @@
         span{
             display: block;
             position: relative;
-            bottom: 5px;
+            bottom: 0;
             font-size: 12px;
         }
     }

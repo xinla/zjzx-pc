@@ -4,33 +4,106 @@
             <div class="user-bg">
                 <div class="user-fans user-public">
                     <div class="user-position">
-                        <span class="fans-num">140</span>
+                        <span class="fans-num">{{fansCount}}</span>
                         <h4 class="fans-tit">粉丝</h4>
                     </div>
                 </div>
                 <div class="user-focus user-public">
                     <div class="user-position">
-                        <span class="focu-num">140</span>
+                        <span class="focu-num">{{focusCount}}</span>
                         <h4 class="focus-tit">关注</h4>
                     </div>
                 </div>
             </div>
             <div class="user-desc">
                 <div class="user-head">
-                    <img src="@/assets/images/login-header.png" alt="">
+                    <img :src="$Tool.headerImgFilter(user.imageurl)">
                 </div>
-                <span class="user-name">陈寒是大帅比</span>
-                <div class="focus-btn">
-                    + 关注
-                </div>
+                <span class="user-name">{{user.username}}</span>
+                <div class="focus-btn" @click="handelFocus">{{focusState?'已关注':'+ 关注'}}</div>
             </div>
         </div>
     </div>
 </template>
-
 <script>
+    import followService from '@/services/followService'
+    import userService from '@/services/userService'
     export default {
-        name: "userInfo"
+        name: "userInfo",
+        data(){
+            return{
+                fansCount:0,
+                focusCount:0,
+                userId: 8,
+                user:{},
+                focusState: false
+            }
+        },
+        mounted(){
+            this.$nextTick(()=>{
+                this.init();
+            });
+        },
+
+        methods:{
+            init(){
+                // 获取粉丝数量
+                followService.getUserVermicelliCount(this.userId,(data)=>{
+                    if(data && data.status == "success") {
+                        this.fansCount = data.result.count;
+                    }
+                });
+
+                //获取关注数量
+                followService.getUserFollowCount(this.userId,(data)=>{
+                   if(data && data.status == "success") {
+                       this.focusCount = data.result.count;
+                   }
+                });
+
+                // 获取用户信息
+                userService.getUserById(this.userId,(data)=>{
+                    if(data && data.status == "success") {
+                        this.user = data.result.user;
+                    }
+                });
+
+                // 获取用户关注状态
+                followService.testFollow(this.userId,(data) =>{
+                    if(data && data.status == "success") {
+                        if(data.result == 1) {
+                            this.focusState = true;
+                        }else{
+                            this.focusState = false;
+                        }
+                    }
+                });
+            },
+            // 关注该用户
+            handelFocus(){
+                followService.doFollow(this.userId,(data)=>{
+                    if(data && data.status == "success") {
+                        if(data.result == 1) {
+                            this.$message({
+                                message: '关注成功',
+                                type: 'success',
+                                center:true
+                            });
+                            this.focusCount ++;
+                            this.focusState = true;
+                        }else{
+                            this.$message({
+                                message: '取消关注',
+                                center:true
+                            });
+                            this.focusCount --;
+                            this.focusState = false;
+                        }
+                    }
+                });
+
+            }
+        }
     }
 </script>
 
@@ -84,7 +157,6 @@
             margin: 0 auto;
             border: 8px solid #fff;
             border-radius: 50%;
-            background: red;
             img{
                 display: block;
                 width: 100%;
