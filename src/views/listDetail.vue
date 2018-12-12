@@ -2,7 +2,7 @@
     <div class="main">
 	    <div class="left fl" @scroll="loadMore">
 	   		<mit v-for="(item,index) in arcList" :article="item" :key="index"></mit>  
-	   		<div>loading</div> 
+	   		<div class="ac">loading..</div> 
 	    </div> 
 		<arcDetail class="right fr"></arcDetail> 
     </div>
@@ -34,9 +34,10 @@ export default {
 		}
 	},
 	mounted () {
-		this.$nextTick(()=>{
-			this.init();
-		})
+		this.classify = this.$route.query.classify;
+		// this.$nextTick(()=>{
+		// 	this.init();
+		// })
 	},
 	methods:{
 		init(){
@@ -127,6 +128,16 @@ export default {
 				this.lock = false;
 			}
 		},
+	},
+	watch:{
+		$route(to,from){
+			this.classify = to.query.classify;
+		},
+		classify(){
+			this.$nextTick(()=>{
+				this.init();
+			})
+		}
 	}
 }
 </script>

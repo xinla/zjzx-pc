@@ -223,6 +223,7 @@ export default {
 		.input{
 			line-height: 36px;
 			color: #fff;
+			background: none;
 		}
 	}
 	.verify-code{

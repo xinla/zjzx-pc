@@ -5,7 +5,7 @@
 body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0;padding:0; }
 html,body,input, select, textarea /* for ie */{ font: 14px Microsoft YaHei,"宋体", arial,-apple-system, "PingFang SC","Helvetica Neue", Helvetica,'DejaVu Sans','Lucida Grande',Tahoma,'Hiragino Sans GB',STHeiti,SimSun,sans-serif;color: #333;/*touch-action: none*/}/** 设置默认字体 **/
 header, section, footer, aside, nav, article, figure{ display: block; }
-input,button,select,textarea { outline: none;vertical-align: middle;/*解决父级底部多余空白*/-webkit-appearance: none; /*去掉webkit默认的表单样式*/font-size: 100%;/* 使得表单元素在 ie 下能继承字体大小 */border:none;background:none;}
+input,button,select,textarea { outline: none;vertical-align: middle;/*解决父级底部多余空白*/-webkit-appearance: none; /*去掉webkit默认的表单样式*/font-size: 100%;/* 使得表单元素在 ie 下能继承字体大小 */border:none;background:#fff;}
 address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 ， 注：optgroup 无法扶正 */
 h1, h2, h3, h4, h5, h6 { font-size: 100%; background:none;} 
 code, kbd, pre, samp { font-family: courier new, courier, monospace; } /* 统一等宽字体 */
@@ -144,5 +144,6 @@ img,a{-webkit-touch-callout:none;}  */
 }
 .clearfix:after,.clearfix:before{content:"";display:table;/*创建匿名的表格单元，触发bfc*/}
 .clearfix:after{clear:both;/*清除浮动*/}
+.cb{ clear: both; }
 
 /*init end*/

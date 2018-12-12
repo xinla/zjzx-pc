@@ -37,6 +37,11 @@ export default new Router({
       path: '/userCenter',
       name: 'userCenter',
       component:() => import('./views/member/userCenter.vue')
+    },
+    {
+      path:'/search',
+      name:'search',
+      component:() => import('./views/search.vue')
     }
   ]
 })

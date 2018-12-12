@@ -1,5 +1,6 @@
 <template>
-	<div class="bfc-o" v-if="ArticleFile.length || imgList.length"  @click="goDetail">
+	 <!-- v-if="ArticleFile.length || imgList.length" -->
+	<div class="bfc-o" @click="goDetail">
 		<div class="article-wrap">
 			<div class="article-item clearfix">
 
@@ -130,7 +131,7 @@ export default {
 			}
 		},
 		goDetail(){
-				this.$Tool.goPage({ name:'listDetail',query:{id:this.article.id,detailType:this.detailType}})				
+				this.$Tool.goPage({ name:'listDetail',query:{id:this.article.id,detailType:this.detailType},replace:true})				
 		}
 	}
 }

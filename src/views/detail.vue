@@ -3,7 +3,20 @@
 		<div class="mask-current" v-show="ifLoad">
 			<loading-main></loading-main>
 		</div>
-		<div class="detail">
+		<div class="loveCiew" style="margin: 20px;" v-if="noId">
+			<p class="red">爱心提示：</p>
+			<p>
+      诈骗在中国已涉及到各行各业，高超的诈骗手段让人防不胜防！
+      全国每年累计被诈骗金额超过3000亿，许多人被骗得倾家荡产，甚至家破人亡！有毒有害食品层出不穷，假冒伪劣产品泛滥成灾，严重伤害了国人的身体健康。
+			</p>
+			<p>我们对此深恶痛绝，鉴于此，我们开创了这个平台！</p>
+			<p>
+			我们希望你能通过直击真相的平台了解到有关方面的知识和技能，懂得如何更好地保护自己和家人，并能够把这个平台推荐和分享给您身边的亲朋好友，让他们尽早的远离欺骗和伤害。
+			</p>
+			<p>我们相信，你的一次举手之劳，可能就会挽救一个家庭甚至一个美丽的生命！</p>
+			<p class="red">直击真相：多一个人看到，就少一个人受骗！</p>
+		</div>
+		<div class="detail" v-else>
 			<section class="content-wrap" v-if="!proFail1">
 				<h1 class="article-title">{{ article.title }}</h1>
 				<div class="publisher bfc-o clearfix">
@@ -253,10 +266,10 @@ export default {
 				title:"",
 				content:"",
 				author:Number,
-				type:2,
+				type:0,
 				sourceurl:'',
-				publishtime:"发布时间",
-				publisharea:"发布地区",
+				publishtime:"",
+				publisharea:"",
 			},
 			artUser:{
 				username:'',
@@ -372,23 +385,29 @@ export default {
 				content:'',
 				thumbs:[]
 			},
-			isWechatCode:false
+			isWechatCode:false,
+			noId:true
 		}
 	},
 	mounted(){
 		this.id = this.$route.query.id;
-		this.detailType = this.$route.query.detailType || 0;
-		this.init();
+		// this.detailType = this.$route.query.detailType || 0;
+		// this.$nextTick(()=>{
+		// 	this.init();
+		// })
 	},
 	methods:{
 		init(){
 			if (!this.id) {
-				this.$message({
-		          message: '获取出错，请返回！',
-		          center: true
-		        });
+				// this.$message({
+		  //         message: '获取出错，请返回！',
+		  //         center: true
+		  //       });
 				// this.$Tool.goBack();
+				this.noId = true;
 				return;
+			}else{
+				this.noId = false;
 			}
 			this.ifLoad = true;
 			//添加阅读记录
@@ -496,7 +515,7 @@ export default {
 			this.ifLoad = false;
 		},
 		// 弹出评论框
-	    ended(){
+	    /*ended(){
 	    	console.log(111);
 	    },
 	    handleAudio(){
@@ -537,10 +556,7 @@ export default {
 	    },
 		handleOpenInput(){
 			this.textShow();
-			// if(this.replyShow){
-			// 	this.popMask = true;
-			// }
-		},
+		},*/
 		// 关注--取消关注
 		handleFocus(userId,type){
 			/*
@@ -1110,6 +1126,7 @@ export default {
 		width:100%;
 		height:100%;
 		background: #fafafa;
+		z-index:9;
 	}
 	.detail{
 		position: relative;
