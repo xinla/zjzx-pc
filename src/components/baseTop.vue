@@ -12,7 +12,7 @@
 					<h1 class="slogan">多一个人看到，少一个人受骗！</h1>
 					<nav class="nav-ul">
 						<router-link :to="{name:'listDetail',query:{classify:0}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == '推荐'}" @click.native="currentClassiftyName = '推荐'">推荐</router-link>
-						<router-link :to="{name:'listDetail',query:{classify:item.classifycode}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == item.classifyname}" v-for="(item,index) in navList" @click.native="currentClassiftyName = item.classifyname">
+						<router-link :to="{name:'listDetail',query:{classify:item.classifycode}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == item.classifyname}" v-for="(item,index) in navList" :key="index" @click.native="currentClassiftyName = item.classifyname">
 							{{item.classifyname}}
 						</router-link>
 					</nav>

@@ -42,6 +42,26 @@ export default new Router({
       path:'/search',
       name:'search',
       component:() => import('./views/search.vue')
+    },
+    {
+      path:'/agreement',
+      name:'agreement',
+      component:() => import('./views/member/agreement.vue')
+    },
+    {
+      path:'/release',
+      name:'release',
+      component:() => import('./views/member/release.vue')
+    },
+    {
+      path:'/identity',
+      name:'identity',
+      component:() => import('./views/member/identity.vue')
+    },
+    {
+      path:'/about',
+      name:'about',
+      component:() => import('./views/about.vue')
     }
   ]
 })

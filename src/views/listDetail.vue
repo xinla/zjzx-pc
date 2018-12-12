@@ -19,7 +19,7 @@ export default {
 	},
 	data () {
 		return {
-			classify:0,
+			classify:-1,
 			arcList:[],
 			page:1,
 			lock:false,
@@ -44,7 +44,7 @@ export default {
 			this.page = 1;
 			let resArticlePage;
 			try{
-				if(this.classify == 0){
+				if(!this.classify || this.classify === '0'){
 					resArticlePage = articleService.articlePage(this.page,15);
 				}else{
 					resArticlePage = articleService.articlePage(this.page,15,this.classify);

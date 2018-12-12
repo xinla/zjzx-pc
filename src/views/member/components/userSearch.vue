@@ -5,11 +5,10 @@
                 <img src="@/assets/images/user-logo.jpg" alt="">
             </div>
             <div class="search-input fr">
-                <input type="search" placeholder="双十一打折的背后  ">
+                <input type="search" v-model.trim="keyword" placeholder="双十一打折的背后">
                 <div class="search-icon">
-                    <i class="iconfont icon-search"></i>
+                    <i class="iconfont icon-search" @click="search"></i>
                 </div>
-
             </div>
         </div>
 
@@ -18,7 +17,17 @@
 
 <script>
     export default {
-        name: "userSearch"
+        name: "userSearch",
+        data(){
+            return{
+                keyword:'',
+            }
+        },
+        methods:{
+            search(){
+                this.keyword && this.$Tool.goPage({name:'search',query:{keyword:this.keyword}})
+            }
+        }
     }
 </script>
 

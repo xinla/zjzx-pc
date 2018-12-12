@@ -34,19 +34,33 @@
             return{
                 fansCount:0,
                 focusCount:0,
-                userId: 8,
+                userId: 0,
                 user:{},
                 focusState: false
             }
         },
         mounted(){
+            this.$route.query.userId ? this.userId = this.$route.query.userId : this.userId = localStorage.id;
             this.$nextTick(()=>{
                 this.init();
             });
         },
-
         methods:{
             init(){
+                // 判断用户是否登录
+              if (localStorage.id && localStorage.id == this.userId) {
+                this.user = {
+                    imageurl:localStorage.userImg,
+                    username:localStorage.userName
+                }
+              }else{
+                // 获取用户信息
+                userService.getUserById(this.userId,(data)=>{
+                    if(data && data.status == "success") {
+                        this.user = data.result.user;
+                    }
+                });
+              }
                 // 获取粉丝数量
                 followService.getUserVermicelliCount(this.userId,(data)=>{
                     if(data && data.status == "success") {
@@ -61,12 +75,6 @@
                    }
                 });
 
-                // 获取用户信息
-                userService.getUserById(this.userId,(data)=>{
-                    if(data && data.status == "success") {
-                        this.user = data.result.user;
-                    }
-                });
 
                 // 获取用户关注状态
                 followService.testFollow(this.userId,(data) =>{
@@ -103,7 +111,7 @@
                 });
 
             }
-        }
+        },
     }
 </script>
 

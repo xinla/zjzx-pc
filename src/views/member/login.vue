@@ -29,7 +29,7 @@
 				</li>
 				<li class="login-agree">
 					<input type="checkbox">
-					我已经阅读并同意<router-link :to='{}'>《直击真相网用户协议》</router-link>
+					我已经阅读并同意<router-link to='/agreement'>《直击真相用户协议》</router-link>
 				</li>
 				<li class="login-li ac" @click="login()">
 					登录
