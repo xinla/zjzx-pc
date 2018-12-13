@@ -59,6 +59,16 @@ export default new Router({
       component:() => import('./views/member/identity.vue')
     },
     {
+      path:'/identityPerson',
+      name:'identityPerson',
+      component:() => import('./views/member/identityPerson.vue')
+    },
+    {
+      path:'/identityEenterprise',
+      name:'identityEenterprise',
+      component:() => import('./views/member/identityEenterprise.vue')
+    },
+    {
       path:'/about',
       name:'about',
       component:() => import('./views/about.vue')
