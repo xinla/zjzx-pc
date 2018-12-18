@@ -83,13 +83,15 @@ const tool = {
   */
   extractImg(str,num = 3){
     if ( typeof str !== "string" ) {retrun;}
+    // 提取含img标签的src 路径
     let reg = /<img[^(img)]*src=[\'\"]?([^\'\"]*)[\'\"]?/gi,
         arr = str.match(reg),
         srcList = [];
     if (arr && arr.length) {
-      if (arr.length > num) {arr.length = num;}
+      arr.length > num && (arr.length = num)
       arr.forEach((item,index)=>{
-        srcList.push(item.replace(/<img.*src=[\'\"]|[\'\"]/ig,""));
+        // 提取src 路径并替换amp转义字符
+        srcList.push(item.replace(/<img.*src=[\'\"]|[\'\"]|amp;/ig,""));
       })
     }
     return srcList;     
