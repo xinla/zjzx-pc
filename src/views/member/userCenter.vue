@@ -20,10 +20,11 @@
         components: {BackTop, UserList, UserInfo, UserSearch, UserHeader},
         beforeRouteEnter(to,from,next){
             if (!to.query.userId && !localStorage.id) {
-                goTruth.$message({
+                alert('获取出错，请返回！')
+              /*  goTruth.$message({
                   message: '获取出错，请返回！',
                   center: true
-                });
+                });*/
                 return;
             }
             next();

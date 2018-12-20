@@ -108,8 +108,7 @@
                         </div>
                         <h4 class="side-tit">{{item.title}}</h4>
                         <div class="side-desc">
-                            <p>
-                                {{item.content}}
+                            <p v-html="item.content">
                             </p>
                         </div>
                         <div class="side-footer">
