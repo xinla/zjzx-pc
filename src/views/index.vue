@@ -20,7 +20,7 @@
 		<ul class="part-left bfc-d">
 			<h4 class="part-name1">揭秘</h4>
 			<li class="part-li" v-for="(item,index) in jmList" :key="index" @click="goDetail(1,item.id)">
-				<img :src="item.image" class="thumb1" alt="">
+				<img :src="item.image" v-if="item.image" class="thumb1" alt="">
 				<div class="article-wrap">
 				<h3 class="slide-title oe">{{item.title}}</h3>
 				  <div class="article">
@@ -39,7 +39,7 @@
 				<span>防骗</span>
 			</h4>
 			<li class="part-li2" v-for="(item,index) in fpList" :key="index" @click="goDetail(2,item.id)">
-				<img :src="item.image" class="thumb2" alt="">
+				<img :src="item.image" v-if="item.image" class="thumb2" alt="">
 				<div class="article-wrap">
 				<h3 class="article-title oe">{{item.title}}</h3>
 				  <div class="article">
@@ -57,7 +57,7 @@
 		</h4>
 		<ul class="part-right">
 			<li class="part-li2" v-for="(item,index) in djList" :key="index" @click="goDetail(3,item.id)">
-				<img :src="item.image" class="thumb2" alt="">
+				<img :src="item.image" v-if="item.image" class="thumb2" alt="">
 				<div class="article-wrap">
 				<h3 class="article-title oe">{{item.title}}</h3>
 				  <div class="article">
@@ -79,8 +79,8 @@
 					<!-- <span class="article-publish">{{item.publishtime}}</span> -->
 				</div>
 				<h3 class="article-title oe">{{item.title}}</h3>
-				<P class="article-desc">
-					{{item.desc}}
+				<P class="article-desc" v-html="item.desc">
+					<!-- {{item.desc}} -->
 				</P>
 				<div class="article-info">
 					<i class="iconfont icon-read">{{item.readNum}}</i>
@@ -92,7 +92,7 @@
 	<h4 class="part-name2 cb"><span>生活</span></h4>
 	<div class="main-bottom">
 		<ul class="part-bottom">
-			<img :src="pfList[0].image" alt="" class="thumb">
+			<img :src="pfList[0].image || pfList[1].image || pfList[2].image" alt="" class="thumb">
 			<li class="part-li" v-for="(item,index) in pfList" :key="index" @click="goDetail(5,item.id)">
 				<h2 class="article-desc oe">
 					{{item.title}}
@@ -104,7 +104,7 @@
 			</li>
 		</ul>
 		<ul class="part-bottom">
-			<img :src="dgList[0].image" alt="" class="thumb">
+			<img :src="dgList[0].image || dgList[1].image || dgList[2].image" alt="" class="thumb">
 			<li class="part-li" v-for="(item,index) in dgList" :key="index" @click="goDetail(6,item.id)">
 				<h2 class="article-desc oe">
 					{{item.title}}
@@ -116,7 +116,7 @@
 			</li>
 		</ul>
 		<ul class="part-bottom">
-			<img :src="gcwList[0].image" alt="" class="thumb">
+			<img :src="gcwList[0].image || gcwList[1].image || gcwList[2].image" alt="" class="thumb">
 			<li class="part-li" v-for="(item,index) in gcwList" :key="index" @click="goDetail(7,item.id)">
 				<h2 class="article-desc oe">
 					{{item.title}}
@@ -173,14 +173,16 @@ export default {
 		fpList:[],
 		djList:[],
 		xqList:[],
-		pfList:[{}],
-		dgList:[{}],
-		gcwList:[{}],
+		pfList:[{},{},{}],
+		dgList:[{},{},{}],
+		gcwList:[{},{},{}],
 		fileRoot:config.fileRoot+'/',
 	}
   },
   mounted(){
-	this.init();
+  	this.$nextTick(()=>{
+		this.init();		
+  	})
   },
   methods:{
 	init(){
@@ -330,9 +332,11 @@ export default {
 				let temp = res[i];
 				this.xqList.push({
 					title:temp.title,// 获取文章标题
-					id:temp.id// 获取文章id
+					id:temp.id,// 获取文章id
+					desc:temp.content//提取描述
 				});
 				//提取描述
+				/*console.log(temp.content)
 				let arr = temp.content.match(/\W+/g),
 					desc = '';
 				if (arr) {
@@ -343,7 +347,7 @@ export default {
 						}
 					}					
 					this.xqList[i].desc = desc.substring(0,36) + '...';
-				}
+				}*/
 				// 获取评论数量
 				articleCommentService.getArticleCommentCount(temp.id,data=>{
 					data && data.status == "success" && (this.xqList[i].commentNum = this.$Tool.numConvertText(data.result.count));
@@ -362,6 +366,7 @@ export default {
 		// 获取普法
 		let resPf = articleService.articlePage(1,5,5);
 		if (resPf && resPf.status == "success") {
+			this.pfList = [];
 			let res = resPf.recordPage.list;
 			for (let i = 0,len = res.length; i < len; i++){
 				let temp = res[i];
@@ -379,6 +384,7 @@ export default {
 				}else{
 					this.pfList[i].image = this.$Tool.extractImg(temp.content,1)
 				}
+					// console.log(this.pfList[i].image)
 				// 获取发布时间
 				this.pfList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
 				userService.getUserById(temp.author,data=>{
@@ -390,6 +396,7 @@ export default {
 		// 获取打工
 		let resDg = articleService.articlePage(1,5,6);
 		if (resDg && resDg.status == "success") {
+			this.dgList = [];
 			let res = resDg.recordPage.list;
 			for (let i = 0,len = res.length; i < len; i++){
 				let temp = res[i];
@@ -418,6 +425,7 @@ export default {
 		// 获取广场舞
 		let resGwc = articleService.articlePage(1,5,7);
 		if (resGwc && resGwc.status == "success") {
+			this.gcwList = [];
 			let res = resGwc.recordPage.list;
 			for (let i = 0,len = res.length; i < len; i++){
 				let temp = res[i];
@@ -543,6 +551,7 @@ export default {
 	.main-right{
 		width: 25%;
 		border: 2px solid #f00;
+		margin-bottom: 40px;
 		.part-right{
 			margin: 0 5px;
 		}
@@ -582,6 +591,8 @@ export default {
 	}
 	.article-desc{
 		margin-bottom: 10px;
+		height: 20px;
+		overflow: hidden;
 	}
 	.main-bottom{
 		display: flex;

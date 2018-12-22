@@ -8,6 +8,11 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/test',
+      name: 'test',
+      component: () => import('./views/test.vue')
+    },
+    {
       path: '/',
       name: '/',
       component: baseTop,
@@ -37,6 +42,11 @@ export default new Router({
       path: '/userCenter',
       name: 'userCenter',
       component:() => import('./views/member/userCenter.vue')
+    },
+    {
+      path: '/member',
+      name: 'member',
+      component:() => import('./views/member/member.vue')
     },
     {
       path:'/search',

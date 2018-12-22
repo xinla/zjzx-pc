@@ -3,7 +3,7 @@
 		<header class="tf top-wrap">
 			<div class="top">
 				<div class="logo-wrap fl ac">
-					<router-link to="/index">
+					<router-link :to="{name:'index'}" @click.native="currentClassiftyName = '推荐'">
 						<img class="logo" src="@/assets/images/logo-icon.png" alt="直击真相">
 						<h1>直击真相</h1>
 					</router-link>				
@@ -50,7 +50,7 @@ export default {
 				{"classifyname":"寻亲","classifycode":4},
 				{"classifyname":"普法","classifycode":5},
 				{"classifyname":"打工","classifycode":6},
-				{"classifyname":"广场舞","classifycode":7}
+				{"classifyname":"娱乐","classifycode":7}
 			]),
 			hotKeywords:[],
 			classifyIndex:0,

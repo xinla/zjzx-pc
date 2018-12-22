@@ -79,7 +79,7 @@
 				</li>
 				<li class="share-list iconfont icon-qq" @click="share('qq')"></li>
 				<li class="share-list iconfont icon-kongjian" @click="share('qzone')"></li>
-				<li class="share-list iconfont icon-weibo" @click="share('weibo')"></li>
+				<li class="share-list iconfont icon-weibo" @click="share('sina')"></li>
 				<!-- <li ><canvas ref="QRCode"></canvas></li> -->
 			</ul>
 			<ul class="article-change clearfix" v-if="!detailType">
@@ -799,7 +799,7 @@ export default {
 				case 'qzone':window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + location.href+'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content);
 				break;
 				// 新浪微博接口的传参
-				case 'sina':window.open('http://service.weibo.com/share/share.php?url=' + location.href+'?sharesource=weibo&title='+ title +'&pic='+ thumbs +'&appkey=1715625583');
+				case 'sina':window.open('http://service.weibo.com/share/share.php?url=' + location.href+'?sharesource=weibo&title='+ title +'&pic='+ thumbs +'&appkey=273153298');
 				break;
 				// qq好友接口的传参
 				case 'qq':window.open('http://connect.qq.com/widget/shareqq/index.html?url='+location.href+'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content +'&desc=直击真相：多一个人看到，就少一个人受骗！');

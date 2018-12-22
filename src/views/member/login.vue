@@ -40,8 +40,7 @@
 				<li class="author-li iconfont icon-wechat" @click="authLogin('wechat')">
 				</li>
 				<li class="author-li iconfont icon-qq" @click="authLogin('qq')"></li>
-				<li class="author-li iconfont icon-kongjian" @click="authLogin('qzone')"></li>
-				<li class="author-li iconfont icon-weibo" @click="authLogin('weibo')"></li>
+				<li class="author-li iconfont icon-weibo" @click="authLogin('sina')"></li>
 			</ul>
 		</div>
 	</div>
@@ -60,6 +59,40 @@ export default {
 			timer:0,
 		}
 	},
+	// mounted(){
+	// 	if (this.$route.query.state === 'zjzxQQAuthorization') {
+	// 		let appid = 101532474,
+	// 		appkey = 'a468951af668cd36f2a0a294168627d1',
+	// 		redirectURI = encodeURIComponent('http://zjzx.xyz/#/login'),
+	// 	 	// authorizationCode = this.$route.query.code,
+	// 	 	access_token = this.$route.query.access_token,
+	// 	 	openid = '';
+
+	// 		/**
+	// 		 * 根据access_token获取openid
+	// 		 * @return callbackc ( {"client_id": "**********", "openid": "**********"} )
+	// 		 * client_id即为appid
+	// 		 * openid即为我们要获取到的openid值
+	// 		 */
+	// 		if (access_token) {
+	// 			$.getJSON("https://graph.qq.com/oauth2.0/me?access_token="  + access_token ,function (data) {
+	// 				openid = data.openid;
+	// 			})
+	// 		}
+	// 		/**
+	// 		 * 根据openid获取openid
+	// 		 * @param  {[type]} access_token [description]
+	// 		 * @return {nickname:"用户的昵称",figureurl_qq_1:"用户不同尺寸的QQ头像url",gender:"用户性别"}
+	// 		 *
+	// 		 */
+	// 		if (access_token && openid) {
+	// 			$.get("https://graph.qq.com/user/get_user_info?access_token=" + access_token  + "&oauth_consumer_key=" + appid + "&openid=" + openid,function (data) {
+	// 				console.log(data)
+	// 				// userService.loginByWx(params,this.userInfoStore)
+	// 			})
+	// 		}
+	// 	}
+	// },
 	methods:{
 		focusMobile(){
 			if (this.mobile === '手机号') {
@@ -140,10 +173,16 @@ export default {
 			userService.loginByMobile(this.mobile,this.verifyCode,this.userInfoStore);
 		},
 		authLogin(type){
+			let redirect_uri = encodeURIComponent('http://www.zjzx.xyz/#/member');
 			switch (type) {
 				case 'wechat':
-				window.open('https://open.weixin.qq.com/connect/qrconnect?appid=wxa9eef2dac05baaec&redirect_uri=http:www.artdreamo2o.com&response_type=code&scope=snsapi_login&state=0')
-
+				window.open(`https://open.weixin.qq.com/connect/qrconnect?appid=wxa13e1618061e3e39&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_login&state=zjzxWechatAuthorization`)
+				break;
+				case 'qq':
+				window.open(`https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101532474&redirect_uri=${redirect_uri}&state=zjzxQQAuthorization`);
+				break;
+				case 'sina':
+				window.open(`https://api.weibo.com/oauth2/authorize?client_id=273153298&response_type=code&redirect_uri=${redirect_uri}&state=zjzxSinaAuthorization`)
 			}
 		},
 		/**
