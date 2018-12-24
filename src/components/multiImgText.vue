@@ -1,9 +1,8 @@
 <template>
 	 <!-- v-if="ArticleFile.length || imgList.length" -->
-	<div class="bfc-o" @click="goDetail">
+	<div class="bfc-o cp" @click="goDetail">
 		<div class="article-wrap">
 			<div class="article-item clearfix">
-
 				<!-- 浮动单图片 -->
 				<img class="float-img a" v-if="3 === article.type && imgList.length === 1" :src="imgList[0]" >
 				<img class="float-img" v-else-if="1 === article.type && ArticleFile.length === 1" :src="fileRoot+ArticleFile[0].url">					
@@ -131,7 +130,8 @@ export default {
 			}
 		},
 		goDetail(){
-				this.$Tool.goPage({ name:'listDetail',query:{id:this.article.id,detailType:this.detailType},replace:true})				
+				// this.$Tool.goPage({ name:'listDetail',query:{id:this.article.id,detailType:this.detailType},replace:true})	
+				this.$router.push({ name:'listDetail',params:{id:this.article.id}})
 		}
 	}
 }

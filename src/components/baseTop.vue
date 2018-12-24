@@ -11,8 +11,8 @@
 				<div class="top-mid">
 					<h1 class="slogan">多一个人看到，少一个人受骗！</h1>
 					<nav class="nav-ul">
-						<router-link :to="{name:'listDetail',query:{classify:0}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == '推荐'}" @click.native="currentClassiftyName = '推荐'">推荐</router-link>
-						<router-link :to="{name:'listDetail',query:{classify:item.classifycode}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == item.classifyname}" v-for="(item,index) in navList" :key="index" @click.native="currentClassiftyName = item.classifyname">
+						<router-link :to="{name:'listDetail',params:{classify:0}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == '推荐'}" @click.native="currentClassiftyName = '推荐'">推荐</router-link>
+						<router-link :to="{name:'listDetail',params:{classify:item.classifycode}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == item.classifyname}" v-for="(item,index) in navList" :key="index" @click.native="currentClassiftyName = item.classifyname">
 							{{item.classifyname}}
 						</router-link>
 					</nav>
@@ -21,7 +21,7 @@
 					<div class="login" v-if="!isLogin">
 						<router-link :to="{name:'login'}">登录</router-link>
 					</div>
-					<div class="member" v-else>
+					<div class="member oe" v-else>
 						<router-link :to="{name:'userCenter'}">
 							<img :src="userPhoto" class="user-photo">{{userName}}
 						</router-link>
@@ -128,7 +128,7 @@ export default {
   .top-mid {
     display: inline-block;
     margin: 38px 0 0 30px;
-    width: 70%;
+    width: 50%;
     line-height: 30px;
 	}
 	.slogan{
@@ -150,9 +150,9 @@ export default {
 		border-top: 2px solid #fe0000;
 	}
 	.top-right{
+		width: 20%;
 	}
 	.search{
-		width: 200px;
 		height: 22px;
 		border-radius: 10px;
 		background: #fff;

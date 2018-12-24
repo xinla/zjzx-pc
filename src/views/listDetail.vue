@@ -34,7 +34,7 @@ export default {
 		}
 	},
 	mounted () {
-		this.classify = this.$route.query.classify;
+		this.classify = this.$route.params.classify;
 		// this.$nextTick(()=>{
 		// 	this.init();
 		// })
@@ -131,7 +131,7 @@ export default {
 	},
 	watch:{
 		$route(to,from){
-			this.classify = to.query.classify;
+			this.classify = to.params.classify;
 		},
 		classify(){
 			this.$nextTick(()=>{

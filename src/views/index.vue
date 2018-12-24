@@ -131,27 +131,27 @@
 	<footer class="footer-wrap">
 		<div class="wrapper ac">
 			<ul class="footer">
-				<li class="web-info">直击真相ICP备8888888</li>
-				<li class="web-info">直击真相</li>
+				<li class="web-info">皖ICP备18025845号-1</li>
+				<li class="web-info">池州康有保网络科技有限公司2018</li>
 				<li class="web-info">网络经营文化许可</li>
 			</ul>
 			<ul class="footer">
-				<li class="web-info">私人会所如果是</li>
-				<li class="web-info">私人会所如果是</li>
-				<li class="web-info">私人会所如果是</li>
-				<li class="web-info">私人会所如果是</li>
-				<li class="web-info">私人会所如果是</li>
-				<li class="web-info">私人会所如果是</li>
+				<li class="web-info">地址：安徽省池州市贵池区君越广场15012室</li>
+				<li class="web-info">电话：18756686768</li>
+				<li class="web-info">邮箱：1570728529@qq.com</li>
+				<li class="web-info">客服热线：400-1106768</li>
+				<li class="web-info">反馈中心</li>
+				<li class="web-info">商务合作</li>
 			</ul>
 			<nav class="friendly-link">
 				<span>友情链接:</span>
-				<a href="" title="">直击真相</a>
-				<a href="" title="">直击真相</a>
-				<a href="" title="">直击真相</a>
-				<a href="" title="">直击真相</a>
-				<a href="" title="">直击真相</a>
-				<a href="" title="">直击真相</a>
-				<a href="" title="">直击真相</a>
+				<a href="www.kangyoubao.net" title="">康有保</a>
+				<a href="" title="">315</a>
+				<a href="" title="">央视网</a>
+				<a href="" title="">新华社</a>
+				<a href="" title="">反假联盟</a>
+				<a href="" title="">反传联盟</a>
+				<a href="" title="">百度知道</a>
 			</nav>
 		</div>
 	</footer>
@@ -459,7 +459,8 @@ export default {
 	 * @param  Number id       当前文章id
 	 */
 	goDetail(classify,id){
-		this.$Tool.goPage({name:"listDetail",query:{classify,id,}});
+		// this.$router.push({name:"listDetail",params:{classify,id,}});
+		this.$router.push({name:"listDetail",params:{classify,id,}});
 	}
   }
 }
@@ -616,7 +617,7 @@ export default {
 		padding: 50px 0;
 		width: 100%;
 		left: 0;
-		color: #fff;
+		color: #ccc;
 		.footer{
 			margin: 10px 0;
 		}

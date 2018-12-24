@@ -36,6 +36,7 @@
 				<div class="content">
 					<div class="article-content" v-if="3 === article.type">
 			          <p v-html="article.content"></p>
+						<a :href="article.sourceurl" class="see-text" v-if="sourceShow">查看原文</a>
 			        </div>
 					<div class="phone-content" v-else>
 						<div v-if="1 === article.type" class="phone-img clearfix">
@@ -51,7 +52,9 @@
 							</video-player>
 						</div>
 					</div>
-					<a :href="article.sourceurl" class="see-text" v-if="sourceShow">查看原文</a>
+					<div class="c666">
+						本文由真相号作者上传并发布，直击真相仅提供信息发布展示平台。文章仅代表作者个人观点，不代表直击真相立场。未经作者许可，不得转载；如有侵权，请联系删除！
+					</div>
 				</div>
 				<div class="loveCiew">
 					<p class="red">爱心提示：</p>
@@ -87,14 +90,14 @@
 					<like :likeStatus="likeStatus"></like>
 					{{likeNum}}
 				</li>
-				<li class="item">
-					<i class="iconfont" :class="{'icon-not-collection':collectToggle.notcollect,'icon-collected':collectToggle.collected}" @click="handleCollect(id)"></i>
+				<li class="item" @click="handleCollect(id)">
+					<i class="iconfont" :class="{'icon-not-collection':collectToggle.notcollect,'icon-collected':collectToggle.collected}"></i>
 					<span>收藏</span>
 				</li>
-				<li class="item">
+				<!-- <li class="item">
 					<i class="iconfont icon-lajixiang"></i>
 					<span>不喜欢</span>
-				</li>
+				</li> -->
 				<div class="item" @click="handleReport(1)">
 					<i class="iconfont icon-warning-circle"></i>
 					<span>举报</span>
@@ -390,7 +393,7 @@ export default {
 		}
 	},
 	mounted(){
-		this.id = this.$route.query.id;
+		this.id = this.$route.params.id;
 		// this.detailType = this.$route.query.detailType || 0;
 		// this.$nextTick(()=>{
 		// 	this.init();
@@ -795,14 +798,14 @@ export default {
 				thumbs = require('@/assets/images/logo-icon.png');
 			}
 			switch(whi){
+				// qq好友接口的传参
+				case 'qq':window.open('http://connect.qq.com/widget/shareqq/index.html?url='+encodeURIComponent(location.href)+'?sharesource=qq&title='+ title +'&pics='+ thumbs +'&summary='+ content +'&desc=直击真相：多一个人看到，就少一个人受骗！');
+				break;
 				// qq空间接口的传参
-				case 'qzone':window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + location.href+'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content);
+				case 'qzone':window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(location.href) +'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content);
 				break;
 				// 新浪微博接口的传参
-				case 'sina':window.open('http://service.weibo.com/share/share.php?url=' + location.href+'?sharesource=weibo&title='+ title +'&pic='+ thumbs +'&appkey=273153298');
-				break;
-				// qq好友接口的传参
-				case 'qq':window.open('http://connect.qq.com/widget/shareqq/index.html?url='+location.href+'?sharesource=qzone&title='+ title +'&pics='+ thumbs +'&summary='+ content +'&desc=直击真相：多一个人看到，就少一个人受骗！');
+				case 'sina':window.open('http://service.weibo.com/share/share.php?url=' + encodeURIComponent(location.href) +'?sharesource=sina&title='+ title +'&pic='+ thumbs);
 				break;
 				// 生成二维码给微信扫描分享
 				case 'wechat':
@@ -820,7 +823,7 @@ export default {
 		    function creatQRCode(){ 
 		      	// 生成的二维码内容，添加变量
 				let canvas = this.$refs.QRCode;
-		        QRCode.toCanvas(canvas, 'http://www.baidu.com', function (error) {
+		        QRCode.toCanvas(canvas, location.href, function (error) {
 		        // if (error) console.error(error);
 		        })
 		    }
@@ -1099,11 +1102,13 @@ export default {
 	},
 	watch:{
 		'$route'(to,from){
-			this.id = to.query.id;
+			this.id = to.params.id;
 		},
 		id(){
 			// debugger
+			this.isWechatCode = false;
 			this.ifLoad = true;
+			$(".detail").scrollTop(0);
 			setTimeout(()=>{
 				this.init();
 				this.ifLoad = false;
@@ -1790,6 +1795,9 @@ export default {
 	.red{
 		color:#f00;
 		font-weight: 600;
+	}
+	.c666{
+		color: #666;
 	}
 	.qr-code {
 	    position: absolute;

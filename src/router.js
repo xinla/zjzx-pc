@@ -24,12 +24,13 @@ export default new Router({
           component: index
         },
         {
-          path: 'listDetail',
+          path: 'listDetail/:classify/:id',
           name: 'listDetail',
           // route level code-splitting
           // this generates a separate chunk (about.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import('./views/listDetail.vue')
+          // props:true
         }
       ]   
     },

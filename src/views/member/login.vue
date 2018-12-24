@@ -59,40 +59,12 @@ export default {
 			timer:0,
 		}
 	},
-	// mounted(){
-	// 	if (this.$route.query.state === 'zjzxQQAuthorization') {
-	// 		let appid = 101532474,
-	// 		appkey = 'a468951af668cd36f2a0a294168627d1',
-	// 		redirectURI = encodeURIComponent('http://zjzx.xyz/#/login'),
-	// 	 	// authorizationCode = this.$route.query.code,
-	// 	 	access_token = this.$route.query.access_token,
-	// 	 	openid = '';
-
-	// 		/**
-	// 		 * 根据access_token获取openid
-	// 		 * @return callbackc ( {"client_id": "**********", "openid": "**********"} )
-	// 		 * client_id即为appid
-	// 		 * openid即为我们要获取到的openid值
-	// 		 */
-	// 		if (access_token) {
-	// 			$.getJSON("https://graph.qq.com/oauth2.0/me?access_token="  + access_token ,function (data) {
-	// 				openid = data.openid;
-	// 			})
-	// 		}
-	// 		/**
-	// 		 * 根据openid获取openid
-	// 		 * @param  {[type]} access_token [description]
-	// 		 * @return {nickname:"用户的昵称",figureurl_qq_1:"用户不同尺寸的QQ头像url",gender:"用户性别"}
-	// 		 *
-	// 		 */
-	// 		if (access_token && openid) {
-	// 			$.get("https://graph.qq.com/user/get_user_info?access_token=" + access_token  + "&oauth_consumer_key=" + appid + "&openid=" + openid,function (data) {
-	// 				console.log(data)
-	// 				// userService.loginByWx(params,this.userInfoStore)
-	// 			})
-	// 		}
-	// 	}
-	// },
+	mounted(){
+		if (localStorage.getItem('token')) {
+	        this.$Tool.goPage({name: 'index',replace:true});
+	        location.reload();
+	    }
+	},
 	methods:{
 		focusMobile(){
 			if (this.mobile === '手机号') {
@@ -173,6 +145,10 @@ export default {
 			userService.loginByMobile(this.mobile,this.verifyCode,this.userInfoStore);
 		},
 		authLogin(type){
+			if (localStorage.getItem('token')) {
+		        this.$Tool.goPage({name: 'index',replace:true});
+		        location.reload();
+		    }
 			let redirect_uri = encodeURIComponent('http://www.zjzx.xyz/#/member');
 			switch (type) {
 				case 'wechat':
@@ -208,10 +184,16 @@ export default {
 				location.reload();
 			}
 			else if(data && data.status == "error") {
-				this.tip.codeTip = data.result.tip;
-				this.tip.active2 = true;
-				this.tip.close2 = false;
-				this.codeDesc = "";
+				// this.tip.codeTip = data.result.tip;
+				// this.tip.active2 = true;
+				// this.tip.close2 = false;
+				// this.codeDesc = "";
+				setTimeout(()=>{
+					this.$message({
+					  message: '系统繁忙，请稍后重试！',
+					  center: true
+					});
+				},0)
 				// console.log("error")
 			}
 		},
