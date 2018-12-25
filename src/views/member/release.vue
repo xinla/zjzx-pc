@@ -293,7 +293,6 @@ export default{
 </script>
 
 <style lang="less" scoped>
-@import url(../../assets/styles/base.less);
 	.release{
 		width: 100%;
 		height: calc(100vh - .87rem);

@@ -49,7 +49,6 @@
 </script>
 
 <style lang="less" scoped>
-@import url(../assets/styles/base.less);
 	.about-wrap{
 		height: calc( 100% - .87rem );
 		overflow: hidden;

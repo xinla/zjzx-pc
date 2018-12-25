@@ -1125,7 +1125,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url(../assets/styles/base.less);
 	.mask-current{
 		position: absolute;
 		width:100%;

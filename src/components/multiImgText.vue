@@ -137,7 +137,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url(../assets/styles/base.less);
 	.article-wrap {
 		padding: 0 .3rem;
 		.article-item{
