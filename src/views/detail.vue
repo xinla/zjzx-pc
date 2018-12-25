@@ -77,7 +77,7 @@
 			<prompt-blank v-if="proFail1" :mes="failMes1"></prompt-blank>
 			<ul class="share-wrap">
 				<li class="share-text"> 分享至 </li>
-				<li class="share-list iconfont icon-wechat" @click="share('wechat')">
+				<li class="share-list iconfont icon-wechat" @mouseover="share('wechat')" @mouseout="share('wechat')">
 					<canvas class="qr-code" v-if="isWechatCode" ref="QRCode"></canvas>
 				</li>
 				<li class="share-list iconfont icon-qq" @click="share('qq')"></li>

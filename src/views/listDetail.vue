@@ -1,8 +1,8 @@
 <template>
     <div class="main">
 	    <div class="left fl" @scroll="loadMore">
-	   		<mit v-for="(item,index) in arcList" :article="item" :key="index"></mit>  
-	   		<div class="ac">loading..</div> 
+	   		<mit v-for="(item,index) in arcList" :article="item" :key="index"></mit>
+	   		<div class="ac">loading...</div> 
 	    </div> 
 		<arcDetail class="right fr"></arcDetail> 
     </div>

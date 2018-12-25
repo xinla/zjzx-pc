@@ -517,7 +517,7 @@ export default {
 		.part-name1{
 			width: 100px;
 			line-height: 34px;
-			background: linear-gradient(#f7ba14,#f98724);
+			background: linear-gradient(#f7e036,#faaf0c);
 			border-radius: 10px;
 			box-shadow: 0 0 8px 2px #333;
 			margin-bottom: 20px;
@@ -538,12 +538,12 @@ export default {
 		margin-bottom: 15px;
 	}
 	.part-name2{
-		border-top: 2px solid #f00;
+		border-top: 2px solid @basicColor;
 	}
 	.part-name2 span {
 		display: inline-block;
 		width: 90px;
-		background: #f00;
+		background: @basicColor;
 		box-shadow: 0px 1px 4px 0px #333;;
 	}
 	.part-li2{
@@ -551,14 +551,14 @@ export default {
 	}
 	.main-right{
 		width: 25%;
-		border: 2px solid #f00;
+		border: 2px solid @basicColor;
 		margin-bottom: 40px;
 		.part-right{
 			margin: 0 5px;
 		}
 		.part-name3{
 			line-height: 44px;
-			background: #f00;
+			background: @basicColor;
 			position: relative;
 		}
 		.icon-arrow-down{

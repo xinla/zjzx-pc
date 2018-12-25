@@ -160,7 +160,7 @@ export default {
 		padding-top: 40px;
 		line-height: 40px;
 		.search-input{
-			border: 1px solid #f00;
+			border: 1px solid @basicColor;
 			border-radius: 5px 0 0 5px;
 			width: 60%;
 			line-height: inherit;
@@ -170,7 +170,7 @@ export default {
 		.search-button{
 			// transform: translateX(-100%);
 			line-height: inherit;
-			background: #f00;
+			background: @basicColor;
 			color: #fff;
 		    width: 80px;
 		}

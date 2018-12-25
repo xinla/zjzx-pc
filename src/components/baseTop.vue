@@ -3,7 +3,7 @@
 		<header class="tf top-wrap">
 			<div class="top">
 				<div class="logo-wrap fl ac">
-					<router-link :to="{name:'index'}" @click.native="currentClassiftyName = '推荐'">
+					<router-link :to="{name:'index'}" @click.native="currentClassiftyCode = 0">
 						<img class="logo" src="@/assets/images/logo-icon.png" alt="直击真相">
 						<h1>直击真相</h1>
 					</router-link>				
@@ -11,8 +11,8 @@
 				<div class="top-mid">
 					<h1 class="slogan">多一个人看到，少一个人受骗！</h1>
 					<nav class="nav-ul">
-						<router-link :to="{name:'listDetail',params:{classify:0}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == '推荐'}" @click.native="currentClassiftyName = '推荐'">推荐</router-link>
-						<router-link :to="{name:'listDetail',params:{classify:item.classifycode}}" class="nav-li ac" :class="{'current-nav':currentClassiftyName == item.classifyname}" v-for="(item,index) in navList" :key="index" @click.native="currentClassiftyName = item.classifyname">
+						<router-link :to="{name:'listDetail',params:{classify:0,id:0}}" class="nav-li ac" :class="{'current-nav':currentClassiftyCode == 0}" @click.native="currentClassiftyCode = 0">推荐</router-link>
+						<router-link :to="{name:'listDetail',params:{classify:item.classifycode,id:0}}" class="nav-li ac" :class="{'current-nav':currentClassiftyCode == item.classifycode}" v-for="(item,index) in navList" :key="index" @click.native="currentClassiftyCode = item.classifycode">
 							{{item.classifyname}}
 						</router-link>
 					</nav>
@@ -33,7 +33,9 @@
 				</div>
 			</div>
 		</header>
-		<router-view class="wrapper main-view" />
+		<keep-alive>
+			<router-view class="wrapper main-view" />
+		</keep-alive>
 	</div>
 </template>
 
@@ -54,7 +56,7 @@ export default {
 			]),
 			hotKeywords:[],
 			classifyIndex:0,
-			currentClassiftyName:"推荐",
+			currentClassiftyCode:0,
 			keyword:'',
 			isLogin:false,
 			userName: '用户名',
@@ -94,12 +96,16 @@ export default {
     	search(){
     		this.keyword && this.$Tool.goPage({name:'search',query:{keyword:this.keyword}})
     	}
+    },
+    watch:{
+    	'$route'(to,from){
+			to.params.classify && (this.currentClassiftyCode = to.params.classify);
+		},
     }
 }
 </script>
 
 <style lang="less" scoped>
-	@import url(../assets/styles/base.less);
   .top-wrap{
     height: 100px;
     background:#262626;
@@ -116,7 +122,7 @@ export default {
   .logo-wrap {
     height: 120px;
     width: 120px;
-    background: linear-gradient(#fe0000,#e30b0c);
+    background: linear-gradient(#f7e036,#faaf0c);
     font-size: 24px;
     border-radius: 0 0 10px 10px;
 	}
@@ -147,7 +153,7 @@ export default {
 	    margin-top: -2px;
 	}
 	.current-nav{
-		border-top: 2px solid #fe0000;
+		border-top: 2px solid @basicColor;
 	}
 	.top-right{
 		width: 20%;

@@ -229,7 +229,7 @@ export default {
 	    top: 10px;
 	    width: 100%;
 	    left: 0;
-	    color: #f00;
+	    color: @basicColor;
 	}
 	.login-li{
 		line-height: 48px;

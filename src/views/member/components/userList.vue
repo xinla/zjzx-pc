@@ -436,7 +436,7 @@
                 color: #7d7d7d;
             }
             .tabActive {
-                color: #f00;
+                color: @basicColor;
                 background: url("../../../assets/images/tab-line.png") 0 bottom no-repeat;
                 position: relative;
                 bottom: -1px;
@@ -669,7 +669,7 @@
         }
         .side-content {
             padding: 30px 10px;
-            border: 1px solid #f00;
+            border: 1px solid @basicColor;
             border-top: none;
             .side-item {
                 margin-bottom: 28px;

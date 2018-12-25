@@ -48,7 +48,6 @@ export default{
 </script>
 
 <style lang="less" scoped>
-@import url(../../assets/styles/base.less);
 	.personal-wrap{
 		height: calc(100vh - .87rem);
 		overflow: hidden;
