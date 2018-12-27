@@ -83,6 +83,11 @@ export default new Router({
       path:'/about',
       name:'about',
       component:() => import('./views/about.vue')
+    },
+    {
+      path:'/download',
+      name:'download',
+      component:() => import('./views/download.vue')
     }
   ]
 })
