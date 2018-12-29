@@ -1,89 +1,303 @@
 <template>
-	<div class="personal-wrap">
-		<div class="personal-title">
-			企业认证流程：
-		</div>
-		<div class="personal-content">
-			<div class="personal-item clearfix" v-for="(item,index) in list">
-				<div class="personal-icon fl">
-					<i class="iconfont" :class="item.class"></i>
-				</div>
-				<div class="personal-desc fl">
-					<p>{{item.title}}</p>
-					<span>{{item.desc}}</span>
-				</div>
-			</div>
-		</div>
+	<div class="identity-wrap">
+		<table class="identity">
+			<tr>
+				<th>认证信息</th>
+				<td>
+					<input type="text" :class="{'error-border':error.realname}" v-model.trim="identity.realname">
+					<div class="error-font">{{error.realname}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>企业名称</th>
+				<td>
+					<input type="text" maxlength="18" :class="{'error-border':error.idcard}" v-model.trim="identity.idcard">
+					<div class="error-font">{{error.idcard}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>信用代码</th>
+				<td>
+					<input type="text" :class="{'error-border':error.industry}" v-model.trim="identity.industry">
+					<div class="error-font">{{error.industry}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>行业分类</th>
+				<td>
+					<input type="text" :class="{'error-border':error.industry}" v-model.trim="identity.industry">
+					<div class="error-font">{{error.industry}}</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>营业执照</th>
+				<td>
+					<img :src="fileRoot + identity.cardimageup" class="thumb" v-show="identity.cardimageup" alt="">
+					<input type="file" id="upImg1" accept="image/*" @change="uploadFile(1,$event)">
+					<label for="upImg1" :class="{'error-border':error.cardimageup}">上传图片</label>
+					<div class="error-font">{{error.cardimageup}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>认证公函</th>
+				<td>
+					<img :src="fileRoot + identity.cardimagedn" class="thumb" v-show="identity.cardimagedn" alt="">
+					<input type="file" id="upImg2" accept="image/*" @change="uploadFile(2,$event)">
+					<label for="upImg2" :class="{'error-border':error.cardimagedn}">上传图片</label>
+					<div class="error-font">{{error.cardimagedn}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>其他资质</th>
+				<td>
+					<img :src="fileRoot + identity.cardimagedn" class="thumb" v-show="identity.cardimagedn" alt="">
+					<input type="file" id="upImg2" accept="image/*" @change="uploadFile(2,$event)">
+					<label for="upImg2" :class="{'error-border':error.cardimagedn}">上传图片</label>
+					<div class="error-font">{{error.cardimagedn}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>运营者姓名</th>
+				<td>
+					<input type="text" :class="{'error-border':error.industry}" v-model.trim="identity.industry">
+					<div class="error-font">{{error.industry}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>运营者手机号码</th>
+				<td>
+					<input type="text" :class="{'error-border':error.industry}" v-model.trim="identity.industry">
+					<div class="error-font">{{error.industry}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>运营者电子邮箱</th>
+				<td>
+					<input type="text" :class="{'error-border':error.industry}" v-model.trim="identity.industry">
+					<div class="error-font">{{error.industry}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>是否要发票</th>
+				<td>
+					<input type="text" :class="{'error-border':error.industry}" v-model.trim="identity.industry">
+					<div class="error-font">{{error.industry}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>邀请码</th>
+				<td>
+					<input type="text" :class="{'error-border':error.industry}" v-model.trim="identity.industry">
+					<div class="error-font">{{error.industry}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th>是否同意并遵守</th>
+				<td>
+					<input type="text" :class="{'error-border':error.industry}" v-model.trim="identity.industry">
+					<div class="error-font">{{error.industry}}</div>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type="checkbox" :class="{'error-border':error.agreement}" v-model="agreement">
+					认证即代表您同意<router-link to='/'><em>《真相号注册协议》</em></router-link>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<button type="button" class="back" @click="$router.back()">上一步</button>
+					<button type="button" class="submit" @click="submit">提交</button>
+				</td>
+			</tr>
+		</table>
 	</div>
 </template>
 <script>
+import config from '@/assets/configs/config'
+import fileService from '@/services/fileService'
+import persionauthService from "@/services/persionauthService"
 export default{
 	data(){
 		return {
-			list:[
-				{
-					title:'1.电访问www.renzheng.zjzx.xyz',
-					desc:'用电脑浏览器打开网址',
-					class:'icon-diannao',
-				},
-				{
-					title:'2.登录真相账户',
-					desc:'登录直击真相账号',
-					class:'icon-morentouxiang',
-				},
-				{
-					title:'根据提示提交企业相关资料',
-					desc:'认证审核，提交认证所需材料',
-					class:'icon-yonghuming',
-				},
-				{
-					title:'审核成功',
-					desc:'预计2个工作日内完成审核',
-					class:'icon-yanzhengmatianchong',
-				}
-			],
+			identity:{
+				authmsg:'',
+				companyname:'',
+				creditcode:'',
+				industrytype:'',
+				companylicence:'',
+				missiveauth:'',
+				otheraptitude:'',
+				corporatename:'',
+				corporatemobile:'',
+				corporateemail:'',
+				ynbill:'',
+				invitecode:'',
+				ynagree:''
+			},
+			fileRoot:config.fileRoot +'/',
+			agreement:false,
+			error:{
+				realname:'',
+				idcard:'',
+				industry:'',
+				agreement:false
+			}
 		}
 	},
+	mounted(){
+		this.init();
+	},
+	methods:{
+		init(){
+		},
+		/**
+		 * [uploadFile description]
+		 * @param  {[type]} type 1：正面 ，2：反面
+		 * @param  {[type]} e    [description]
+		 * @return {[type]}      [description]
+		 */
+		uploadFile(type,e){
+			let file = e.target.files[0];
+			if (!file) { return; }
+			if (!this.$Tool.checkPic(file.name)) {
+		    	this.$message({
+				  message:'格式错误',
+				})
+			    return;
+			 }
+			let param = new FormData(); //创建form对象
+			param.append('file',file,file.name);//通过append向form对象添加数据
+			fileService.uploadPic(param,(data)=>{
+				if (type == 1) {
+		          	this.identity.cardimageup = data.result.url;
+				}else{
+		          	this.identity.cardimagedn = data.result.url;
+				}
+			})
+		},
+		submit(){
+			this.error = {};
+			if (!this.agreement) {
+				this.error.agreement = true;
+				return;
+			}
+			if (!this.identity.realname || !this.$Tool.checkInput(this.identity.realname)) {
+				this.error.realname = '输入有误';
+				return;
+			}
+			if (!this.identity.idcard || this.identity.idcard.length != 18) {
+				this.error.idcard = '号码有误';
+				return;
+			}
+			if (!this.identity.industry || !this.$Tool.checkInput(this.identity.industry)) {
+				this.error.industry = '输入有误';
+				return;
+			}
+			if (!this.identity.cardimageup) {
+				this.error.cardimageup = '请上传身份证人像面图片';
+				return;
+			}
+			if (!this.identity.cardimagedn) {
+				this.error.cardimagedn = '请上传身份证国徽图片';
+				return;
+			}
+			let res = persionauthService.submitAuth(localStorage.token,localStorage.id,this.identity);
+			if (res && res.status == 'success') {
+				this.$message({
+				  message:'申请已提交，正在审核中',
+				})
+			}
+
+		}
+	}
 }
 </script>
 
 <style lang="less" scoped>
-	.personal-wrap{
-		height: calc(100vh - .87rem);
-		overflow: hidden;
-		overflow-y: auto;
-		.personal-title{
-			padding: .34rem;
-			font-size: .36rem;
+	.identity-wrap{
+		background: @bgColor;
+		padding-top: 50px;
+		height: 100vh;
+	}
+	.identity{
+		// display: block;设置单元格宽度不好使
+		width: 100%;
+		max-width: 1000px;
+		margin: 0 auto;
+		background: #fff;
+		border: 20px solid #fff;
+		tr{
+		    height: 60px;
 		}
-		.personal-content{
-			padding-left: .34rem;
-			background-color: #fff;
-			.personal-item{
-				height: 1.37rem;
-				border-bottom: .02rem solid @borderColor;
-				.personal-icon{
-					width: .85rem;
-					height: 100%;
-					line-height: 1.37rem;
-					.iconfont{
-						font-size: .5rem;
-						color: @mainColor;
-					}
-				}
-				.personal-desc{
-					height: 100%;
-					p{
-						font-size: .34rem;
-						padding-top: .18rem;
-					}
-					span{
-						display: block;
-						padding-top: .1rem;
-						color: #999;
-					}
-				}
-			}
+		th{
+			width: 20%;
+		}
+		input[type=text]{
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			padding: 8px 10px;
+		}
+		input[type=checkbox]{
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			border: 1px solid #ccc;
+			background:@bgColor;
+			margin-right: 10px;
+		    vertical-align: sub;
+		}
+		input[type=checkbox]:checked{
+			background: @thinMainColor;
+		}
+		input[type=file]{
+			display: none;
+		}
+		button {
+		    padding: 10px;
+		    margin-right: 20px;
+		    width: 130px;
+		    margin-left: 15%;
+		    color: #fff;
+		    cursor: pointer;
+		    border-radius: 6px;
+		    transition: all .3s cubic-bezier(.645,.045,.355,1);
+		}
+		button:hover{
+		    background: @deepMainColor;
+		    color: #fff;
+		}
+		.back{
+			border: 1px solid @mainColor;
+			color: @mainColor;
+		}
+		.submit{
+		    background: @mainColor;
+		}
+		em{
+			color: #406599;
+		}
+		label{
+			display: inline-block;
+			padding: 10px 30px;
+			background-color: #f1f1f1;
+		    color: #a4a4a4;
+		    border-radius: 8px;
+		    cursor: pointer;
+		}
+		.thumb{
+			width: 200px;
+			border-radius: 8px;
+			margin: 10px 10px 10px 0;
+		}
+		.error-border{
+			border-color:@errColor !important;
+		    box-shadow: 0 0 4px 0px @errColor;
+		}
+		.error-font{
+			color: @errColor;
 		}
 	}
 </style>
