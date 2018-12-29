@@ -8,11 +8,6 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/test',
-      name: 'test',
-      component: () => import('./views/test.vue')
-    },
-    {
       path: '/',
       name: '/',
       component: baseTop,

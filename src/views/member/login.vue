@@ -60,6 +60,7 @@ export default {
 		}
 	},
 	mounted(){
+	    console.log(this.$route)
 		if (localStorage.getItem('token')) {
 	        this.$Tool.goPage({name: 'index',replace:true});
 	        location.reload();

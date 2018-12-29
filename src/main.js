@@ -15,8 +15,9 @@ Vue.use(Tool);
 import LoadingMain from '@/components/loadingMain'
 Vue.component('LoadingMain',LoadingMain);
 //element-ui
-import { Message,MessageBox,Loading,Tabs,Carousel,CarouselItem } from 'element-ui';
+import { Message,MessageBox,Loading,Tabs,Carousel,CarouselItem} from 'element-ui';
 Vue.prototype.$message = Message;
+Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$messageBox = MessageBox;
 Vue.prototype.$Tabs = Tabs;
 Vue.component('carousel',Carousel);

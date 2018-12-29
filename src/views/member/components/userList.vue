@@ -436,7 +436,7 @@
                 color: #7d7d7d;
             }
             .tabActive {
-                color: @basicColor;
+                color: red;
                 background: url("../../../assets/images/tab-line.png") 0 bottom no-repeat;
                 position: relative;
                 bottom: -1px;

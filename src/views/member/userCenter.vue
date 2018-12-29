@@ -1,7 +1,6 @@
 <template>
     <div>
         <user-header></user-header>
-        <user-search></user-search>
         <user-info></user-info>
         <user-list></user-list>
         <back-top></back-top>
@@ -21,10 +20,10 @@
         beforeRouteEnter(to,from,next){
             if (!to.query.userId && !localStorage.id) {
                 alert('获取出错，请返回！')
-              /*  goTruth.$message({
-                  message: '获取出错，请返回！',
-                  center: true
-                });*/
+                /*  goTruth.$message({
+                    message: '获取出错，请返回！',
+                    center: true
+                  });*/
                 return;
             }
             next();
@@ -33,5 +32,4 @@
 </script>
 
 <style scoped>
-
 </style>

@@ -20,7 +20,7 @@
                     <img :src="$Tool.headerImgFilter(user.imageurl)">
                 </div>
                 <span class="user-name">{{user.username}}</span>
-                <div class="focus-btn" @click="handelFocus">{{focusState?'已关注':'+ 关注'}}</div>
+                <div class="focus-btn" @click="handelFocus" v-if="!userId">{{focusState?'已关注':'+ 关注'}}</div>
             </div>
         </div>
     </div>
