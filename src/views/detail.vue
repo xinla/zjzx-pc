@@ -56,7 +56,7 @@
 						本文由真相号作者上传并发布，直击真相仅提供信息发布展示平台。文章仅代表作者个人观点，不代表直击真相立场。未经作者许可，不得转载；如有侵权，请联系删除！
 					</div>
 				</div>
-				<div class="loveCiew">
+				<div :class="['loveCiew',{'loveCiew-unfold':!isUnfold}]">
 					<p class="red">爱心提示：</p>
 					<p>
 	          诈骗在中国已涉及到各行各业，高超的诈骗手段让人防不胜防！
@@ -68,6 +68,9 @@
 					</p>
 					<p>我们相信，你的一次举手之劳，可能就会挽救一个家庭甚至一个美丽的生命！</p>
 					<p class="red">直击真相：多一个人看到，就少一个人受骗！</p>
+					<span class="unfold-ciew ac cp" @click="isUnfold = !isUnfold">
+						{{isUnfold ? "收起" : "展开..."}}
+					</span>
 				</div>
 				<!-- <div class="keywords">
 					<label>关键词：</label>
@@ -389,7 +392,8 @@ export default {
 				thumbs:[]
 			},
 			isWechatCode:false,
-			noId:true
+			noId:true,
+			isUnfold:false
 		}
 	},
 	mounted(){
@@ -1786,10 +1790,27 @@ export default {
 		display: none !important;
 	}
 	.loveCiew{
+		position: relative;
 		line-height: 30px;
 		text-indent: 2em;
 		color:#f36767;
-	    margin-bottom: 10px;
+		overflow: hidden;
+	    height: 235px;
+	    transition: all .5s;
+	}
+	.loveCiew-unfold{
+		height: 45px;
+	}
+	.unfold-ciew{
+	    line-height: 30px;
+	    background: #f00;
+	    color: #fff;
+	    border-radius: 50px;
+        position: absolute;
+	    bottom: 0;
+	    right: 0;
+	    text-indent: initial;
+	    width: 50px;
 	}
 	.red{
 		color:#f00;

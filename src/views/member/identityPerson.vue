@@ -44,7 +44,7 @@
 				<th></th>
 				<td>
 					<input type="checkbox" :class="{'error-border':error.agreement}" v-model="agreement">
-					认证即代表您同意并遵守<router-link to='/'><em>《真相号注册协议》</em></router-link>
+					认证即代表您同意并遵守<router-link to='/'>《真相号注册协议》</router-link>
 				</td>
 			</tr>
 			<tr>
@@ -209,7 +209,7 @@ export default{
 		.submit{
 		    background: @mainColor;
 		}
-		em{
+		a{
 			color: #406599;
 		}
 		label{

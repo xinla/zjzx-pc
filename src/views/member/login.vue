@@ -7,25 +7,22 @@
 					<i class="iconfont icon-iphone"></i>
 					<input type="text" class="input"
 					v-model.trim="mobile"
-					@focus="focusMobile"
-					@blur="blurMobile"
-					maxlength="11">
+					maxlength="11"
+					placeholder="手机号">
 				</li>
 				<li class="login-li">
 					<i class="iconfont icon-yanzhengma"></i>
 					<input type="text" class="input" 
 					v-model.trim="verifyCode"
-					@focus="focusCode"
-					@blur="blurCode"
-					maxlength="4">
+					maxlength="4"
+					placeholder="验证码">
 					<span class="fr verify-code" :class="{'disabled':timer}" @click="getVerifyCode">{{getCodeDesc}}</span>
 				</li>
 				<li class="login-li">
 					<i class="iconfont icon-suo"></i>
 					<input type="text" class="input" 
 					v-model.trim="password"
-					@focus="focusPassword"
-					@blur="blurPassword">
+					placeholder="密码">
 				</li>
 				<li class="login-agree">
 					<input type="checkbox">
@@ -51,10 +48,10 @@ import userService from '@/services/userService'
 export default {
 	data () {
 		return {
-			mobile:'手机号',
-			verifyCode:'验证码',
+			mobile:'',
+			verifyCode:'',
 			getCodeDesc:'获取验证码',
-			password:'密码',
+			password:'',
 			errorTip:'',
 			timer:0,
 		}
@@ -67,7 +64,7 @@ export default {
 	    }
 	},
 	methods:{
-		focusMobile(){
+		/*focusMobile(){
 			if (this.mobile === '手机号') {
 				this.mobile = '';
 			}
@@ -96,7 +93,7 @@ export default {
 			if (!this.password) {
 				this.password = '密码';
 			}
-		},
+		},*/
 		// 获取验证码
 		getVerifyCode(){
 			// this.$refs.mobileFocus.focus();
@@ -270,6 +267,17 @@ export default {
 	}
 	a{
 		color: blue;
+	}
+	input::-webkit-input-placeholder { /* WebKit browsers */
+	  color: #fff;
+	}
+
+	input::-moz-placeholder { /* Mozilla Firefox 19+ */
+	  color: #fff;
+	}
+
+	input:-ms-input-placeholder { /* Internet Explorer 10+ */
+	  color: #fff;
 	}
 	.login-li:last-child{
 		background: linear-gradient(#3aebf6,#1268ea)

@@ -19,7 +19,7 @@ const tool = {
   },
   //手机号识别并返回
   isPhoneNumber(num) {
-    if (!num) { return false };
+    if (!num) { return false; }
     let str = num.toString();
     let val = str.replace(/[^0-9]/ig, "");
     if (val.length !== 11) { return false };
@@ -28,6 +28,7 @@ const tool = {
   },
   //输入区内容合法验证
   checkInput(val){
+    if (!val) { return false; }
     val = String(val);
     var reg = /(script|href|on|iframe|frameset)/gi;
     return !reg.test(val); //合法返回true
