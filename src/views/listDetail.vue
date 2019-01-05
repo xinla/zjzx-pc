@@ -47,16 +47,25 @@ export default {
 				if(!this.classify || this.classify === '0'){
 					let resTopArticle = articleService.getTodayArticle();
                     resArticlePage = articleService.articlePage(this.page,15);
-                    // console.log(resTopArticle.list)
-                    // console.log(resArticlePage.recordPage.list)
-                    let temp = resArticlePage.recordPage.list;
-                    for (var i = 0; i < temp.length; i++) {
-                    	if (temp[i].id == resTopArticle.list[0].id || temp[i].id == resTopArticle.list[1].id) {
-                    		temp.splice(i,1);
-                    	}
+                    let temp = resArticlePage.recordPage.list,
+                        same = [];
+                    // console.log(temp);console.log(resTopArticle.list)
+                    // 置顶与推荐查重
+                    for (let i = 0,len = temp.length; i < len; i++) {
+                        for (let j = 0,len1 = resTopArticle.list.length; j < len1; j++) {
+                            if (temp[i].id == resTopArticle.list[j].id) {
+                                same.push(i);
+                                break;
+                            }
+                        }
+                        if(same.length == resTopArticle.list.length) {break;}
                     }
-                    // console.log(temp);console.log(resArticlePage.recordPage.list);
-                    resArticlePage.recordPage.list = resTopArticle.list.concat(resArticlePage.recordPage.list)
+                    // console.log(same)
+                    // 删除重复
+                    for (let i = 0; i < same.length; i++) {
+                        temp.splice(same[i] - i,1)
+                    }
+                    resArticlePage.recordPage.list = resTopArticle.list.concat(temp)
 				}else{
 					resArticlePage = articleService.articlePage(this.page,15,this.classify);
 				}
@@ -159,11 +168,12 @@ export default {
 		overflow: auto;
 	}
 	.left{
-		width: 32%;
+		width: 34%;
 		margin-right: 1%;
+		padding: 0 1%;
 	}
 	.right{
-		width: 67%;
+		width: 65%;
 	}
 </style>
 

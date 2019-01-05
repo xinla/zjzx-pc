@@ -1190,7 +1190,7 @@ export default {
 					text-align: center;
 					color: #fff;
 					border-radius: .1rem;
-					background-color: #f85959;
+					background-color: @mainColor;
 					border: .02rem solid transparent;
 				}
 				.btnActive{
@@ -1803,7 +1803,7 @@ export default {
 	}
 	.unfold-ciew{
 	    line-height: 30px;
-	    background: #f00;
+	    background: @deepMainColor;
 	    color: #fff;
 	    border-radius: 50px;
         position: absolute;
