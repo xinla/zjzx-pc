@@ -519,7 +519,7 @@ export default {
 			line-height: 34px;
 			background: linear-gradient(#f7e036,#faaf0c);
 			border-radius: 10px;
-			box-shadow: 0 0 8px 2px #333;
+			// box-shadow: 0 0 8px 2px #333;
 			margin-bottom: 20px;
 		}
 	}
@@ -544,7 +544,7 @@ export default {
 		display: inline-block;
 		width: 90px;
 		background: @basicColor;
-		box-shadow: 0px 1px 4px 0px #333;;
+		// box-shadow: 0px 1px 4px 0px #333;
 	}
 	.part-li2{
 		margin-bottom: 40px;

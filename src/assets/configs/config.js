@@ -1,7 +1,8 @@
 export default {
-	// successServer:"http://112.29.234.121:8585",
-	successServer: "http://47.101.58.43:8185",
-	fileServer:"http://47.101.58.43:8081",
+	domain:"http://www.zjzx.xyz",
+	share:"http://www.zjzx.xyz:8990",
 	fileRoot:"http://47.101.58.43:8085",
-	domain:"http://192.168.2.103:8080"
+	fileServer:"http://47.101.58.43:8081",
+	successServer: "http://47.101.58.43:8185",
+	download:"http://www.kangyoubao.net/download.html",
 }
