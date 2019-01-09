@@ -90,6 +90,7 @@ export default {
 						title:temp.title.replace(reg,`<span class="highlight">${this._keyword}</span>`),// 获取文章标题
 						id:temp.id// 获取文章id
 					});
+			console.info(res[i].id)
 					// 获取封面图
 					if (temp.type !== 3) {
 						articleFileService.getFileByArticle(temp.id,data=>{
@@ -142,7 +143,7 @@ export default {
 		 * @param  Number id       当前文章id
 		 */
 		goDetail(id){
-			this.$Tool.goPage({name:"listDetail",query:{id,}});
+			this.$router.push({name:"listDetail",params:{classify:0,id,}});
 		}
 	}
 }
