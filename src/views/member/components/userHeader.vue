@@ -2,7 +2,9 @@
     <div class="wrap">
         <div class="header cw clearfix">
             <div class="header-logo fl">
-                <img src="@/assets/images/logo1.png" alt="直击真相">
+                <router-link :to="{name:'index'}" @click.native="currentClassiftyCode = 0">
+                    <img src="@/assets/images/logo1.png" alt="直击真相">
+                </router-link>
             </div>
 
             <ul class="header-right fr clearfix">
@@ -43,7 +45,6 @@
             }
         },
         mounted(){
-            console.log(this.$route)
             this.$nextTick(()=>{
                if(!localStorage.classify){
                    articleClassifyService.getArticleClassifyList((data) =>{

@@ -101,7 +101,7 @@
 
                 </div>
                 <div class="side-content">
-                    <div class="side-item" v-for="(item, index) in groomList">
+                    <div class="side-item" v-for="(item, index) in groomList" @click="goDetail(0,item.id)">
                         <div class="side-user clearfix">
                             <img :src="$Tool.headerImgFilter(userInfo.imageurl)" class="side-userPhoto fl" alt="">
                             <span class="name fl">{{ userInfo.username}}</span>
@@ -187,6 +187,7 @@
         mounted() {
             this.$nextTick(() => {
                 this.init();
+                console.log(this.$route)
             });
         },
         methods: {
@@ -284,6 +285,7 @@
                 if(groomData && groomData.status == "success") {
                     listUtil.appendList(this.groomList, groomData.recordPage.list);
                     listUtil.asyncSetListPropty(groomData.recordPage.list, (item) => {
+                        console.log(item)
                         let userData = userService.getUserById(item.author);
                         if(userData && userData.status == "success") {
                             this.userInfo = userData.result.user;
@@ -305,6 +307,11 @@
                         })
                     });
                 }
+            },
+
+            goDetail(classify,id){
+                // this.$router.push({name:"listDetail",params:{classify,id,}});
+                this.$router.push({name:"listDetail",params:{classify,id,}});
             },
 
             // 文章视频选项卡切换
@@ -673,6 +680,7 @@
             border-top: none;
             .side-item {
                 margin-bottom: 28px;
+                cursor: pointer;
                 .side-user {
                     .side-userPhoto {
                         display: block;
