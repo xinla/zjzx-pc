@@ -56,26 +56,25 @@
 						本文由真相号作者上传并发布，直击真相仅提供信息发布展示平台。文章仅代表作者个人观点，不代表直击真相立场。未经作者许可，不得转载；如有侵权，请联系删除！
 					</div>
 				</div>
-				<div :class="['loveCiew',{'loveCiew-unfold':!isUnfold}]">
-					<p class="red">爱心提示：</p>
-					<p>
-	          诈骗在中国已涉及到各行各业，高超的诈骗手段让人防不胜防！
-	          全国每年累计被诈骗金额超过3000亿，许多人被骗得倾家荡产，甚至家破人亡！有毒有害食品层出不穷，假冒伪劣产品泛滥成灾，严重伤害了国人的身体健康。
-					</p>
-					<p>我们对此深恶痛绝，鉴于此，我们开创了这个平台！</p>
-					<p>
-					我们希望你能通过直击真相的平台了解到有关方面的知识和技能，懂得如何更好地保护自己和家人，并能够把这个平台推荐和分享给您身边的亲朋好友，让他们尽早的远离欺骗和伤害。
-					</p>
-					<p>我们相信，你的一次举手之劳，可能就会挽救一个家庭甚至一个美丽的生命！</p>
-					<p class="red">直击真相：多一个人看到，就少一个人受骗！</p>
-					<span class="unfold-ciew ac cp" @click="isUnfold = !isUnfold">
-						{{isUnfold ? "收起" : "展开..."}}
-					</span>
-				</div>
-				<!-- <div class="keywords">
-					<label>关键词：</label>
-					<span v-for="item in article.keywords">{{ item }}</span>
-				</div> -->
+                <div class="love-tip">
+                    <p class="red">爱心提示：</p>
+                    <p>诈骗在中国已涉及到各行各业，高超的诈骗手段让人防不胜防！
+                        全国每年累计被诈骗金额超过3000亿，许多人被骗得倾家荡产，甚至家破人亡！有毒有害食品层出不穷，假冒伪劣产品泛滥成灾，严重伤害了国人的身体健康。</p>
+                </div>
+                <collapse-transition>
+                    <div class="love-tip" v-show="isActive">
+                        <p>我们对此深恶痛绝，鉴于此，我们开创了这个平台！</p>
+                        <p>
+                            我们希望你能通过直击真相的平台了解到有关方面的知识和技能，懂得如何更好地保护自己和家人，并能够把这个平台推荐和分享给您身边的亲朋好友，让他们尽早的远离欺骗和伤害。
+                        </p>
+                        <p>我们相信，你的一次举手之劳，可能就会挽救一个家庭甚至一个美丽的生命！</p>
+                        <p class="red">直击真相：多一个人看到，就少一个人受骗！</p>
+                    </div>
+                </collapse-transition>
+                <div class="love-toggle" @click="handleToggle">
+                    {{toggleText}}
+                    <i class="iconfont" :class="arrowIcon ? 'icon-shang' : 'icon-xia'"></i>
+                </div>
 			</section>
 			<prompt-blank v-if="proFail1" :mes="failMes1"></prompt-blank>
 			<ul class="share-wrap">
@@ -114,7 +113,7 @@
 			</ul>
 			<div class="comment-wrap" v-if="ifSwitchB">
 				<div class="comment-all-num">
-					共<em class="all-num">{{commentNum}}</em>条评论				
+					共<em class="all-num">{{commentNum}}</em>条评论
 				</div>
 				<div>
 					<!-- <div class="fl">
@@ -157,7 +156,7 @@
 									</div>
 									<span class="hot-report fr cp" @click="handleReport(2,item)">举报</span>
 									<span class="hot-report fr cp"  v-if="item.douserid == userId" @click="deleteCommon(item.id,index,1)" >删除</span>
-								</div>								
+								</div>
 								<!-- 二级回复 -->
 								<ul class="hot-list" v-if="item.replyShow">
 									<li class="hot-item clearfix" v-for="(unit,sign) in replyList[index]">
@@ -236,14 +235,20 @@ import articleCommentService from '@/services/article_commentService'
 import articleCollectService from '@/services/articleCollectService'
 import messageService from '@/services/messageService'
 import transmitService from '@/services/transmitService'
+import collapseTransition from "@/assets/js/elTransition"
 
 export default {
 	components:{
 		like,
+        collapseTransition
 	},
 	data(){
 		return {
 			// badgeShow:false,
+            arrowIcon:false,
+            isActive:false,
+            collectIcon:false,
+            toggleText:'展开',
 			sourceShow:false,
 			reportToggle:true,
 			reportShow:false,
@@ -404,6 +409,16 @@ export default {
 		// })
 	},
 	methods:{
+        handleToggle(){
+	      this.isActive = !this.isActive;
+	      if(this.isActive){
+	          this.toggleText="收起";
+	          this.arrowIcon = true;
+          }else{
+	          this.toggleText = "展开"
+              this.arrowIcon = false;
+          }
+        },
 		init(){
 			if (!this.id) {
 				// this.$message({
@@ -724,7 +739,7 @@ export default {
 			          center: true
 			        });
 				}
-				
+
 			}
 		},
 
@@ -819,12 +834,12 @@ export default {
 				}
 				this.$nextTick(()=>{
 					creatQRCode.call(this);
-				}) 
+				})
 				break;
 				dafault:;
 			}
 			// 动态生成二维码
-		    function creatQRCode(){ 
+		    function creatQRCode(){
 		      	// 生成的二维码内容，添加变量
 				let canvas = this.$refs.QRCode;
 		        QRCode.toCanvas(canvas, location.href, function (error) {
@@ -847,7 +862,7 @@ export default {
 		    if(whi == 'wechat'){
 		        window.open('http://zixuephp.net/inc/qrcode_img.php?url=http://zixuephp.net/article-1.html');
 		    }*/
-		    
+
 		},
 		//首次回复
 		handleFirstReply(item,commentIndex){
@@ -946,14 +961,14 @@ export default {
 						itemid:this.replyobj.id,
 						reportuserid:this.replyobj.douserid,
 						reportreasion:reason.type + reason.desc
-					};										
+					};
 				}
 				// console.log(reportInfo)
 				let res = reportService.doReport(reportInfo);
 				if (res && res.status === "success") {
 					this.$vux.alert.show({
 					  content:'感谢您的反馈，我们会着实核查！',
-					})			
+					})
 					this.reportShow = false;
 					this.popMask = false;
 					this.reportreasion = "";
@@ -1047,12 +1062,12 @@ export default {
 					this.pageNum1 ++;
 				}
 				// if (this.commentList.length == 0) {
-				// 	this.lock = true;		
+				// 	this.lock = true;
 				// 	this.proFail2 = true;
 				// 	this.failMes2 = "暂无评论，来抢第一个沙发吧";
 				// 	this.ifLoadMore = false;
 				// } else if (this.commentList.length < 10 || this.commentNum == this.commentList.length ) {
-				// 	this.lock = true;		
+				// 	this.lock = true;
 				// 	this.ifLoadMore = true;
 				// 	this.proFail2 = false;
 				// 	this.loadText = "已加载全部";
@@ -1121,7 +1136,7 @@ export default {
 	},
 	// beforeRouteEnter(to,from,next){
 	// 	next(vm=>{
-	// 		vm.id = to.query.id;	
+	// 		vm.id = to.query.id;
 	// 		vm.detailType = to.query.detailType || 0;
 	// 	})
 	// }
@@ -1152,9 +1167,9 @@ export default {
 				letter-spacing: .02rem;
 				overflow: hidden;
 				text-overflow:ellipsis;
-				display:-webkit-box; 
+				display:-webkit-box;
 				-webkit-box-orient:vertical;
-				-webkit-line-clamp:3; 
+				-webkit-line-clamp:3;
 			}
 			.publisher{
 				padding: .45rem 0;
@@ -1303,7 +1318,7 @@ export default {
 		display: flex;
 		li{
 			flex: 1;
-			text-align: center;	
+			text-align: center;
 		}
 		.current{
 			border-bottom: .04rem solid #f85959;
@@ -1387,11 +1402,11 @@ export default {
 					padding-top: .1rem;
 					.hot-text{
 						line-height: .45rem;
-						// overflow:hidden; 
+						// overflow:hidden;
 						// text-overflow:ellipsis;
-						// display:-webkit-box; 
+						// display:-webkit-box;
 						// -webkit-box-orient:vertical;
-						// -webkit-line-clamp:4; 
+						// -webkit-line-clamp:4;
 					}
 					.hot-open{
 						position: absolute;
@@ -1502,7 +1517,7 @@ export default {
 					color: #fff;
 				}
 			}
-				
+
 		}
 	}
 	.share-wrap{
@@ -1518,7 +1533,7 @@ export default {
 				width: 40%;
 				border-top: 1px solid #ddd;
 				margin:0 10px;
-			}			
+			}
 		}
 		.share-list{
 			position: relative;
@@ -1544,7 +1559,7 @@ export default {
 						width: .75rem;
 						height: .75rem;
 						margin-top: .225rem;
-				
+
 					}
 				}
 				.share-desc{
@@ -1691,7 +1706,7 @@ export default {
 										height: 100%;
 										border-radius: 50%;
 									}
-								}	
+								}
 							}
 							.reply-footer-desc{
 								font-size: .24rem;
@@ -1798,8 +1813,31 @@ export default {
 	    height: 235px;
 	    transition: all .5s;
 	}
+    .love-tip{
+        p{
+            line-height: 30px;
+            text-indent: 2em;
+            color:#f36767;
+        }
+    }
+    .love-toggle{
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        margin: 10px auto;
+        letter-spacing: 3px;
+        cursor: pointer;
+        background: linear-gradient(#f7ba15, #f8981f, #f98823);
+        color: #fff;
+        i{
+            margin-right: -6px;
+            font-size: 16px;
+        }
+
+    }
 	.loveCiew-unfold{
-		height: 55px;
+		height: 45px;
 	}
 	.unfold-ciew{
 	    line-height: 30px;
@@ -1813,7 +1851,7 @@ export default {
 	    width: 50px;
 	}
 	.red{
-		color:#f00;
+		color:#f00 !important;
 		font-weight: 600;
 	}
 	.c666{
@@ -1839,4 +1877,4 @@ export default {
 		border: .02rem solid #e8e8e8;
 		text-align: center;
 	}
-</style>	
+</style>
