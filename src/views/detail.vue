@@ -1811,7 +1811,6 @@ export default {
 		color:#f36767;
 		overflow: hidden;
 	    height: 235px;
-	    transition: all .5s;
 	}
     .love-tip{
         p{
@@ -1828,7 +1827,7 @@ export default {
         margin: 10px auto;
         letter-spacing: 3px;
         cursor: pointer;
-        background: linear-gradient(#f7ba15, #f8981f, #f98823);
+        background: linear-gradient(@basicColor, #f8981f, #f98823);
         color: #fff;
         i{
             margin-right: -6px;

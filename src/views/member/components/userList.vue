@@ -59,7 +59,7 @@
                                 <h3 class="video-title">{{item.title}}</h3>
                                 <div class="video-desc">
                                     <p>
-                                        视频没有内容
+                                        <!--视频没有内容-->
                                     </p>
                                 </div>
                                 <div class="tabs-footer clearfix">
@@ -194,7 +194,7 @@
             init() {
                 this.articlePage = 1;
                 // 获取文章列表
-                let articleData = articleService.getArticleByUser(this.userId, this.articlePage, 10, 1);
+                let articleData = articleService.getArticleByUser(this.userId, this.articlePage, 5, 1);
 
                 if (articleData && articleData.status == "success") {
                     if (this.articleTotal == articleData.result.recordPage.totalRow) {
@@ -238,7 +238,7 @@
                 }
                 this.videoPage = 1;
                 // 获取视频列表
-                let videoData = articleService.getArticleByUser(this.userId, this.videoPage, 10, 2);
+                let videoData = articleService.getArticleByUser(this.userId, this.videoPage, 8, 2);
                 if (videoData && videoData.status == "success") {
                     if (this.videoTotal == articleData.result.recordPage.totalRow) {
                         this.videoBool.ifNew = true;
@@ -281,7 +281,7 @@
 
 
                 // 获取风闻专区推荐列表
-                let groomData =  articleService.articlePage(this.groomPage,10,'',1);
+                let groomData =  articleService.articlePage(this.groomPage,8,'',1);
                 if(groomData && groomData.status == "success") {
                     listUtil.appendList(this.groomList, groomData.recordPage.list);
                     listUtil.asyncSetListPropty(groomData.recordPage.list, (item) => {
@@ -355,7 +355,7 @@
                 this.articleBool.loading = true;
                 this.articleBool.lock = true;
                 try {
-                    let articleData = articleService.getArticleByUser(this.userId, this.articlePage, 10, 1);
+                    let articleData = articleService.getArticleByUser(this.userId, this.articlePage, 5, 1);
                     if (articleData && articleData.status == "success") {
                         listUtil.appendList(this.articleList, articleData.result.recordPage.list);
                         listUtil.asyncSetListPropty(articleData.result.recordPage.list, (item) => {
@@ -397,7 +397,7 @@
                 this.videoBool.loading = true;
                 this.videoBool.lock = true;
                 try {
-                    let videoData = articleService.getArticleByUser(this.userId, this.videoPage, 10, 2);
+                    let videoData = articleService.getArticleByUser(this.userId, this.videoPage, 8, 2);
                     if (videoData && videoData.status == "success") {
                         listUtil.appendList(this.videoList, videoData.result.recordPage.list);
                         listUtil.asyncSetListPropty(videoData.result.recordPage.list, (item) => {
@@ -427,182 +427,92 @@
 </script>
 
 <style lang="less" scoped>
-    .user-left {
-        width: 758px;
-        height: 1000px;
-        .user-tab {
-            width: 100%;
-            line-height: 49px;
-            border-bottom: 1px solid #e8e8e8;
-            .tab-item {
-                float: left;
-                width: 92px;
-                font-size: 24px;
-                cursor: pointer;
-                text-align: center;
-                color: #7d7d7d;
-            }
-            .tabActive {
-                color: red;
-                background: url("../../../assets/images/tab-line.png") 0 bottom no-repeat;
-                position: relative;
-                bottom: -1px;
-            }
-        }
-        .user-wrap {
-            margin-top: 25px;
-            .user-article {
-                .article-item {
-                    margin-bottom: 23px;
-                    padding-bottom: 10px;
-                    border-bottom: 1px solid #e8e8e8;
-                    .img-item {
-                        width: 359px;
-                        height: 194px;
-                        margin-right: 38px;
-                        img {
-                            display: block;
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                        }
-                        &:last-child {
-                            margin-right: 0;
-                        }
-                    }
-                    .article-title {
-                        line-height: 48px;
-                        font-size: 18px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        display: -webkit-box;
-                        -webkit-box-orient: vertical;
-                        -webkit-line-clamp: 1;
-                    }
-                }
-            }
-            .article-loading {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                text-align: center;
-                padding: 15px 0;
-                line-height: 30px;
-                color: #222;
-                .load-img {
-                    width: 28px;
-                    height: 28px;
-                    margin-right: 5px;
-                    img {
-                        display: block;
-                    }
-                }
-            }
-            .article-loaded {
-                width: 100%;
-                font-size: 15px;
-                padding: 15px 0;
-                line-height: 30px;
-                text-align: center;
-                color: #222;
-            }
-            .article-null {
-                width: 100%;
-                position: relative;
-                height: 300px;
-                color: #999;
-                .article-box {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    margin-left: -150px;
-                    margin-top: -50px;
-                    width: 300px;
-                    height: 100px;
-                    text-align: center;
-                    .iconfont {
-                        font-size: 65px;
-                    }
-                    .article-msg {
-                        line-height: 40px;
-                        text-align: center;
-                        font-size: 15px;
-                        letter-spacing: 1px;
-                    }
-                }
+    .wrap{
+        margin-bottom: 60px;
 
+        .user-left {
+            width: 758px;
+            .user-tab {
+                width: 100%;
+                line-height: 49px;
+                border-bottom: 1px solid #e8e8e8;
+                .tab-item {
+                    float: left;
+                    width: 92px;
+                    font-size: 24px;
+                    cursor: pointer;
+                    text-align: center;
+                    color: #7d7d7d;
+                }
+                .tabActive {
+                    color: @basicColor;
+                    background: url("../../../assets/images/tab-line.png") 0 bottom no-repeat;
+                    position: relative;
+                }
             }
-            .user-video {
-                .video-item {
-                    margin-bottom: 25px;
-                    padding-bottom: 25px;
-                    border-bottom: 1px solid #e8e8e8;
-                    .video-cover {
-                        width: 360px;
-                        height: 194px;
-                        position: relative;
-                        img {
-                            display: block;
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                        }
-                        .play-icon {
-                            width: 48px;
-                            height: 48px;
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            margin-left: -24px;
-                            margin-top: -24px;
-                            border-radius: 50%;
-                            text-align: center;
-                            background-color: rgba(255, 255, 255, 0.5);
-                            .iconfont {
-                                line-height: 48px;
-                                font-size: 26px;
-                                color: #fff;
+            .user-wrap {
+                margin-top: 25px;
+                .user-article {
+                    .article-item {
+                        margin-bottom: 23px;
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid #e8e8e8;
+                        .img-item {
+                            width: 359px;
+                            height: 194px;
+                            margin-right: 38px;
+                            img {
+                                display: block;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                            &:last-child {
+                                margin-right: 0;
                             }
                         }
-                    }
-                    .video-content {
-                        position: relative;
-                        width: 388px;
-                        height: 194px;
-                        min-height: 194px;
-                        overflow: hidden;
-                        .video-title {
-                            line-height: 30px;
-                            font-size: 24px;
+                        .article-title {
+                            line-height: 48px;
+                            font-size: 18px;
                             overflow: hidden;
                             text-overflow: ellipsis;
                             display: -webkit-box;
                             -webkit-box-orient: vertical;
-                            -webkit-line-clamp: 2;
-                        }
-                        .video-desc {
-                            margin-top: 6px;
-                            /*font-size: 14px;*/
-                            line-height: 24px;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            display: -webkit-box;
-                            -webkit-box-orient: vertical;
-                            -webkit-line-clamp: 4;
-                        }
-                        .tabs-footer {
-                            position: absolute;
-                            bottom: 0;
-                            line-height: 30px;
+                            -webkit-line-clamp: 1;
                         }
                     }
                 }
-                .video-null {
+                .article-loading {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                    padding: 15px 0;
+                    line-height: 30px;
+                    color: #222;
+                    .load-img {
+                        width: 28px;
+                        height: 28px;
+                        margin-right: 5px;
+                        img {
+                            display: block;
+                        }
+                    }
+                }
+                .article-loaded {
+                    width: 100%;
+                    font-size: 15px;
+                    padding: 15px 0;
+                    line-height: 30px;
+                    text-align: center;
+                    color: #222;
+                }
+                .article-null {
                     width: 100%;
                     position: relative;
                     height: 300px;
                     color: #999;
-                    .video-box {
+                    .article-box {
                         position: absolute;
                         top: 50%;
                         left: 50%;
@@ -614,7 +524,7 @@
                         .iconfont {
                             font-size: 65px;
                         }
-                        .video-msg {
+                        .article-msg {
                             line-height: 40px;
                             text-align: center;
                             font-size: 15px;
@@ -623,108 +533,199 @@
                     }
 
                 }
-
-            }
-            /*公共的标题footer*/
-            .tabs-footer {
-                line-height: 40px;
-                color: #505050;
-                .time {
-                    font-size: 12px;
-                    margin-right: 34px;
-                }
-                .icons {
-                    .foot-icon-item {
-                        margin-right: 20px;
-                        .iconfont {
-                            margin-right: 3px;
-                            font-size: 18px;
+                .user-video {
+                    .video-item {
+                        margin-bottom: 25px;
+                        padding-bottom: 25px;
+                        border-bottom: 1px solid #e8e8e8;
+                        .video-cover {
+                            width: 360px;
+                            height: 194px;
+                            position: relative;
+                            img {
+                                display: block;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                            .play-icon {
+                                width: 48px;
+                                height: 48px;
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                margin-left: -24px;
+                                margin-top: -24px;
+                                border-radius: 50%;
+                                text-align: center;
+                                background-color: rgba(255, 255, 255, 0.5);
+                                .iconfont {
+                                    line-height: 48px;
+                                    font-size: 26px;
+                                    color: #fff;
+                                }
+                            }
                         }
-                        span {
-                            font-size: 10px;
-                            vertical-align: top;
+                        .video-content {
+                            position: relative;
+                            width: 388px;
+                            height: 194px;
+                            min-height: 194px;
+                            overflow: hidden;
+                            .video-title {
+                                line-height: 30px;
+                                font-size: 24px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                display: -webkit-box;
+                                -webkit-box-orient: vertical;
+                                -webkit-line-clamp: 2;
+                            }
+                            .video-desc {
+                                margin-top: 6px;
+                                /*font-size: 14px;*/
+                                line-height: 24px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                display: -webkit-box;
+                                -webkit-box-orient: vertical;
+                                -webkit-line-clamp: 4;
+                            }
+                            .tabs-footer {
+                                position: absolute;
+                                bottom: 0;
+                                line-height: 30px;
+                            }
+                        }
+                    }
+                    .video-null {
+                        width: 100%;
+                        position: relative;
+                        height: 300px;
+                        color: #999;
+                        .video-box {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            margin-left: -150px;
+                            margin-top: -50px;
+                            width: 300px;
+                            height: 100px;
+                            text-align: center;
+                            .iconfont {
+                                font-size: 65px;
+                            }
+                            .video-msg {
+                                line-height: 40px;
+                                text-align: center;
+                                font-size: 15px;
+                                letter-spacing: 1px;
+                            }
+                        }
+
+                    }
+
+                }
+                /*公共的标题footer*/
+                .tabs-footer {
+                    line-height: 40px;
+                    color: #505050;
+                    .time {
+                        font-size: 12px;
+                        margin-right: 34px;
+                    }
+                    .icons {
+                        .foot-icon-item {
+                            margin-right: 20px;
+                            .iconfont {
+                                margin-right: 3px;
+                                font-size: 18px;
+                            }
+                            span {
+                                font-size: 10px;
+                                vertical-align: top;
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    .user-right {
-        width: 360px;
-        height: 1000px;
-        margin-top: 50px;
-        .side-title {
-            width: 100%;
-            line-height: 32px;
-            position: relative;
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: 1px;
-            text-align: center;
-            background: url("../../../assets/images/title-bg.png") 0 0 repeat-x;
-            .iconfont {
-                width: 17px;
-                display: block;
-                position: absolute;
-                left: 50%;
-                margin-left: -7px;
-                bottom: -15px;
-                font-size: 13px;
-                cursor: default;
+        .user-right {
+            width: 360px;
+            margin-top: 50px;
+            .side-title {
+                width: 100%;
+                line-height: 32px;
+                position: relative;
+                font-size: 18px;
+                color: #fff;
+                letter-spacing: 1px;
+                text-align: center;
+                background: linear-gradient(@basicColor, #f89a1e);
+                .iconfont {
+                    width: 17px;
+                    display: block;
+                    position: absolute;
+                    left: 50%;
+                    margin-left: -7px;
+                    bottom: -15px;
+                    font-size: 13px;
+                    cursor: default;
+                }
             }
-        }
-        .side-content {
-            padding: 30px 10px;
-            border: 1px solid @basicColor;
-            border-top: none;
-            .side-item {
-                margin-bottom: 28px;
-                cursor: pointer;
-                .side-user {
-                    .side-userPhoto {
-                        display: block;
-                        width: 36px;
-                        height: 36px;
-                        margin-right: 12px;
-                        border-radius: 50%;
+            .side-content {
+                padding: 30px 10px;
+                border: 1px solid @basicColor;
+                border-top: none;
+                .side-item {
+                    margin-bottom: 28px;
+                    cursor: pointer;
+                    .side-user {
+                        .side-userPhoto {
+                            display: block;
+                            width: 36px;
+                            height: 36px;
+                            margin-right: 12px;
+                            border-radius: 50%;
+                        }
+                        .name {
+                            width: 200px;
+                            max-width: 200px;
+                            line-height: 36px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                        }
                     }
-                    .name {
-                        width: 200px;
-                        max-width: 200px;
-                        line-height: 36px;
+                    .side-tit {
+                        padding: 8px 0;
+                        line-height: 28px;
+                        font-size: 18px;
                         overflow: hidden;
-                        white-space: nowrap;
                         text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 2;
+                        color: #222;
+                        text-align: left;
+                        margin-bottom: 0;
                     }
-                }
-                .side-tit {
-                    padding: 8px 0;
-                    line-height: 28px;
-                    font-size: 18px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: -webkit-box;
-                    -webkit-box-orient: vertical;
-                    -webkit-line-clamp: 2;
-                    color: #222;
-                    text-align: left;
-                    margin-bottom: 0;
-                }
-                .side-desc {
-                    margin-bottom: 15px;
-                    line-height: 20px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: -webkit-box;
-                    -webkit-box-orient: vertical;
-                    -webkit-line-clamp: 4;
-                }
-                .side-footer {
-                    font-size: 12px;
-                    color: #262626;
-                    span {
-                        margin-right: 16px;
+                    .side-desc {
+                        margin-bottom: 15px;
+                        line-height: 20px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 4;
+                    }
+                    .side-footer {
+                        font-size: 12px;
+                        color: #262626;
+                        span {
+                            margin-right: 16px;
+                        }
                     }
                 }
             }

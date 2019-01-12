@@ -551,7 +551,7 @@
                     font-size: 20px;
                     letter-spacing: 2px;
                     box-shadow: 4px 3px 17px rgba(155, 155, 155, .8), -3px -1px 5px rgba(155, 155, 155, .8);
-                    background: linear-gradient(#f7ba15, #f8981f, #f98823);
+                    background: linear-gradient(@basicColor, #f8981f, #f98823);
                     color: #fff;
                 }
                 .expose-list {
@@ -617,7 +617,7 @@
                         font-size: 16px;
                         letter-spacing: 2px;
                         box-shadow: 3px 4px 15px rgba(155, 155, 155, .8);
-                        background: linear-gradient(#f7ba15, #f8981f, #f98823);
+                        background: linear-gradient(@basicColor, #f8981f, #f98823);
                         color: #fff;
                     }
                 }
@@ -680,7 +680,7 @@
             color: #fff;
             letter-spacing: 1px;
             text-align: center;
-            background: linear-gradient(#f7ba15,#f89a1e);
+            background: linear-gradient(@basicColor,#f89a1e);
             .iconfont {
                 width: 17px;
                 display: block;
@@ -694,7 +694,7 @@
         }
         .side-content{
             padding: 16px 5px;
-            border: 2px solid #f7ba15;
+            border: 2px solid @basicColor;
             border-top: none;
             .side-item{
                 padding: 15px 0;
@@ -792,7 +792,7 @@
                 position: relative;
                 line-height: 36px;
                 text-align: center;
-                background: linear-gradient(#f7ba15, #f8981f, #f98823);
+                background: linear-gradient(@basicColor, #f8981f, #f98823);
                 box-shadow: 3px 4px 15px rgba(155, 155, 155, 0.8);
                 font-size: 16px;
                 letter-spacing: 2px;
@@ -805,7 +805,7 @@
                     content: '';
                     width: 454px;
                     height: 2px;
-                    background-color: #f7ba15;
+                    background-color: @basicColor;
                 }
             }
         }

@@ -21,6 +21,20 @@
                 </div>
                 <span class="user-name">{{user.username}}</span>
                 <div class="focus-btn" @click="handelFocus" v-if="!userId">{{focusState?'已关注':'+ 关注'}}</div>
+                <div v-else class="focus-btn fabu-btn">
+                    <i class="iconfont icon-bianji1"></i>
+                    发布文章
+                </div>
+            </div>
+        </div>
+
+
+        <div class="release-dialog">
+            <div class="dialog-wrapper">
+                <div class="dialog-header clearfix">
+                    <h3 class="title fl">发布文章</h3>
+                    <i class="iconfont icon-close fr"></i>
+                </div>
             </div>
         </div>
     </div>
@@ -36,7 +50,8 @@
                 focusCount:0,
                 userId: 0,
                 user:{},
-                focusState: false
+                focusState: false,
+                centerDialogVisible:true
             }
         },
         mounted(){
@@ -48,19 +63,19 @@
         methods:{
             init(){
                 // 判断用户是否登录
-              if (localStorage.id && localStorage.id == this.userId) {
-                this.user = {
-                    imageurl:localStorage.userImg,
-                    username:localStorage.userName
-                }
-              }else{
-                // 获取用户信息
-                userService.getUserById(this.userId,(data)=>{
-                    if(data && data.status == "success") {
-                        this.user = data.result.user;
+                if (localStorage.id && localStorage.id == this.userId) {
+                    this.user = {
+                        imageurl:localStorage.userImg,
+                        username:localStorage.userName
                     }
-                });
-              }
+                }else{
+                    // 获取用户信息
+                    userService.getUserById(this.userId,(data)=>{
+                        if(data && data.status == "success") {
+                            this.user = data.result.user;
+                        }
+                    });
+                }
                 // 获取粉丝数量
                 followService.getUserVermicelliCount(this.userId,(data)=>{
                     if(data && data.status == "success") {
@@ -70,9 +85,9 @@
 
                 //获取关注数量
                 followService.getUserFollowCount(this.userId,(data)=>{
-                   if(data && data.status == "success") {
-                       this.focusCount = data.result.count;
-                   }
+                    if(data && data.status == "success") {
+                        this.focusCount = data.result.count;
+                    }
                 });
 
 
@@ -183,11 +198,38 @@
             margin: 0 auto;
             line-height: 38px;
             border-radius: 10px;
-            font-size: 18px;
+            font-size: 16px;
             letter-spacing: 1px;
             cursor: pointer;
             background: linear-gradient(#3aebf6, #1268ea);
             color: #fff;
+        }
+        .fabu-btn{
+            width: 125px;
+            background: linear-gradient(@basicColor, #f89a1e);
+            .iconfont{
+                font-size:18px;
+            }
+        }
+    }
+    .release-dialog{
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        display: flex;
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0,0,0,0.6);
+        .dialog-wrapper{
+            width: 620px;
+            height: 350px;
+            padding: 0 30px 26px 30px;
+            border-radius: 12px;
+            background-color: #fff;
         }
     }
 </style>
