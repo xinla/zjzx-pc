@@ -1799,7 +1799,7 @@ export default {
 	    transition: all .5s;
 	}
 	.loveCiew-unfold{
-		height: 45px;
+		height: 55px;
 	}
 	.unfold-ciew{
 	    line-height: 30px;
