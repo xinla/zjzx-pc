@@ -90,14 +90,14 @@ export default {
 						title:temp.title.replace(reg,`<span class="highlight">${this._keyword}</span>`),// 获取文章标题
 						id:temp.id// 获取文章id
 					});
-			console.info(res[i].id)
+			        console.info(res[i].id)
 					// 获取封面图
 					if (temp.type !== 3) {
 						articleFileService.getFileByArticle(temp.id,data=>{
 							if (data && data.status == "success" && data.result.filelist.length) {
 								1 === temp.type ? this.$set(this.searchResult[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.searchResult[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
 							}
-						}) 					
+						})
 					}else{
 						// this.$set(this.searchResult[i],'image',this.$Tool.extractImg(temp.content,1)[0]);
 						this.searchResult[i].image = this.$Tool.extractImg(temp.content,1)[0]
@@ -112,10 +112,10 @@ export default {
 					// 获取用户头像&昵称
 					userService.getUserById(temp.author,data=>{
 						data && data.status == "success" && (
-							this.$set(this.searchResult[i], 'publisher', data.result.user.username), 
+							this.$set(this.searchResult[i], 'publisher', data.result.user.username),
 							this.$set(this.searchResult[i], 'header', this.$Tool.headerImgFilter(data.result.user.imageurl))
 							);
-					});	
+					});
 				}
 
 				// this.searchResult = this.searchResult.concat(res.recordPage.list);
