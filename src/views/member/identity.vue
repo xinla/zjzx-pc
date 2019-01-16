@@ -1,27 +1,29 @@
 <template>
-	<div class="authentication-wrap">
-		<div class="authentication-first">
-			<div class="authentication-item" @click="$Tool.goPage({name:'identityPerson',query:{title:'个人认证'}})">
-				<p class="title">身份认证</p>
-				<span class="desc">适用于个人用户真实身份的认证</span>
-				<i class="iconfont icon-arrow-right"></i>
+	<div class="identity-wrap">
+		<div class="authentication-wrap">
+			<div class="authentication-first">
+				<div class="authentication-item" @click="$Tool.goPage({name:'identityPerson',query:{title:'个人认证'}})">
+					<p class="title">身份认证</p>
+					<span class="desc">适用于个人用户真实身份的认证</span>
+					<i class="iconfont icon-arrow-right"></i>
+				</div>
+				<div class="authentication-item" @click="$Tool.goPage({name:'identityEenterprise',query:{title:'企业认证'}})">
+					<p class="title">企业认证</p>
+					<span class="desc">为企业品牌诚信加冕</span>
+					<i class="iconfont icon-arrow-right"></i>
+				</div>
 			</div>
-			<div class="authentication-item" @click="$Tool.goPage({name:'identityEenterprise',query:{title:'企业认证'}})">
-				<p class="title">企业认证</p>
-				<span class="desc">为企业品牌诚信加冕</span>
-				<i class="iconfont icon-arrow-right"></i>
-			</div>
-		</div>
-		<div class="authentication-second">
-			<div class="authentication-title">认证特权</div>
-			<div class="authentication-content">
-				<div class="item" v-for="item in list">
-					<div class="item-icon">
-						<i class="iconfont" :class="item.class"></i>
-					</div>
-					<div class="item-desc">
-						<p class="title">{{item.title}}</p>
-						<span class="desc">{{item.desc}}</span>
+			<div class="authentication-second">
+				<div class="authentication-title">认证特权</div>
+				<div class="authentication-content">
+					<div class="item" v-for="item in list">
+						<div class="item-icon">
+							<i class="iconfont" :class="item.class"></i>
+						</div>
+						<div class="item-desc">
+							<p class="title">{{item.title}}</p>
+							<span class="desc">{{item.desc}}</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -56,12 +58,16 @@
 </script>
 
 <style lang="less" scoped>
+	.identity-wrap{
+		background: @bgColor;
+		padding-top: 50px;
+	}
 	.authentication-wrap{
-		width: 100%;
+		width: 1000px;
 		height: calc(100vh - .87rem);
-		overflow: hidden;
 		overflow-y: auto;
-		background-color: #f4f5f6;
+		margin: 0 auto;
+		background-color: @bgColor;
 		.authentication-first{
 			padding-left: .4rem;
 			background-color: #fff;

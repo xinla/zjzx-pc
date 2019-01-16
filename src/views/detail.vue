@@ -34,24 +34,24 @@
 					<!-- <button type="button" class="focus bfc-p fr" v-if="userId != article.author" @click="handleFocus(article.author,1)">{{focusState?'已关注':'关注'}}</button> -->
 				</div>
 				<div class="content">
-					<div class="article-content" v-if="3 === article.type">
+					<div class="article-content" v-if="article.content">
 			          <p v-html="article.content"></p>
 						<a :href="article.sourceurl" class="see-text" v-if="sourceShow">查看原文</a>
 			        </div>
-					<div class="phone-content" v-else>
-						<div v-if="1 === article.type" class="phone-img clearfix">
-							<div class="tel-img fl" v-for="(item,index) in ArticleFile">
-								<img  :src="fileRoot + item.url" :alt="item.filename">
-							</div>
-						</div>
-						<div v-else-if="2 === article.type">
-							<video-player class="video-player vjs-custom-skin"
-								ref="videoPlayer"
-							 	:playsinline="true"
-							  	:options="playerOptions">
-							</video-player>
+					<div v-if="1 === article.type" class="phone-img clearfix">
+						<div class="tel-img fl" v-for="(item,index) in ArticleFile">
+							<img  :src="fileRoot + item.url" :alt="item.filename">
 						</div>
 					</div>
+					<div v-else-if="2 === article.type">
+						<video-player class="video-player vjs-custom-skin"
+							ref="videoPlayer"
+						 	:playsinline="true"
+						  	:options="playerOptions">
+						</video-player>
+					</div>
+					<!-- <div class="phone-content">
+					</div> -->
 					<div class="c666">
 						本文由真相号作者上传并发布，直击真相仅提供信息发布展示平台。文章仅代表作者个人观点，不代表直击真相立场。未经作者许可，不得转载；如有侵权，请联系删除！
 					</div>
@@ -1220,7 +1220,7 @@ export default {
 					// padding-bottom: .4rem;
 					line-height: .5rem;
 					p{
-            font-size: .34rem;
+			            font-size: .34rem;
 						line-height: .5rem !important;
 						margin-bottom: .3rem !important;
 					}
@@ -1234,27 +1234,27 @@ export default {
 						text-align: center;
 					}
 				}
-				.phone-content{
-					// padding-bottom: .4rem;
-					.phone-img{
-						width: 100%;
-						.tel-img{
-							width: 32.5%;
-							height: 2.1rem;
-							margin-right: .086rem;
-							margin-bottom: .086rem;
-							&:nth-child(3n){
-								margin-right: 0;
-							}
-							img{
-								display: block;
-								width: 100%;
-								height: 100%;
-								object-fit: cover;
-							}
+				.phone-img{
+					width: 100%;
+					.tel-img{
+						width: 32.5%;
+						height: 2.1rem;
+						margin-right: .086rem;
+						margin-bottom: .086rem;
+						&:nth-child(3n){
+							margin-right: 0;
+						}
+						img{
+							display: block;
+							width: 100%;
+							height: 100%;
+							object-fit: cover;
 						}
 					}
 				}
+				/* .phone-content{
+					// padding-bottom: .4rem;
+				} */
 				.see-text{
 					letter-spacing: .02rem;
 					line-height: .5rem;

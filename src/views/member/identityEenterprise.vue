@@ -284,7 +284,6 @@ export default{
 	.identity-wrap{
 		background: @bgColor;
 		padding-top: 50px;
-		height: 100vh;
 	}
 	.identity{
 		// display: block;设置单元格宽度不好使
