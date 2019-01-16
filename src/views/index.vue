@@ -235,7 +235,7 @@
                 let resJm = articleService.articlePage(1,6,1);
                 if (resJm && resJm.status == "success") {
                     let res = resJm.recordPage.list;
-                    console.log(res)
+                    // console.log(res)
                     for (let i = 0,len = res.length; i < len; i++){
                         let temp = res[i];
                         this.jmList.push({
