@@ -10,7 +10,7 @@
                 <div class="user-wrap" >
                     <!--文章-->
                     <div class="user-article" v-show="toggleA" @scroll="loadMoreArticle(e)">
-                        <div class="article-item" v-for="item in articleList">
+                        <div class="article-item" v-for="item in articleList" @click="goDetail(null,item.id)">
                             <ul class="article-img-list clearfix">
                                 <li class="img-item fl" v-for="(itemfile,index) in item.articleFile" v-if="index < 2">
                                     <img :src="fileRoot + itemfile.url">
@@ -48,7 +48,7 @@
                     </div>
                     <!--视频-->
                     <div class="user-video" v-show="toggleB" @scroll="loadMoreVideo(e)">
-                        <div class="video-item clearfix" v-for="item in videoList">
+                        <div class="video-item clearfix" v-for="item in videoList" @click="goDetail(null,item.id)">
                             <div class="video-cover fl" v-for="itemfile in item.videoFile">
                                 <img :src="fileRoot + itemfile.thumbnail">
                                 <div class="play-icon">
@@ -103,8 +103,8 @@
                 <div class="side-content">
                     <div class="side-item" v-for="(item, index) in groomList" @click="goDetail(0,item.id)">
                         <div class="side-user clearfix">
-                            <img :src="$Tool.headerImgFilter(userInfo.imageurl)" class="side-userPhoto fl" alt="">
-                            <span class="name fl">{{ userInfo.username}}</span>
+                            <img :src="$Tool.headerImgFilter(item.imageurl)" class="side-userPhoto fl" alt="">
+                            <span class="name fl">{{ item.username}}</span>
                         </div>
                         <h4 class="side-tit">{{item.title}}</h4>
                         <div class="side-desc">
@@ -278,16 +278,15 @@
                         });
                     });
                 }
-
-
                 // 获取风闻专区推荐列表
-                let groomData =  articleService.articlePage(this.groomPage,8,'',1);
+                let groomData =  articleService.articlePage(this.groomPage,5);
                 if(groomData && groomData.status == "success") {
                     listUtil.appendList(this.groomList, groomData.recordPage.list);
                     listUtil.asyncSetListPropty(groomData.recordPage.list, (item) => {
                         let userData = userService.getUserById(item.author);
                         if(userData && userData.status == "success") {
-                            this.userInfo = userData.result.user;
+                            this.$set(item, "imageurl", userData.result.user.imageurl);
+                            this.$set(item, "username", userData.result.user.username);
                         }
 
                         //获取文章评论数量

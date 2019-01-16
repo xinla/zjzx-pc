@@ -41,7 +41,7 @@
 					<div class="phone-content" v-else>
 						<div v-if="1 === article.type" class="phone-img clearfix">
 							<div class="tel-img fl" v-for="(item,index) in ArticleFile">
-								<img  :src="fileRoot + item.url" :alt="item.filename"  v-preview="fileRoot + item.url">
+								<img  :src="fileRoot + item.url" :alt="item.filename">
 							</div>
 						</div>
 						<div v-else-if="2 === article.type">

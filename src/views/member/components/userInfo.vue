@@ -562,9 +562,15 @@
                             border-radius: 6px;
                             background-color: rgba(0,0,0,0.6);
                             .iconfont{
-                                font-size: 35px;
+                                font-size: 20px;
                                 padding: 0 10px;
                                 color: #fff;
+                                opacity: .6;
+                                transition: all .4s;
+                            }
+                            &:hover .iconfont{
+                                font-size: 30px;
+                                opacity: 1;
                             }
                         }
                         .dialog-img{
