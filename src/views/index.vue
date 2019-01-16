@@ -270,7 +270,7 @@
                     // console.log(this.jmList)
                 }
                 // 获取防骗
-                let resFp = articleService.articlePage(1,9,2);
+                let resFp = articleService.articlePage(1,8,2);
                 if (resFp && resFp.status == "success") {
                     let res = resFp.recordPage.list;
                     for (let i = 0,len = res.length; i < len; i++){

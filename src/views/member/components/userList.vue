@@ -148,7 +148,7 @@
                 articleList: [],
                 videoList: [],
                 articleCount: 0,
-                userId: 2,
+                userId: localStorage.id,
                 type: 0,
                 ifArticle: false,
                 ifVideos: false,
