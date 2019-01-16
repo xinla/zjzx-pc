@@ -285,7 +285,6 @@
                 if(groomData && groomData.status == "success") {
                     listUtil.appendList(this.groomList, groomData.recordPage.list);
                     listUtil.asyncSetListPropty(groomData.recordPage.list, (item) => {
-                        console.log(item)
                         let userData = userService.getUserById(item.author);
                         if(userData && userData.status == "success") {
                             this.userInfo = userData.result.user;
