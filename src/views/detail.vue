@@ -20,7 +20,7 @@
 			<section class="content-wrap" v-if="!proFail1">
 				<h1 class="article-title">{{ article.title }}</h1>
 				<div class="publisher bfc-o clearfix">
-					<router-link :to="{name:'',query:{userId:article.author}}">
+					<!-- <router-link :to="{name:'userCenter',query:{userId:article.author}}"> -->
 						<!-- <img :src="$Tool.headerImgFilter(artUser.imageurl)" alt="" class="uphoto uphoto-big fl"> -->
 						<div class="article-time-name">
 								{{ artUser.username}}
@@ -30,7 +30,7 @@
 							<!-- <div class="ts utime">
 							</div> -->
 						</div>
-					</router-link>
+					<!-- </router-link> -->
 					<!-- <button type="button" class="focus bfc-p fr" v-if="userId != article.author" @click="handleFocus(article.author,1)">{{focusState?'已关注':'关注'}}</button> -->
 				</div>
 				<div class="content">
@@ -38,11 +38,14 @@
 			          <p v-html="article.content"></p>
 						<a :href="article.sourceurl" class="see-text" v-if="sourceShow">查看原文</a>
 			        </div>
-					<div v-if="1 === article.type" class="phone-img clearfix">
+			        <div v-if="1 === article.type">
+						<img class="phone-img" v-for="(item,index) in ArticleFile" :src="fileRoot + item.url" :alt="item.filename">
+					</div>
+					<!-- <div v-if="1 === article.type" class="phone-img clearfix">
 						<div class="tel-img fl" v-for="(item,index) in ArticleFile">
 							<img  :src="fileRoot + item.url" :alt="item.filename">
 						</div>
-					</div>
+					</div> -->
 					<div v-else-if="2 === article.type">
 						<video-player class="video-player vjs-custom-skin"
 							ref="videoPlayer"
@@ -1172,7 +1175,7 @@ export default {
 				-webkit-line-clamp:3;
 			}
 			.publisher{
-				padding: .45rem 0;
+			    padding-bottom: 15px;
 				.uphoto{
 					width: 1.2rem;
 					height: 1.2rem;
@@ -1235,12 +1238,11 @@ export default {
 					}
 				}
 				.phone-img{
-					width: 100%;
-					.tel-img{
+					margin-bottom: 10px;
+					/* .tel-img{
 						width: 32.5%;
 						height: 2.1rem;
 						margin-right: .086rem;
-						margin-bottom: .086rem;
 						&:nth-child(3n){
 							margin-right: 0;
 						}
@@ -1250,7 +1252,7 @@ export default {
 							height: 100%;
 							object-fit: cover;
 						}
-					}
+					} */
 				}
 				/* .phone-content{
 					// padding-bottom: .4rem;

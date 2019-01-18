@@ -123,8 +123,9 @@
             </div>
         </div>
         <div class="module-wrapper">
-            <div class="module-header">
+            <div class="module-header ac">
                 <h4 class="title">寻亲</h4>
+                <p class="xunqing">公益寻亲：免费发布寻人寻亲信息，利用网络技术帮助失散人群，早日回家团圆。</p>
             </div>
             <div class="module-body">
                 <ul class="module-list clearfix">
@@ -810,7 +811,7 @@
             }
         }
         .module-body{
-            margin-top: 45px;
+            margin-top: 30px;
             .module-list{
                 .module-item{
                     float: left;
@@ -832,7 +833,7 @@
                         }
                     }
                     .title{
-                        padding: 8px 18px;
+                        margin: 8px 18px;
                         line-height: 24px;
                         font-size: 18px;
                         overflow: hidden;
@@ -875,6 +876,11 @@
                 }
             }
         }
+    }
+    .xunqing{
+        font-weight: 500;
+        color: @deepMainColor;
+        margin-top: 10px;
     }
 </style>
 
