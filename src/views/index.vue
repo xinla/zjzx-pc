@@ -125,7 +125,7 @@
         <div class="module-wrapper">
             <div class="module-header ac">
                 <h4 class="title">寻亲</h4>
-                <p class="xunqing">公益寻亲：免费发布寻人寻亲信息，利用网络技术帮助失散人群，早日回家团圆。</p>
+                <p class="xunqing">公益寻亲：免费发布寻人寻亲信息，利用网络信息技术帮助失散人群，早日回家团圆。邮箱：2787064791@qq.com</p>
             </div>
             <div class="module-body">
                 <ul class="module-list clearfix">
@@ -878,7 +878,6 @@
         }
     }
     .xunqing{
-        font-weight: 500;
         color: @deepMainColor;
         margin-top: 10px;
     }

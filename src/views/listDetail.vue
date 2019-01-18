@@ -1,5 +1,8 @@
 <template>
     <div class="main">
+    	<div class="xunqing ac" v-if="classify  == 4">
+    		公益寻亲：免费发布寻人寻亲信息，利用网络信息技术帮助失散人群，早日回家团圆。邮箱：2787064791@qq.com
+    	</div>
 	    <div class="left fl" @scroll="loadMore">
 	   		<mit v-for="(item,index) in arcList" :article="item" :key="index"></mit>
 	   		<div class="ac">loading...</div> 
@@ -175,5 +178,9 @@ export default {
 	.right{
 		width: 65%;
 	}
+	.xunqing{
+        color: @deepMainColor;
+        margin-bottom: 10px;
+    }
 </style>
 
