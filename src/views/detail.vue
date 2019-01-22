@@ -56,13 +56,13 @@
 					<!-- <div class="phone-content">
 					</div> -->
 					<div class="c666">
-						免责声明：以上内容源自网络，版权归原作者所有，如有侵犯您的原创版权请告知，我们将尽快删除相关内容。
+						免责声明：直击真相爱心平台，仅为有正能量和社会价值的信息提供其发布与展示，如有侵权，请及时联系我们删除，谢谢您的支持！
 					</div>
 				</div>
                 <div class="love-tip">
                     <p class="red">爱心提示：</p>
                     <p>诈骗在中国已涉及到各行各业，高超的诈骗手段让人防不胜防！
-                        全国每年累计被诈骗金额超过3000亿，许多人被骗得倾家荡产，甚至家破人亡！有毒有害食品层出不穷，假冒伪劣产品泛滥成灾，严重伤害了国人的身体健康，拐卖妇女儿童现象屡禁不止。</p>
+                        全国每年累计被诈骗金额超过3000亿，许多人被骗得倾家荡产，甚至家破人亡！有毒有害食品层出不穷，假冒伪劣产品泛滥成灾，严重伤害了国人的身体健康，拐卖妇女儿童屡禁不止。</p>
                 </div>
                 <collapse-transition>
                     <div class="love-tip" v-show="isActive">
@@ -844,8 +844,9 @@ export default {
 			// 动态生成二维码
 		    function creatQRCode(){
 		      	// 生成的二维码内容，添加变量
-				let canvas = this.$refs.QRCode;
-		        QRCode.toCanvas(canvas, location.href, function (error) {
+				let canvas = this.$refs.QRCode,
+					href = config.share + '/#/detail?id=' + this.id;
+		        QRCode.toCanvas(canvas, href, function (error) {
 		        // if (error) console.error(error);
 		        })
 		    }
@@ -1061,7 +1062,7 @@ export default {
 						}
 					}
 				});
-				if (this.commentList.length <= 10){
+				if (this.commentList.length >= 10){
 					this.pageNum1 ++;
 				}
 				// if (this.commentList.length == 0) {
@@ -1132,6 +1133,7 @@ export default {
 			this.ifLoad = true;
 			$(".detail").scrollTop(0);
 			setTimeout(()=>{
+				this.pageNum1 = 1;
 				this.init();
 				this.ifLoad = false;
 			},200)

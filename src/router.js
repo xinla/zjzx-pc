@@ -83,6 +83,11 @@ export default new Router({
       path:'/download',
       name:'download',
       component:() => import('./views/download.vue')
-    }
+    },
+    {
+      path:'/privacy',
+      name:'privacy',
+      component:() => import('./views/privacy.vue')
+    },
   ]
 })
