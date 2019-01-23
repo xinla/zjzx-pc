@@ -4,7 +4,7 @@
             <div class="wrap-left fl">
                 <div class="banner">
                     <carousel indicator-position="outside" height="500px">
-                        <carousel-item v-for="(item,index) in slideList" :key="index" @click.native="goDetail(0,item.id)">
+                        <carousel-item v-for="(item,index) in slideList" :key="index" v-if="item.image" @click.native="goDetail(0,item.id)">
                             <img class="slide-img" :src="item.image">
                             <div class="slide-desc">
                                 <h3 class="slide-title">{{item.title}}</h3>
