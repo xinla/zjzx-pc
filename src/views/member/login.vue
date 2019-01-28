@@ -193,7 +193,7 @@ export default {
 				// this.codeDesc = "";
 				setTimeout(()=>{
 					this.$message({
-					  message: '系统繁忙，请稍后重试！',
+					  message: data.result.tip,
 					  center: true
 					});
 				},0)
