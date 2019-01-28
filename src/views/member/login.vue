@@ -18,14 +18,14 @@
 					placeholder="验证码">
 					<span class="fr verify-code" :class="{'disabled':timer}" @click="getVerifyCode">{{getCodeDesc}}</span>
 				</li>
-				<li class="login-li">
+				<!-- <li class="login-li">
 					<i class="iconfont icon-suo"></i>
 					<input type="text" class="input" 
 					v-model.trim="password"
 					placeholder="密码">
-				</li>
+				</li> -->
 				<li class="login-agree">
-					<input type="checkbox">
+					<input type="checkbox" v-model="isAgree">
 					我已经阅读并同意<router-link to='/agreement'>《直击真相用户协议》</router-link>
 				</li>
 				<li class="login-li ac" @click="login()">
@@ -36,7 +36,7 @@
 				<li class="login-author"> 一键登录 </li>
 				<li class="author-li iconfont icon-wechat" @click="authLogin('wechat')">
 				</li>
-				<li class="author-li iconfont icon-qq" @click="authLogin('qq')"></li>
+				<!-- <li class="author-li iconfont icon-qq" @click="authLogin('qq')"></li> -->
 				<li class="author-li iconfont icon-weibo" @click="authLogin('sina')"></li>
 			</ul>
 		</div>
@@ -54,10 +54,11 @@ export default {
 			password:'',
 			errorTip:'',
 			timer:0,
+			isAgree:false,
 		}
 	},
 	mounted(){
-	    console.log(this.$route)
+	    // console.log(this.$route)
 		if (localStorage.getItem('token')) {
 	        this.$Tool.goPage({name: 'index',replace:true});
 	        location.reload();
@@ -138,6 +139,10 @@ export default {
 			if (this.errorTip) { return; }
 			if (this.verifyCode.length < 4) {
 				this.errorTip = '请输入正确的验证码';
+				return;
+			}
+			if (!this.isAgree) {
+				this.errorTip = '请同意用户协议';
 				return;
 			}
 			userService.loginByMobile(this.mobile,this.verifyCode,this.userInfoStore);
@@ -227,7 +232,7 @@ export default {
 	    top: 10px;
 	    width: 100%;
 	    left: 0;
-	    color: @basicColor;
+	    color: @errColor;
 	}
 	.login-li{
 		line-height: 48px;
@@ -283,24 +288,25 @@ export default {
 		background: linear-gradient(#3aebf6,#1268ea)
 	}
 	.login-author{
-			margin-bottom:5px;
-			&::before,&::after{
-				display: inline-block;
-				position: relative;
-				top: -3px;
-				content:"";
-				width: 30%;
-				border-top: 1px solid #ddd;
-				margin:0 10px;
-			}			
-		}
-		.author-li{
-			position: relative;
-			background-color: #666;
+		margin-bottom:5px;
+		&::before,&::after{
 			display: inline-block;
-			color: #fff;
-			padding: 5px;
-			border-radius: 50%;
-			margin:0 5px;
-		}
+			position: relative;
+			top: -3px;
+			content:"";
+			width: 30%;
+			border-top: 1px solid #ddd;
+			margin:0 10px;
+		}			
+	}
+	.author-li{
+		position: relative;
+		background-color: #666;
+		display: inline-block;
+		color: #fff;
+		padding: 5px;
+		border-radius: 50%;
+		margin:0 5px;
+	    font-size: 22px;
+	}
 </style>

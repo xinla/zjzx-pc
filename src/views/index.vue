@@ -130,7 +130,7 @@
             <div class="module-body">
                 <ul class="module-list clearfix">
                     <li class="module-item fl" v-for="(item,index) in xqList" v-if="index <= 1" @click="goDetail(4,item.id)">
-                        <div class="item-img">
+                        <div class="item-img" v-if="item.image">
                             <img :src="item.image" alt="">
                         </div>
                         <h5 class="title">{{item.title}}</h5>
@@ -142,7 +142,7 @@
                 </ul>
                 <ul class="module-list clearfix">
                     <li class="module-item module-small-item clearfix" v-for="(item,index) in xqList" v-if="index >= 2" @click="goDetail(4,item.id)">
-                        <div class="item-img fl">
+                        <div class="item-img fl" v-if="item.image">
                             <img :src="item.image" alt="">
                         </div>
                         <div class="module-desc fl">
@@ -210,7 +210,7 @@
                                 }
                             })
                         }else{
-                            this.slideList[i].image = this.$Tool.extractImg(temp.content,1)
+                            this.slideList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // 获取评论数量
                         articleCommentService.getArticleCommentCount(temp.id,data=>{
@@ -251,7 +251,7 @@
                                 }
                             })
                         }else{
-                            this.jmList[i].image = this.$Tool.extractImg(temp.content,1)
+                            this.jmList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // 获取评论数量
                         articleCommentService.getArticleCommentCount(temp.id,data=>{
@@ -292,7 +292,7 @@
                                 }
                             })
                         }else{
-                            this.fpList[i].image = this.$Tool.extractImg(temp.content,1)
+                            this.fpList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // 获取评论数量
                         articleCommentService.getArticleCommentCount(temp.id,data=>{
@@ -324,7 +324,7 @@
                                 }
                             })
                         }else{
-                            this.djList[i].image = this.$Tool.extractImg(temp.content,1)
+                            this.djList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // 获取发布时间
                         this.djList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
@@ -379,7 +379,7 @@
                                 }
                             })
                         }else{
-                            this.xqList[i].image = this.$Tool.extractImg(temp.content,1)
+                            this.xqList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // 获取发布时间
                         this.xqList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
@@ -408,7 +408,7 @@
                                 }
                             })
                         }else{
-                            this.pfList[i].image = this.$Tool.extractImg(temp.content,1)
+                            this.pfList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // console.log(this.pfList[i].image)
                         // 获取发布时间
@@ -438,7 +438,7 @@
                                 }
                             })
                         }else{
-                            this.dgList[i].image = this.$Tool.extractImg(temp.content,1)
+                            this.dgList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // 获取发布时间
                         this.dgList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
@@ -467,7 +467,7 @@
                                 }
                             })
                         }else{
-                            this.gcwList[i].image = this.$Tool.extractImg(temp.content,1)
+                            this.gcwList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // 获取发布时间
                         this.gcwList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);

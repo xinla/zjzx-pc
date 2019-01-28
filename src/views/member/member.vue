@@ -53,14 +53,14 @@ export default {
 						paramStr:JSON.stringify(param)
 					}
 					$.post("http://47.101.58.43:8185/three/getThreeInfo",params,function(info){
-						// console.log(info);
+						// console.log(data);
 						let userparams = {
 							qq_openid:data.openid,//:"qq标识",
 							qq_unionid:data.unionid,//qq_多应用唯一标识
 							qq_nikname:info.nickname,//:"qq昵称",
 							qq_image:info.figureurl_1//:"qq头像地址"
 						}
-						console.log(userparams)
+						// console.log(userparams)
 						userService.loginByQQ(userparams,_this.userInfoStore)
 					});
 				}

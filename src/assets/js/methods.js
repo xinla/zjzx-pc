@@ -68,13 +68,13 @@ const tool = {
   },
   //图片格式判断
   checkPic(str){
-    if ( typeof str !== "string" ) {retrun;}
+    if ( typeof str !== "string" ) {return;}
     let reg = /\.(jpg|png|jpeg|gif)$/i;
     return reg.test(str);
   },
   //视频格式判断
   checkVideo(str){
-    if ( typeof str !== "string" ) {retrun;}
+    if ( typeof str !== "string" ) {return;}
     let reg = /\.(mp4)$/i;
     return reg.test(str);
   },
@@ -83,7 +83,7 @@ const tool = {
   * @num 图片最大数量
   */
   extractImg(str,num = 3){
-    if ( typeof str !== "string" ) {retrun;}
+    if ( typeof str !== "string" ) {return;}
     // 提取含img标签的src 路径
     let reg = /<img[^(img)]*src=[\'\"]?([^\'\"]*)[\'\"]?/gi,
         arr = str.match(reg),
