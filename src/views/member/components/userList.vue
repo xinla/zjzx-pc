@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <div class="user-list cw clearfix">
+        <div class="user-list wrapper clearfix">
             <div class="user-left fl">
                 <ul class="user-tab clearfix">
                     <li class="tab-item" :class="{'tabActive': tabIndex === index}" v-for="(item,index) in tabs"

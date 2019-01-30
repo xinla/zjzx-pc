@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <div class="search cw clearfix">
+        <div class="search wrapper clearfix">
             <div class="logo fl">
                 <img src="@/assets/images/user-logo.jpg" alt="">
             </div>

@@ -36,11 +36,6 @@ input[type="file"] > input[type="button"]:focus { outline: none; }
 input::-moz-placeholder,
 textarea::-moz-placeholder,
 input:-ms-input-placeholder,textarea:-ms-input-placeholder,input::-webkit-input-placeholder,textarea::-webkit-input-placeholder { color: #ccc; }
-.cw{
-  width: 1180px;
-  margin-left: auto;
-  margin-right: auto;
-}
 *:not(input, select, textarea) { -webkit-user-select: none; }/*禁止选中文本内容*/
 
 ::-webkit-scrollbar {display: none;/*隐藏滚轮*/}
@@ -141,9 +136,10 @@ img,a{-webkit-touch-callout:none;}  */
 .wrapper,.header-wrap{
   /*position: relative;*/
   max-width: 1300px;
-  min-width: 1020px;
+  min-width: 1200px;
+  width: 1180px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 10px;
   /*overflow-y: hidden;*/
 }
 .clearfix:after,.clearfix:before{content:"";display:table;/*创建匿名的表格单元，触发bfc*/}

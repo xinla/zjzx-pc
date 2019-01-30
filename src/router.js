@@ -6,6 +6,7 @@ import index from './views/index.vue'
 Vue.use(Router)
 
 export default new Router({
+  mode:"history",
   routes: [
     {
       path: '/',
@@ -26,7 +27,12 @@ export default new Router({
           // which is lazy-loaded when the route is visited.
           component: () => import('./views/listDetail.vue')
           // props:true
-        }
+        },
+        {
+          path:'/download',
+          name:'download',
+          component:() => import('./views/download.vue')
+        },
       ]   
     },
     {
@@ -78,11 +84,6 @@ export default new Router({
       path:'/about',
       name:'about',
       component:() => import('./views/about.vue')
-    },
-    {
-      path:'/download',
-      name:'download',
-      component:() => import('./views/download.vue')
     },
     {
       path:'/privacy',

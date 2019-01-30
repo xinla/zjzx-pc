@@ -1,7 +1,7 @@
 <template>
     <div>
         <header class="header tf">
-            <div class="cw clearfix">
+            <div class="wrapper clearfix">
                 <h1 class="header-logo fl">
                     <router-link :to="{name:'index'}" @click.native="currentClassiftyCode = 0">
                         <img src="@/assets/images/index-logo.png" alt="直击真相">
@@ -9,7 +9,9 @@
                 </h1>
 
                 <div class="nav-wrapper fl">
-                    <h3 class="nav-title">多一个人看到，少一个人受骗！</h3>
+                    <router-link to="download">
+                        <h3 class="nav-title">多一个人看到，少一个人受骗！<sup class="download">点我下载App</sup></h3>
+                    </router-link>
                     <nav class="nav">
                         <ul class="nav-list clearfix">
                             <router-link
@@ -57,7 +59,7 @@
 
         </header>
         <keep-alive>
-            <router-view class="main-view cw" />
+            <router-view class="main-view wrapper" />
         </keep-alive>
     </div>
 </template>
@@ -267,5 +269,8 @@
     .main-view{
         margin: 135px auto 0;
     }
-
+    sup.download {
+        font-size: 10px;
+        color: rgba(255, 204, 0, 0.73);
+    }
 </style>

@@ -2,7 +2,7 @@
     <div>
 
         <footer class="footer-wrapper">
-            <div class="footer cw">
+            <div class="footer wrapper">
                 <ul class="foot-list clearfix">
                     <li class="foot-item">皖ICP备18025845号-1</li>
                     <li class="foot-item">池州康有保网络科技有限公司2018</li>

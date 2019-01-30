@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <div class="user-info cw">
+        <div class="user-info wrapper">
             <div class="user-bg">
                 <div class="user-fans user-public">
                     <div class="user-position">

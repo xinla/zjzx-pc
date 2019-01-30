@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <div class="header cw clearfix">
+        <div class="header wrapper clearfix">
             <div class="header-logo fl">
                 <router-link :to="{name:'index'}" @click.native="currentClassiftyCode = 0">
                     <img src="@/assets/images/logo1.png" alt="直击真相">
