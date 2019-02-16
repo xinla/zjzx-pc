@@ -3,7 +3,7 @@
 		<img src="@/assets/images/downloadBg.png" alt=""><br>
 		<img class="download-code" src="@/assets/images/logo.png" alt=""><br>
 		<a class="download-link" href="http://download.zjzx.xyz/download.html"><i class="iconfont icon-andriod"></i><span class="ai">Android</span>下载</a><br>
-		<a class="download-link" href=""><i class="iconfont icon-ios"></i><span class="ai">IOS</span>下载</a>
+		<a class="download-link" href="https://itunes.apple.com/cn/app/%E7%9B%B4%E5%87%BB%E7%9C%9F%E7%9B%B8/id1450056517?mt=8"><i class="iconfont icon-ios"></i><span class="ai">IOS</span>下载</a>
 	</div>
 </template>
 
@@ -14,14 +14,26 @@ export default {
 			downloadCode:require('@/assets/images/logo-icon.png')
 		}
 	},*/
-	methods:{
-		/*showAndriod(){
+  mounted() {
+    let ua = navigator.userAgent;
+    if (ua.indexOf('Android') > -1) {
+      // TODO:待放置应用宝下载地址
+      location.href = 'https://mobile.baidu.com/item?docid=25512436&f0=search_searchContent%400_appBaseNormal%400'
+      return
+    }
+    if (ua.indexOf('iPhone') > -1) {
+      location.href = 'https://itunes.apple.com/cn/app/%E7%9B%B4%E5%87%BB%E7%9C%9F%E7%9B%B8/id1450056517?mt=8'
+      return
+    }
+  },
+	/*methods:{
+		showAndriod(){
 			this.downloadCode = require('@/assets/images/logo-icon.png')
 		},
 		showIOS(){
 			this.downloadCode = require('@/assets/images/downloadBg.png')
-		}*/
-	}
+		}
+	}*/
 }
 </script>
 
