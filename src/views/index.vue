@@ -113,9 +113,9 @@
                         </li>
                     </ul>
                 </div>
-                <div class="side-pic">
+                <router-link to="/answer" tag="div" class="side-pic">
                     <img src="@/assets/images/wenda.png" alt="在线问答">
-                </div>
+                </router-link>
                 <div class="side-pic">
                     <img src="@/assets/images/tougao.png" alt="在线投稿">
                 </div>

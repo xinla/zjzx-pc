@@ -46,6 +46,11 @@ export default new Router({
       component:() => import('./views/member/userCenter.vue')
     },
     {
+      path: '/answer',
+      name: 'answer',
+      component:() => import('./views/member/answer.vue')
+    },
+    {
       path: '/member',
       name: 'member',
       component:() => import('./views/member/member.vue')
