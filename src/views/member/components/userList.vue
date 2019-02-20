@@ -187,7 +187,6 @@
         mounted() {
             this.$nextTick(() => {
                 this.init();
-                console.log(this.$route)
             });
         },
         methods: {

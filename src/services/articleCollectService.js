@@ -52,7 +52,7 @@ service.testCollect = function(articleid,call){
 
 	commonUtil.ajax(controller+'/testCollect',params,call);
 
-}
+};
 
 export default service;
 

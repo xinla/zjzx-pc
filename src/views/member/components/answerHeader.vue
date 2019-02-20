@@ -5,8 +5,8 @@
                 <img src="@/assets/images/answer-logo.png" alt="在线问答">
             </div>
             <div class="answer-search fl">
-                <input type="search" placeholder="搜索你感兴趣的问题">
-                <span class="answer-button">搜索</span>
+                <input type="search" v-model.trim="keyword" placeholder="搜索你感兴趣的问题">
+                <span class="answer-button" @click="search">搜索</span>
             </div>
             <ul class="answer-list fl clearfix">
                 <li class="answer-item">问答首页</li>
@@ -15,8 +15,13 @@
                 <li class="answer-item">等我来答</li>
             </ul>
             <ul class="answer-right clearfix fr">
-                <li class="item">登录</li>
-                <li class="item">注册</li>
+                <router-link :to="{path:'login'}" class="item" tag="li" v-if="noLogin">登录</router-link>
+                <router-link :to="{path:'login'}" class="item" tag="li" v-if="noLogin">注册</router-link>
+                <li class="item" v-if="logined">
+                    <img :src="userPhoto">
+                    <span class="username">{{username}}</span>
+                </li>
+                <li class="item item-quit" @click="signOut" v-if="logined">退出登录</li>
                 <li class="item">反馈</li>
                 <li class="item">投诉</li>
             </ul>
@@ -25,8 +30,52 @@
 </template>
 
 <script>
+    import userService from '@/services/userService'
     export default {
-        name: "answerHeader"
+        name: "userHeader",
+        data(){
+            return{
+                noLogin:false,
+                logined:false,
+                username:'',
+                userPhoto:'',
+                keyword:'',
+            }
+        },
+        mounted(){
+            if(!localStorage.id) {
+                this.noLogin = true;
+                this.logined = false;
+            }else{
+                this.noLogin = false;
+                this.logined = true;
+                this.username = localStorage.userName;
+                this.userPhoto = localStorage.userImg;
+            }
+        },
+        methods:{
+            search(){
+                this.keyword && this.$Tool.goPage({name:'search',query:{keyword:this.keyword}})
+            },
+            signOut(){
+                let data = userService.logOut();
+                if(data && data.status == "success"){
+                    this.$confirm('退出登录, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                        center: true
+                    }).then(()=>{
+                        this.$store.dispatch("userLogout");
+                        this.$Tool.goPage({name:"login",path: "/login"});
+                        this.$message({
+                            type: 'success',
+                            message: '退出成功!'
+                        });
+                    });
+                }
+            }
+        }
     }
 </script>
 
@@ -76,6 +125,16 @@
             .item{
                 float: left;
                 margin-right: 12px;
+                cursor: pointer;
+                img{
+                    width: 28px;
+                    height: 28px;
+                    margin-right: 10px;
+                    border-radius: 50%;
+                }
+            }
+            .item-quit{
+                color: #ec414d;
             }
         }
     }

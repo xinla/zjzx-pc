@@ -24,14 +24,40 @@ service.getQuestionPage = function(page,size,userid){
 		page,//:"当前页",
 		size,//:"分页大小"
 		userid,//:"用户id"
-	}
-	// if (call) {
-	// 	commonUtil.ajax(controller+'/getQuestionPage',params,call);
-	// 	return;
-	// }
+	};
 	let resMap = commonUtil.ajaxAsync(controller+'/getQuestionPage',params);
 
 	return resMap;
-}
+};
 
+// 获取回答
+service.getAnswers = function (page, size, parentid) {
+	let params = {page, size, parentid};
+	let resData = commonUtil.ajaxAsync(controller + '/getAnswers', params);
+	return resData;
+};
+
+// 删除问答
+// 删除问答
+service.deleteQuestion = function(id){
+	let params = {
+		userid,
+		token,
+		"ids[]":[id]
+	};
+	let resDelete = commonUtil.ajaxAsync(controller+'/deleteQuestion',params);
+
+	return resDelete;
+};
+
+//获取回答数量
+service.getAnswerCount = function(wdid, call) {
+	let params ={wdid};
+	commonUtil.ajax(controller+'/getAnswerCount',params,call);
+};
+// 获取用户发布问题数量
+service.getUserQuestionCount = function (userid, call) {
+	let params = {userid};
+	commonUtil.ajax(controller+'/getUserQuestionCount',params,call);
+};
 export default service
