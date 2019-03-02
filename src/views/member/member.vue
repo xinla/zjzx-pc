@@ -22,12 +22,13 @@ export default {
 
 			/**
 			 * http://zjzx.xyz/#/login?#access_token=5B4C881C174FD8CD63C6DD601946F08A&expires_in=7776000&state=zjzxQAuthorization
-			 * 根据access_token获取openid
-			 * https://graph.qq.com/oauth2.0/me?access_token=5B4C881C174FD8CD63C6DD601946F08A
-			 * @return callbackc ( {"client_id": "**********", "openid": "**********"} )
-			 * callback( {"client_id":"101532474","openid":"DEF306ECDC61C9FBA8BFB342A6DCB588"} );
+			 * 根据access_token获取openid和unionid
+			 * https://graph.qq.com/oauth2.0/me?access_token=5B4C881C174FD8CD63C6DD601946F08A&unionid=1
+			 * @return callbackc ( {"client_id": "**********", "openid": "**********","unionid":***********} )
+			 * callback( {"client_id":"101532474","openid":"DEF306ECDC61C9FBA8BFB342A6DCB588","unionid":"UID_693CF9DDB9603AF9B5D8CF932406B48E"} );
 			 * client_id即为appid
 			 * openid即为我们要获取到的openid值
+			 * unionid即为我们要获取到的unionid值
 			 */
 			$.ajax({
 				url:`https://graph.qq.com/oauth2.0/me?access_token=${access_token}&unionid=1`, 
@@ -54,6 +55,11 @@ export default {
 					}
 					$.post("http://47.101.58.43:8185/three/getThreeInfo",params,function(info){
 						// console.log(data);
+						/*{
+							client_id:"101532474"
+							openid:"DEF306ECDC61C9FBA8BFB342A6DCB588"
+							unionid:"UID_693CF9DDB9603AF9B5D8CF932406B48E"
+						}*/
 						let userparams = {
 							qq_openid:data.openid,//:"qq标识",
 							qq_unionid:data.unionid,//qq_多应用唯一标识

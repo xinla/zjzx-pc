@@ -1,6 +1,6 @@
 import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/map';
+const controller =config.successServer+'/zjzx-area/map';
 const service ={}
 
 service.getPoiList = function(page_num,latitude,longitude,call){

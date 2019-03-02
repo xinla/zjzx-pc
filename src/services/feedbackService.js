@@ -1,6 +1,6 @@
 import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/feedback';
+const controller =config.successServer+'/zjzx-system/feedback';
 const service ={}
 
 let userid = localStorage.getItem('id');

@@ -1,6 +1,6 @@
 import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/interlocution';
+const controller =config.successServer+'/zjzx-article/interlocution';
 const service ={}
 
 const userid = localStorage.getItem('id');

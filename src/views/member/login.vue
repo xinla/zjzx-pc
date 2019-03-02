@@ -36,7 +36,7 @@
 				<li class="login-author"> 一键登录 </li>
 				<li class="author-li iconfont icon-wechat" @click="authLogin('wechat')">
 				</li>
-				<!-- <li class="author-li iconfont icon-qq" @click="authLogin('qq')"></li> -->
+				<li class="author-li iconfont icon-qq" @click="authLogin('qq')"></li>
 				<li class="author-li iconfont icon-weibo" @click="authLogin('sina')"></li>
 			</ul>
 		</div>
