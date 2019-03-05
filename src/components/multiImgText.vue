@@ -23,7 +23,7 @@
 			<!-- 视频大图 -->
 			<div class="article-video" v-else-if="2 === article.type && ArticleFile.length">
 				<div class="article-play cc">
-					<i class="iconfont icon-bofang1"></i>
+					<i class="iconfont icon-play"></i>
 				</div>
 				<img :src="fileRoot + ArticleFile[0].thumbnail">
 			</div>

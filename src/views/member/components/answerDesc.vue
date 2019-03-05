@@ -80,8 +80,7 @@
                 </div>
             </div>
         </div>
-
-            <question-dialog :show="showDialog" @cancel="handleCancelDialog"></question-dialog>
+        <question-dialog :show="showDialog" @cancel="handleCancelDialog"></question-dialog>
     </div>
 </template>
 

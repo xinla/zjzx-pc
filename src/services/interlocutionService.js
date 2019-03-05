@@ -6,7 +6,6 @@ const service ={}
 const userid = localStorage.getItem('id');
 // 发布问题（讨论）
 service.publishQuestion = function(record,images) {
-	
 	let params = {
 		userid,
 		title:record.title,//:"标题",

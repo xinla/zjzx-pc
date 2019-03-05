@@ -2,15 +2,18 @@
     <div class="answer-wrap">
         <answer-header></answer-header>
         <answer-desc></answer-desc>
+        <back-top></back-top>
+
     </div>
 </template>
 
 <script>
     import answerHeader from "./components/answerHeader";
     import answerDesc from "./components/answerDesc";
+    import BackTop from "../../components/backTop";
     export default {
         name: "answer",
-        components: {answerHeader,answerDesc},
+        components: {answerHeader,answerDesc,BackTop},
     }
 </script>
 

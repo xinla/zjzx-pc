@@ -16,18 +16,17 @@
                             </el-input>
                         </el-form-item>
                         <div class="dialog-upload clearfix">
-                            <!--<transition-group  enter-active-class="animated fadeInLeft" leave-active-class=" animated fadeOutRight">-->
-                            <div class="dialog-thumbnail fl">
-                                <div class="dialog-mask">
-                                    <i class="iconfont icon-lajixiang"></i>
+                            <transition-group  enter-active-class="animated fadeInLeft" leave-active-class=" animated fadeOutRight">
+                                <div class="dialog-thumbnail fl" v-for="(item,index) in record_file" :key="index">
+                                    <div class="dialog-mask">
+                                        <i class="iconfont icon-lajixiang" @click="handleRemoveThumbnail(index)"></i>
+                                    </div>
+                                    <div class="dialog-img">
+                                        <img :src="fileRoot + item.url">
+                                    </div>
                                 </div>
-                                <div class="dialog-img">
-                                    <img src="@/assets/images/tougao.png">
-                                </div>
-
-                            </div>
-                            <!--</transition-group>-->
-                            <div class="dialog-add fl">
+                            </transition-group>
+                            <div class="dialog-add fl" v-show="addShow">
                                 <label for="upImg"></label>
                                 <i class="iconfont icon-add"></i>
                                 <input type="file" id="upImg" multiple @change="uploadFile" accept = "image/*"  style="display: none;">
@@ -53,7 +52,9 @@
         data(){
             return{
                 fileRoot:config.fileRoot +'/',
-                record:{}
+                record:{},
+                record_file:[],
+                addShow:true
             }
         },
         props:{
@@ -63,20 +64,14 @@
             }
         },
         methods:{
+            // 取消弹框
             cancel(){
+                this.addShow = true;
+                this.record_file = [];
                 this.$emit('cancel');
             },
-            handlePublish(){
-                if(!this.record.title) {
-                    this.$message({
-                        message: "请输入问题标题",
-                        type: "warning"
-                    });
-                    this.$refs.titleRef.focus();
-                }
-                this.record.title = this.$Tool.doTitle(this.record.title);
 
-            },
+            // 上传图片
             uploadFile(e){
                 let file = e.target.files[0];
                 if(!file){return;}
@@ -91,9 +86,78 @@
                 let param = new FormData();
                 param.append('file', file, file.name);
                 fileService.uploadPic(param, (data)=>{
+                    let obj = {};
+                    obj.url = data.result.url;
+                    obj.filename = data.result.filename;
+                    this.record_file.push(obj);
+                    if(this.record_file.length >= 4) {
+                        this.addShow = false;
+                    }else{
+                        this.addShow=true;
+                    }
 
                 });
-            }
+            },
+            //删除上传缩略图
+            handleRemoveThumbnail(item){
+                this.$confirm('确认删除?', '', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.record_file.splice(item,1);
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.addShow = true;
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            // 发布
+            handlePublish(){
+                if(!this.record.title) {
+                    this.$message({
+                        message: "请输入问题标题",
+                        type: "warning"
+                    });
+                    this.$refs.titleRef.focus();
+                    return;
+                }
+                if(!this.$Tool.checkInput(this.record.title)){
+                    this.record.title = this.$Tool.replaceNo(this.record.title);
+                    this.$message({
+                        message: '内容含有非法字符，已为您删除，请确认',
+                        type: 'error'
+                    });
+                    return;
+                }
+                this.record.author = Number(localStorage.id || 0);
+                if(this.record.type != 1 && this.record.type != 2) {
+                    this.record.title = this.$Tool.doTitle(this.record.title);
+                    Object.assign(this.record,this.position);
+                    let images = [];
+                    for(let i = this.record_file.length -1; i>=0;i--){
+                        images.push(this.record_file[i].url);
+                    }
+                    let data = interService.publishQuestion(this.record,images+"");
+                    if(data && data.status == "success"){
+                        console.log(data)
+                        this.$message({
+                            message: '发布成功',
+                            type: 'success'
+                        });
+                    }
+                }
+
+
+
+            },
+
         }
     }
 </script>
