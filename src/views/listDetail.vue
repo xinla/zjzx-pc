@@ -1,9 +1,10 @@
 <template>
     <div class="main">
-    	<div class="xunqing ac" v-if="classify  == 4">
+    	<div class="xunqing ac" v-if="classify == 4">
     		公益寻亲：免费发布寻人寻亲信息，利用网络信息技术帮助失散人群，早日回家团圆。邮箱：2787064791@qq.com
     	</div>
 	    <div class="left fl" @scroll="loadMore">
+	    	<mit v-for="(item,index) in topList" :article="item" :key="index" ifTop=true></mit>
 	   		<mit v-for="(item,index) in arcList" :article="item" :key="index"></mit>
 	   		<div class="ac">loading...</div> 
 	    </div> 
@@ -34,6 +35,7 @@ export default {
 			ifLoading:true,
 			tip:"正在加载",	
 			timeId:0,
+			topList:[]
 		}
 	},
 	mounted () {
@@ -48,27 +50,27 @@ export default {
 			let resArticlePage;
 			try{
 				if(!this.classify || this.classify === '0'){
-					let resTopArticle = articleService.getTodayArticle();
+					this.topList = articleService.getTodayArticle().list;
                     resArticlePage = articleService.articlePage(this.page,15);
                     let temp = resArticlePage.recordPage.list,
                         same = [];
-                    // console.log(temp);console.log(resTopArticle.list)
+                    // console.log(temp);console.log(this.topList)
                     // 置顶与推荐查重
                     for (let i = 0,len = temp.length; i < len; i++) {
-                        for (let j = 0,len1 = resTopArticle.list.length; j < len1; j++) {
-                            if (temp[i].id == resTopArticle.list[j].id) {
+                        for (let j = 0,len1 = this.topList.length; j < len1; j++) {
+                            if (temp[i].id == this.topList[j].id) {
                                 same.push(i);
                                 break;
                             }
                         }
-                        if(same.length == resTopArticle.list.length) {break;}
+                        if(same.length == this.topList.length) {break;}
                     }
                     // console.log(same)
                     // 删除重复
                     for (let i = 0; i < same.length; i++) {
                         temp.splice(same[i] - i,1)
                     }
-                    resArticlePage.recordPage.list = resTopArticle.list.concat(temp)
+                    // resArticlePage.recordPage.list = this.topList.concat(temp)
 				}else{
 					resArticlePage = articleService.articlePage(this.page,15,this.classify);
 				}

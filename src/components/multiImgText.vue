@@ -31,8 +31,9 @@
 		<!-- 文章评论 -->
 		<div class="article-footer clearfix">
 			<div class="fl">
+				<span class="stick" v-if="ifTop">置顶</span>
 				<span class="publisher oe" v-if="ifPublisher">{{publisher}}</span>
-				<span>{{commentNum}}评论</span>
+				<!-- <span>{{commentNum}}评论</span> -->
 				<span>{{publishtime}}</span>
 			</div>
 			<div class="fr article-remove" @click="$emit('delete',[article.id,whi,$event])" v-if="ifDel">
@@ -84,6 +85,10 @@ export default {
 		ifSingle:{
 			type:Boolean,
 			default:false,
+		},
+		ifTop:{
+			type:Boolean,
+			default:false
 		}
 	},
 	mounted(){
@@ -96,6 +101,12 @@ export default {
 		article(){
 			this.init();
 		},
+	},
+	computed:{
+		// 判断是否黑名单
+        isBlacklist(){
+            return  this.$store.state.blacklist.includes(this.article.author)
+        }
 	},
 	methods:{
 		init(){
@@ -208,6 +219,17 @@ export default {
 			}
 			span{
 				margin-right: .1rem;
+			}
+			.stick{
+				display: inline-block;
+				line-height: .4rem;
+				text-align: center;
+				border: .02rem solid #ed4040;
+				transform: scale(.9);
+				color: #ed4040;
+				padding: 0 .06rem;
+				letter-spacing: .02rem;
+				border-radius: .1rem;
 			}
 			.article-remove{
 				width: .45rem;

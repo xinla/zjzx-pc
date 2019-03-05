@@ -8,10 +8,11 @@ function State(){
     this.isScolling = false;
     this.selectedPublishName = "";
     this.selectedPublishAddress ="";
-
+    this.blacklist = [];
 }
 
 let state = new State();
+localStorage.blacklist && (state.blacklist = JSON.parse(localStorage.blacklist))
 const mutations = {
     setIsScolling(state,data){
         state.isScolling = data;
