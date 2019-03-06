@@ -1,5 +1,5 @@
-import config from '@/assets/js/config'
-import axios from 'axios'
+import config from '@/assets/configs/config'
+// import axios from 'axios'
 import commonUtil from '@/utils/commonUtil'
 const controller =config.successServer+'/zjzx-user/userchain';
 const service ={}
