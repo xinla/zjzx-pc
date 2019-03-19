@@ -128,14 +128,14 @@ const tool = {
    * @return String/Number    [description]
    */
   numConvertText(num){
-    if (typeof num !== "number") {return;}
-    if (num >= 1000) {
+      if (typeof num !== "number") {return;}
       if (num >= 10000) {
-        return (num/10000).toFixed(1) + 'k';
+          return (num/10000).toFixed(1) + 'w';
       }
-      return (num/1000).toFixed(1) + 'w';
-    }
-    return num;
+      /*if (num >= 1000) {
+          return (num/1000).toFixed(1) + 'k';
+      }*/
+      return num;
   },
 
   doTitle(str){

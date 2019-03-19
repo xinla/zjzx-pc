@@ -16,7 +16,13 @@
   </head>
   <body>
     <script type="text/javascript">
-      let ua = navigator.userAgent.toLowerCase(),isIE = ua.indexOf("msie") > -1;if(isIE){ua.match(/msie ([\d.]+)/)[1] <= 8;alert('系统检测到您正在使用ie8以下内核的浏览器，不能实现完美体验，请更换或升级浏览器访问！')}
+      var docEl = document.documentElement
+      var clientWidth = Math.min(window.innerWidth, docEl.clientWidth)
+      if (clientWidth <= 750) {
+        location.href = 'http://m.zjzx.xyz'
+        return
+      }
+      var ua = navigator.userAgent.toLowerCase(),isIE = ua.indexOf("msie") > -1;if(isIE){ua.match(/msie ([\d.]+)/)[1] <= 8;alert('系统检测到您正在使用ie8以下内核的浏览器，不能实现完美体验，请更换或升级浏览器访问！')}
     </script>
     <div id="app"></div>
     <!-- built files will be auto injected -->

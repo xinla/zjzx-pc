@@ -62,12 +62,6 @@ new Vue({
   router,
   store,
   created(){
-    let docEl = document.documentElement
-    let clientWidth = Math.min(window.innerWidth, docEl.clientWidth)
-    if (clientWidth <= 750) {
-      location.href = 'http://m.zjzx.xyz'
-      return
-    }
   	window.GoTruth = this;
   },
   render: h => h(App)
