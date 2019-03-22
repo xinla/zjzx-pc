@@ -1,6 +1,11 @@
 <template></template>
 <script>
 import userService from '@/services/userService'
+import config from '@/assets/configs/config'
+
+const agency = config.successServer + '/zjzx-system/three/getThreeInfo'
+const agencyHttps = config.successServer + '/zjzx-system/three/getThreadInfoHttps'
+
 export default {
 	mounted(){
 		var _this = this,
@@ -53,7 +58,7 @@ export default {
 						url:"https://graph.qq.com/user/get_user_info",
 						paramStr:JSON.stringify(param)
 					}
-					$.post("http://47.101.58.43:8185/three/getThreeInfo",params,function(info){
+					$.post(agency,params,function(info){
 						// console.log(data);
 						/*{
 							client_id:"101532474"
@@ -93,7 +98,7 @@ export default {
 			}
 				// console.log(_params)
 
-			$.post("http://47.101.58.43:8185/three/getThreeInfo",params,function(data){
+			$.post(agency,params,function(data){
 				/**
 				 * 获取用户个人信息（UnionID机制）
 				 * https://api.weixin.qq.com/sns/userinfo?access_token=16_DQgpZ-iQehrzMRaqoRaeUm2EPQ1A79IDm_bimfg_T4ozTeJgkpGpdJyTEud2RmzWr7grn69-m44Uu0MuAoE8Pg&openid=oyn3p5iZy_H-zSWbsxLAKDS8CjV0
@@ -109,7 +114,7 @@ export default {
 					paramStr:JSON.stringify(_param)
 				}
 				// console.log(_params)
-				$.post('http://47.101.58.43:8185/three/getThreeInfo',_params,function(info){
+				$.post(agency,_params,function(info){
 					let userparams = {
 						wx_openid:info.openid,//:"微信标识",
 						wx_nikname:info.nickname,//:"微信昵称",
@@ -142,7 +147,7 @@ export default {
 				paramStr:JSON.stringify(_param)
 			}
 			// console.log(_params)
-			$.post("http://47.101.58.43:8185/three/getThreadInfoHttps",_params,function(data){
+			$.post(agencyHttps,_params,function(data){
 			// debugger
 			// https://api.weibo.com/2/users/show.json?access_token=2.00aJfJtG03eHUScc4208a39aT64juB&uid=6311798622
 				let param = {
@@ -155,7 +160,7 @@ export default {
 				}
 				// debugger;
 					// console.log(param)
-				$.post('http://47.101.58.43:8185/three/getThreeInfo',params,function(info){
+				$.post(agency,params,function(info){
 					// console.log(info)
 					let userparams = {
 						xl_openid:info.id,//:"sina标识unid",
