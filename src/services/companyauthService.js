@@ -1,6 +1,6 @@
-import config from '@/assets/configs/config'
+
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/zjzx-auth/companyauth';
+const controller = '/zjzx-auth/companyauth';
 
 export default {
 	/**

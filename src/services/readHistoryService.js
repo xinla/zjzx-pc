@@ -1,6 +1,6 @@
-import config from '@/assets/configs/config'
+
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/zjzx-article/readhistory';
+const controller = '/zjzx-article/readhistory';
 const service ={}
 
 let userid = localStorage.getItem('id');

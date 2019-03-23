@@ -1,7 +1,6 @@
-import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
-const controller =config.fileServer+'/file';
-const service ={}
+const controller = '/file';
+const service = {}
 
  // let fileConfig = {
  //    headers:{'Content-Type':'multipart/form-data'}
@@ -22,16 +21,16 @@ service.uploadVideo = function(params,call){
 	// })
 }
 
-function ajaxFile (url,params,call) {
+function ajaxFile (url, params, call) {
 	$.ajax({
-		url: url,
+		url: window.urls.fileServer + url,
 		type: 'post',
 		dataType: 'json',
 		data: params,
-		async:true,
-		processData:false,
-		contentType:false,
-		success:function(res){
+		async: true,
+		processData: false,
+		contentType: false,
+		success: function(res) {
 			call(res);
 		}
 	})

@@ -45,6 +45,7 @@
 
 <script>
 import userService from '@/services/userService'
+import loginService from '@/services/login'
 export default {
 	data () {
 		return {
@@ -101,9 +102,7 @@ export default {
 			this.checkMobile();
 			if (this.errorTip || this.timer) { return; }
 			// this.$vux.loading.show({text: 'Loading'});
-			userService.getCode(this.mobile,(data)=>{
-				// this.$refs.codeFocus.focus();
-				// this.tip.codeColor = true;
+			loginService.getCode(this.mobile).then(data => {
 				if(data && data.status == "success") {
 					// this.$vux.loading.hide();
 					this.getCodeDesc = "60秒后重发";
@@ -127,7 +126,7 @@ export default {
 					// this.mobile = "";
 					// this.tip.close1 = false;
 				}
-			});
+			})
 
 		},
 		/**

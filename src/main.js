@@ -1,5 +1,5 @@
-import '@/assets/styles/reset.css';
-import '@/assets/styles/base.less';
+import '@/styles/reset.css';
+import '@/styles/base.less';
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -9,9 +9,10 @@ window.$ = $;
 
 import animate from 'animate.css'
 //配置文件
-import config from '@/assets/configs/config'
+import urls from './urls'
+window.urls = urls
 //工具函数
-import Tool from '@/assets/js/methods'
+import Tool from '@/utils/methods'
 Vue.use(Tool);
 //文在动画loading
 import LoadingMain from '@/components/loadingMain'

@@ -1,6 +1,6 @@
-import config from '@/assets/configs/config'
+
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/zjzx-system/version';
+const controller = '/zjzx-system/version';
 const service ={}
 
 // 版本比较

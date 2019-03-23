@@ -1,6 +1,6 @@
-import config from '@/assets/configs/config'
+
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/zjzx-area/city';
+const controller = '/zjzx-area/city';
 const service ={}
 
 service.getCityByProvince = function(provinceid) {

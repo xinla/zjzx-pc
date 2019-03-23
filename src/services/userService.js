@@ -1,6 +1,6 @@
-import config from '@/assets/configs/config'
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/zjzx-user/user';
+import request from '@/utils/request'
+const controller = '/zjzx-user/user';
 const service ={}
 
 const token = localStorage.getItem('token');
@@ -173,6 +173,21 @@ service.getUserPhByUserid = function(userid,call){
 
   return resMap;
 };
+
+/**
+ * 更新用户
+ * @param  {[type]} user [description]
+ * @return {[type]}      [description]
+ */
+service.updateUser2 = function(user) {
+		return request({
+			url: controller + '/updateUser2',
+			params: { 
+				token,
+				record: user
+		  }
+		})
+	}
 
 export default service
 

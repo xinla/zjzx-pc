@@ -1,13 +1,13 @@
-const util ={}
+const util = {}
 
-util.ajaxAsync = function(url,params){
+util.ajaxAsync = function(url, params){
 	let res = {};
 	$.ajax({
-		url: url,
+		url: window.urls.successServer + url,
 		type: 'post',
 		dataType: 'json',
 		data: params,
-		async:false,
+		async: false,
 		success:function(data){
 			res = data;
 		}
@@ -16,12 +16,12 @@ util.ajaxAsync = function(url,params){
 	return res;
 
 }
-util.ajax = function(url,params,call){
-	$.post(url,params,function(data){
+util.ajax = function(url, params, call){
+	$.post(window.urls.successServer + url, params, function(data) {
 		if (call) {
 			call(data);		
 		}
-	},"json");
+	}, "json");
 
 }
 export default util

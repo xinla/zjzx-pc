@@ -238,7 +238,7 @@ import articleCommentService from '@/services/article_commentService'
 import articleCollectService from '@/services/articleCollectService'
 import messageService from '@/services/messageService'
 import transmitService from '@/services/transmitService'
-import collapseTransition from "@/assets/js/elTransition"
+import collapseTransition from "@/utils/elTransition"
 
 export default {
 	components:{

@@ -1,6 +1,6 @@
-import config from '@/assets/configs/config'
+
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/zjzx-article/transmit';
+const controller = '/zjzx-article/transmit';
 const service ={}
 
 service.getTransmitList = function(articleid,page,size) {

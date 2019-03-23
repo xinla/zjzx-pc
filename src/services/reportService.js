@@ -1,6 +1,6 @@
-import config from '@/assets/configs/config'
+
 import commonUtil from '@/utils/commonUtil'
-const controller =config.successServer+'/zjzx-system/report';
+const controller = '/zjzx-system/report';
 const service ={}
 
 const token = localStorage.getItem('token');
