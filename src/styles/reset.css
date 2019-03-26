@@ -133,11 +133,11 @@ img,a{-webkit-touch-callout:none;}  */
   overflow-y: auto;
 }
 /* pc 外体框架 */
-.wrapper,.header-wrap{
+.wrapper{
   /*position: relative;*/
   max-width: 1300px;
-  min-width: 1200px;
-  width: 1180px;
+  /*min-width: 1200px;*/
+  width: 1220px;
   margin: 0 auto;
   padding: 0 10px;
   /*overflow-y: hidden;*/

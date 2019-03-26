@@ -2,32 +2,61 @@
     <div>
         <div class="module clearfix">
             <div class="wrap-left fl">
-                <div class="banner">
-                    <carousel indicator-position="outside" height="500px">
-                        <carousel-item v-for="(item,index) in slideList" :key="index" v-if="item.image" @click.native="goDetail(0,item.id)">
-                            <img class="slide-img" :src="item.image">
-                            <div class="slide-desc">
-                                <h3 class="slide-title">{{item.title}}</h3>
-                                <div class="slide-tip clearfix">
-                                    <div class="slide-left fl">
-                                        <span>{{item.publisher}}</span>
-                                        <span>{{item.publishtime}}</span>
-                                    </div>
-                                    <div class="slide-right fr">
-                                        <span><i class="iconfont icon-read"></i>{{item.readNum}}</span>
-                                        <span><i class="iconfont icon-xiaoxi"></i>{{item.commentNum}}</span>
+                <!-- banner -->
+                <div class="banner-top">
+                    <div class="banner fl">
+                        <carousel height="341px">
+                            <carousel-item v-for="(item,index) in slideList" :key="index" v-if="item.image" @click.native="goDetail(0,item.id)">
+                                <img class="slide-img" :src="item.image">
+                                <div class="slide-desc">
+                                    <h3 class="slide-title oe">{{item.title}}</h3>
+                                    <div class="slide-tip clearfix">
+                                        <!-- <div class="slide-left fl">
+                                            <span>{{item.publisher}}</span>
+                                            <span>{{item.publishtime}}</span>
+                                        </div> -->
+                                        <div class="slide-right fr">
+                                            <span><i class="iconfont icon-read"></i>{{item.readNum}}</span>
+                                            <span><i class="iconfont icon-xiaoxi"></i>{{item.commentNum}}</span>
 
+                                        </div>
                                     </div>
                                 </div>
+                            </carousel-item>
+                        </carousel>
+                    </div>
+                    <ul class="fr top-news">
+                        <li class="li" v-for="(item,index) in jmList" v-if="index<2" :key="index" @click="goDetail(1,item.id)">
+                            <div class="img-wrap">
+                              <img class="img" :src="item.image" alt="">
                             </div>
-                        </carousel-item>
-                    </carousel>
+                            <h3 class="title">{{item.title}}</h3>
+                        </li>
+                    </ul>
                 </div>
                 <div class="type-wrapper clearfix">
                     <div class="type-left fl">
-                        <h4 class="expose-title">揭秘</h4>
+                        <h4 class="column-title">
+                            <i class="icon"></i>推荐视频
+                        </h4>
+                        <ul class="cheat-list">
+                            <li class="cheat-item" v-for="(item,index) in fpList" :key="index" @click="goDetail(2,item.id)">
+                                <div class="cheat-img" v-if="item.image">
+                                    <img :src="item.image">
+                                </div>
+                                <div class="cheat-desc">
+                                    <h3 class="title">{{item.title}}</h3>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="type-right fr">
+                        <h4 class="column-title">
+                            <i class="icon"></i>最新资讯
+                        </h4>
                         <ul class="expose-list">
-                            <li class="expose-item" v-for="(item,index) in jmList" :key="index" @click="goDetail(1,item.id)">
+                            <li class="cheat-item" v-for="(item,index) in jmList" :key="index" @click="goDetail(1,item.id)">
                                 <div class="expose-img" v-if="item.image">
                                     <img :src="item.image" >
                                 </div>
@@ -47,82 +76,51 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="type-right fr">
-                        <h4 class="cheat-title">
-                            <span>防骗</span>
-                        </h4>
-                        <ul class="cheat-list">
-                            <li class="cheat-item" v-for="(item,index) in fpList" :key="index" @click="goDetail(2,item.id)">
-                                <div class="cheat-img" v-if="item.image">
-                                    <img :src="item.image">
-                                </div>
-                                <div class="cheat-desc">
-                                    <h3 class="title">{{item.title}}</h3>
-                                    <div class="cheat-tip">
-                                        <span>{{item.publisher}}</span>
-                                        <span>{{item.publishtime}}</span>
-                                    </div>
-                                </div>
-
-                            </li>
-                        </ul>
-                    </div>
+                    
                 </div>
             </div>
             <div class="wrap-right fr">
-                <div class="report">
+                <!-- <div class="report">
                     <img src="@/assets/images/jubao.png" alt="举报专区">
-                </div>
-                <div class="side-title">
-                    <span>打假</span>
-                    <i class="iconfont icon-arrow-down"></i>
+                </div> -->
+                <div class="side-content">
+                    <div class="column-title">
+                      <i class="icon"></i>
+                      寻人启事
+                    </div>
+                    <carousel indicator-position="outside" height="216px">
+                        <carousel-item v-for="(item,index) in slideList" :key="index" v-if="item.image" @click.native="goDetail(0,item.id)">
+                            <img class="slide-img" :src="item.image">
+                            <div class="slide-desc">
+                                <h3 class="slide-title oe">{{item.title}}</h3>
+                            </div>
+                        </carousel-item>
+                    </carousel>
                 </div>
                 <div class="side-content">
+                    <div class="column-title">
+                      <i class="icon"></i>
+                      问答专题
+                    </div>
                     <ul class="side-list">
-                        <li class="side-item"  v-for="(item,index) in djList" :key="index" @click="goDetail(3,item.id)">
-                            <div class="side-img" v-if="item.image">
-                                <img :src="item.image">
-                            </div>
-                            <h4 class="title">{{item.title}}</h4>
-                            <div class="side-tip">
-                                <span>{{item.publisher}}</span>
-                                <span>{{item.publishtime}}</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="side-title">
-                    <span>风闻专区</span>
-                    <i class="iconfont icon-arrow-down"></i>
-                </div>
-                <div class="side-content">
-                    <ul class="side-list">
-                        <li class="side-item" v-for="(item,index) in slideList" :key="index" @click="goDetail(0,item.id)">
-                            <div class="side-userInfo">
+                        <li class="side-item bfc-o" v-for="(item,index) in slideList" :key="index" @click="goDetail(0,item.id)">
+                            <div class="fl side-userInfo">
                                 <img class="side-userPhoto" :src="item.header">
-                                <span class="side-username">{{item.publisher}}</span>
                             </div>
                             <h4 class="title title1">{{item.title}}</h4>
-                            <div class="side-desc">
-                                <p v-html="item.desc"></p>
-                            </div>
-                            <div class="side-tip">
-                                <span><i class="iconfont icon-read"></i>{{item.readNum}}</span>
-                                <span><i class="iconfont icon-xiaoxi"></i>{{item.commentNum}}</span>
-                            </div>
                         </li>
                     </ul>
                 </div>
-                <router-link to="/answer" tag="div" class="side-pic">
+                <!-- <router-link to="/answer" tag="div" class="side-pic">
                     <img src="@/assets/images/wenda.png" alt="在线问答">
                 </router-link>
                 <div class="side-pic">
                     <img src="@/assets/images/tougao.png" alt="在线投稿">
-                </div>
+                </div> -->
 
             </div>
         </div>
-        <div class="module-wrapper">
+        <!-- <div class="module-wrapper">
             <div class="module-header ac">
                 <h4 class="title">寻亲</h4>
                 <p class="xunqing">公益寻亲：免费发布寻人寻亲信息，利用网络信息技术帮助失散人群，早日回家团圆。邮箱：2787064791@qq.com</p>
@@ -155,7 +153,7 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
         <base-footer></base-footer>
     </div>
 </template>
@@ -493,27 +491,44 @@
 </script>
 
 <style lang="less" scoped>
+    .column-title {
+        font-size: 16px;
+        line-height: 30px;
+        vertical-align: text-top;
+    }
+    .icon {
+        display: inline-block;
+        width: 4px;
+        height: 16px;
+        border-radius: 2px;
+        background: #09f;
+        margin-right: 5px;
+        vertical-align: text-top;
+    }
     .wrap-left {
-        width: 790px;
+        width: 850px;
+        .banner-top {
+            height: 341px;
+            position: relative;
+        }
         .banner {
-            width: 100%;
-            height: 500px;
+            width: 600px;
             position: relative;
             background-color: #6b6b6b;
             .slide-img {
                 display: block;
                 width: 100%;
-                height: 500px;
+                height: 100%;
                 object-fit: cover;
             }
             .slide-desc {
                 width: 100%;
-                height: 100px;
+                height: 80px;
                 position: absolute;
                 left: 0;
                 bottom: 0;
-                padding: 0 20px;
-                background-color: rgba(0, 0, 0, .7);
+                padding: 0 5px;
+                background-color: rgba(0, 0, 0, .5);
                 .slide-title {
                     line-height: 45px;
                     font-size: 20px;
@@ -539,121 +554,111 @@
                 }
             }
         }
+        .top-news {
+            width: 200px;
+            margin-left: 50px;
+            height: 100%;
+            .li {
+                height: 50%;
+                .img {
+                    height: 120px;
+                    width: 100%;
+                    object-fit: cover;
+                }
+                .title {
+                    overflow: hidden;
+                }
+            }
+        }
         .type-wrapper {
             margin-top: 30px;
-            .type-left {
-                width: 460px;
-                .expose-title {
-                    width: 100px;
-                    height: 40px;
-                    line-height: 40px;
-                    text-align: center;
-                    border-radius: 14px;
-                    font-size: 20px;
-                    letter-spacing: 2px;
-                    box-shadow: 4px 3px 17px rgba(155, 155, 155, .8), -3px -1px 5px rgba(155, 155, 155, .8);
-                    background: linear-gradient(@basicColor, #f8981f, #f98823);
-                    color: #fff;
+            .cheat-item {
+                padding-top: 10px;
+                border-top: 2px solid #f2f2f2;
+                &:first-child {
+                    border-top-color: rgba(0, 153, 255, .2);
+                }
+            }
+            .type-right {
+                width: 520px;
+                .icon {
+                    background: @currentColor;
+                }
+                .cheat-item {
+                    padding-bottom: 10px;
+                    &:first-child {
+                      border-top-color: rgba(255, 102, 51, .2);
+                    }
                 }
                 .expose-list {
-                    margin-top: 20px;
-                    .expose-item {
-                        margin-bottom: 50px;
-                        .expose-img {
-                            width: 460px;
-                            height: 240px;
-                            img {
-                                display: block;
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                            }
+                    .expose-img {
+                        width: 155px;
+                        height: 105px;
+                        float: left;
+                        margin-right: 10px;
+                        img {
+                            display: block;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
                         }
-                        .expose-desc {
-                            padding: 10px 13px 18px 10px;
-                            border-radius: 0 0 15px 15px;
-                            box-shadow: 1px 1px 4px 2px #bcbcbc;
-                            border: 1px solid #8f8f8f;
-                            border-top: none;
-                            .title {
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                display: -webkit-box;
-                                -webkit-box-orient: vertical;
-                                -webkit-line-clamp: 2;
-                                margin-bottom: 13px;
-                                line-height: 30px;
-                                font-size: 18px;
-                                color: #222;
-                            }
-                            .expose-tip {
-                                padding-top: 12px;
-                                font-size: 12px;
-                                color: #505050;
-                                span {
-                                    margin-right: 10px;
-                                    .iconfont {
-                                        vertical-align: middle;
-                                        margin-right: 3px;
-                                    }
+                    }
+                    .expose-desc {
+                        .title {
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                            -webkit-line-clamp: 2;
+                            margin-bottom: 13px;
+                            line-height: 30px;
+                            font-size: 18px;
+                            color: #222;
+                        }
+                        .expose-tip {
+                            padding-top: 12px;
+                            font-size: 12px;
+                            color: #505050;
+                            span {
+                                margin-right: 10px;
+                                .iconfont {
+                                    vertical-align: middle;
+                                    margin-right: 3px;
                                 }
                             }
                         }
                     }
                 }
             }
-            .type-right {
-                width: 300px;
-                height: 800px;
-                /*background-color: #4cd964;*/
-                .cheat-title {
-                    border-top: 2px solid #f8a11c;
-                    span {
-                        display: block;
-                        width: 86px;
-                        height: 28px;
-                        margin: 0 auto;
-                        line-height: 28px;
-                        text-align: center;
-                        font-size: 16px;
-                        letter-spacing: 2px;
-                        box-shadow: 3px 4px 15px rgba(155, 155, 155, .8);
-                        background: linear-gradient(@basicColor, #f8981f, #f98823);
-                        color: #fff;
-                    }
-                }
+            .type-left {
+                width: 280px;
                 .cheat-list {
-                    margin-top: 30px;
-                    .cheat-item {
-                        margin-bottom: 30px;
-                        border: 1px solid #a0a0a0;
-                        .cheat-img {
+                    .cheat-img {
+                        width: 100%;
+                        height: 156px;
+                        img {
+                            display: block;
                             width: 100%;
-                            height: 160px;
-                            img {
-                                display: block;
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                            }
+                            height: 100%;
+                            object-fit: cover;
                         }
-                        .cheat-desc {
-                            padding: 6px 10px;
-                            .title {
-                                line-height: 22px;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                display: -webkit-box;
-                                -webkit-box-orient: vertical;
-                                -webkit-line-clamp: 2;
-                            }
-                            .cheat-tip {
-                                padding-top: 12px;
-                                font-size: 12px;
-                                color: #262626;
-                                span {
-                                    margin-right: 8px;
-                                }
+                    }
+                    .cheat-desc {
+                        padding: 8px 0 10px;
+                        .title {
+                            line-height: 22px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                            -webkit-line-clamp: 2;
+                        }
+                        .cheat-tip {
+                            padding-top: 12px;
+                            font-size: 12px;
+                            color: #262626;
+                            span {
+                                margin-right: 8px;
                             }
                         }
                     }
@@ -662,9 +667,10 @@
         }
     }
     .wrap-right {
-        width: 360px;
-        .report{
-            width: 360px;
+        width: 300px;
+        margin-left: 50px;
+        /* .report{
+            width: 100%;
             height: 95px;
             margin-bottom: 20px;
             img{
@@ -672,6 +678,13 @@
                 width: 100%;
                 height: 100%;
             }
+        } */
+        .column-title {
+          line-height: 40px;
+        }
+        .icon {
+          margin-left: 5px;
+          background: @currentColor;
         }
         .side-title{
             width: 100%;
@@ -694,11 +707,10 @@
             }
         }
         .side-content{
-            padding: 16px 5px;
-            border: 2px solid @basicColor;
-            border-top: none;
+          margin-top: 20px;
+            box-shadow: 0 0 5px 2px #ddd;
             .side-item{
-                padding: 15px 0;
+                padding: 15px 5px;
                 border-bottom: 1px solid #e8e8e8;
                 &:first-child{
                     padding-top: 0;
@@ -720,7 +732,7 @@
                     }
                 }
                 .side-img{
-                    width: 346px;
+                    width: 100%;
                     height: 200px;
                     img{
                         display: block;
@@ -731,7 +743,6 @@
                 }
                 .title{
                     font-size: 16px;
-                    margin-top: 5px;
                     line-height: 20px;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -741,7 +752,6 @@
                 }
                 .title1{
                     line-height: 24px;
-                    margin-bottom: 12px;
                 }
                 .side-desc{
                     font-size: 15px;
@@ -769,7 +779,7 @@
             }
         }
         .side-pic{
-            width: 360px;
+            width: 100%;
             height: 222px;
             margin-top: 25px;
             img{
@@ -779,7 +789,6 @@
                 object-fit: cover;
             }
         }
-
     }
     .module-wrapper{
         margin-top: 90px;
@@ -876,51 +885,55 @@
                 }
             }
         }
+        
     }
     .xunqing{
         color: @deepMainColor;
         margin-top: 10px;
     }
+
 </style>
 
-<style>
-    .el-carousel__indicators--outside{
-        position: absolute;
-        bottom: 0 !important;
-    }
+<style lang="less">
 
-    /*el-carousel 样式定制*/
-    .el-carousel{
-        margin-bottom: 30px;
-    }
+    // /*el-carousel 样式定制*/
     .el-carousel__button{
-        width: 32px !important;
-        height: 3px !important;
+        width: 32px;
+        height: 3px;
     }
     .el-carousel__item{
         background: #262626;
         color: #fff;
     }
     .el-carousel__arrow{
-        width: 55px;
-        height: 55px;
+        width: 45px;
+        height: 45px;
         background-color: rgba(0,0,0,0.5);
     }
     .el-carousel__arrow:hover{
         background-color: rgba(0,0,0,0.8);
     }
-    .el-icon-arrow-left,
-    .el-icon-arrow-right{
-        transform: scale(2.2);
+    // .el-icon-arrow-left,
+    // .el-icon-arrow-right{
+    //     transform: scale(2.2);
+    // }
+    // .el-carousel__indicators--outside{
+    //     position: absolute;
+    //     bottom: 0;
+    //     -webkit-transform: translateX(-50%);
+    //     transform: translateX(-50%);
+    // }
+    .el-carousel__indicators--outside button {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
     }
-    .el-carousel__indicators--outside{
-        position: absolute;
-        bottom: 0;
-        -webkit-transform: translateX(-50%);
-        transform: translateX(-50%);
+    .wrap-right .el-carousel__arrow{
+        width: 35px;
+        height: 35px;
     }
     /*当前样式*/
     .el-carousel__indicator.is-active button {
-        background-color: #f10;
+        background-color: @currentColor;
     }
 </style>
