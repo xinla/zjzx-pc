@@ -26,11 +26,11 @@
                         </carousel>
                     </div>
                     <ul class="fr top-news">
-                        <li class="li" v-for="(item,index) in jmList" v-if="index<2" :key="index" @click="goDetail(1,item.id)">
+                        <li class="li" v-for="(item,index) in topList" v-if="index<2" :key="index" @click="goDetail(1,item.id)">
                             <div class="img-wrap">
-                              <img class="img" :src="item.image" alt="">
+                              <img class="img" :src="item.image" :alt="item.title">
                             </div>
-                            <h3 class="title">{{item.title}}</h3>
+                            <h3 class="title ellipsis-line">{{item.title}}</h3>
                         </li>
                     </ul>
                 </div>
@@ -40,14 +40,13 @@
                             <i class="icon"></i>推荐视频
                         </h4>
                         <ul class="cheat-list">
-                            <li class="cheat-item" v-for="(item,index) in fpList" :key="index" @click="goDetail(2,item.id)">
+                            <li class="cheat-item" v-for="(item,index) in videoList" :key="index" @click="goDetail(2,item.id)">
                                 <div class="cheat-img" v-if="item.image">
                                     <img :src="item.image">
                                 </div>
                                 <div class="cheat-desc">
                                     <h3 class="title">{{item.title}}</h3>
                                 </div>
-
                             </li>
                         </ul>
                     </div>
@@ -56,10 +55,17 @@
                             <i class="icon"></i>最新资讯
                         </h4>
                         <ul class="expose-list">
-                            <li class="cheat-item" v-for="(item,index) in jmList" :key="index" @click="goDetail(1,item.id)">
+                            <li class="cheat-item" v-for="(item,index) in newsList" :key="index" @click="goDetail(1,item.id)">
+                              <!-- 单图 -->
                                 <div class="expose-img" v-if="item.image">
-                                    <img :src="item.image" >
+                                   <img class="img" :src="item.image" >
                                 </div>
+                                <!-- 三图 -->
+                                <!-- <div class="three" v-for="(item,index) in item.image">
+                                  <img class="img" :src="item.image" >
+                                  <img class="img" :src="item.image" >
+                                  <img class="img" :src="item.image" >
+                                </div> -->
                                 <div class="expose-desc">
                                     <h3 class="title">{{item.title}}</h3>
                                     <div class="expose-tip clearfix">
@@ -80,16 +86,23 @@
                 </div>
             </div>
             <div class="wrap-right fr">
-                <!-- <div class="report">
-                    <img src="@/assets/images/jubao.png" alt="举报专区">
-                </div> -->
+                <div class="logined" v-if="isLogin">
+                    <div class="publish">
+                      <i class="iconfont icon-bianji1"></i>
+                      我要发布
+                    </div>
+                    <div class="publish">
+                      <i class="iconfont icon-warning-circle"></i>
+                      我要提问
+                    </div>
+                </div>
                 <div class="side-content">
                     <div class="column-title">
                       <i class="icon"></i>
                       寻人启事
                     </div>
                     <carousel indicator-position="outside" height="216px">
-                        <carousel-item v-for="(item,index) in slideList" :key="index" v-if="item.image" @click.native="goDetail(0,item.id)">
+                        <carousel-item v-for="(item,index) in xqList" :key="index" v-if="item.image" @click.native="goDetail(0,item.id)">
                             <img class="slide-img" :src="item.image">
                             <div class="slide-desc">
                                 <h3 class="slide-title oe">{{item.title}}</h3>
@@ -99,62 +112,24 @@
                 </div>
                 <div class="side-content">
                     <div class="column-title">
-                      <i class="icon"></i>
+                      <i class="icon" style="background: #78c7fb;"></i>
                       问答专题
                     </div>
                     <ul class="side-list">
-                        <li class="side-item bfc-o" v-for="(item,index) in slideList" :key="index" @click="goDetail(0,item.id)">
+                        <li class="side-item bfc-o" v-for="(item,index) in qaList" :key="index" @click="goDetail(0,item.id)">
                             <div class="fl side-userInfo">
                                 <img class="side-userPhoto" :src="item.header">
                             </div>
-                            <h4 class="title title1">{{item.title}}</h4>
+                            <div style="margin-left: 46px">
+                              <h4 class="title title1">{{item.title}}</h4>
+                              {{item.createtime}}
+                            </div>
                         </li>
                     </ul>
                 </div>
-                <!-- <router-link to="/answer" tag="div" class="side-pic">
-                    <img src="@/assets/images/wenda.png" alt="在线问答">
-                </router-link>
-                <div class="side-pic">
-                    <img src="@/assets/images/tougao.png" alt="在线投稿">
-                </div> -->
 
             </div>
         </div>
-        <!-- <div class="module-wrapper">
-            <div class="module-header ac">
-                <h4 class="title">寻亲</h4>
-                <p class="xunqing">公益寻亲：免费发布寻人寻亲信息，利用网络信息技术帮助失散人群，早日回家团圆。邮箱：2787064791@qq.com</p>
-            </div>
-            <div class="module-body">
-                <ul class="module-list clearfix">
-                    <li class="module-item fl" v-for="(item,index) in xqList" v-if="index <= 1" @click="goDetail(4,item.id)">
-                        <div class="item-img" v-if="item.image">
-                            <img :src="item.image" alt="">
-                        </div>
-                        <h5 class="title">{{item.title}}</h5>
-                        <div class="module-tip">
-                            <span>{{item.publisher}}</span>
-                            <span>{{item.publishtime}}</span>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="module-list clearfix">
-                    <li class="module-item module-small-item clearfix" v-for="(item,index) in xqList" v-if="index >= 2" @click="goDetail(4,item.id)">
-                        <div class="item-img fl" v-if="item.image">
-                            <img :src="item.image" alt="">
-                        </div>
-                        <div class="module-desc fl">
-                            <h5 class="title">{{item.title}}</h5>
-                            <div class="module-tip">
-                                <span>{{item.publisher}}</span>
-                                <span>{{item.publishtime}}</span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div> -->
-        <base-footer></base-footer>
     </div>
 </template>
 
@@ -165,23 +140,23 @@
     import articleCommentService from '@/services/article_commentService'
     import userService from '@/services/userService'
     import readHistoryService from '@/services/readHistoryService'
-    import baseFooter from '@/components/baseFoot'
+    import interService from '@/services/interlocutionService'
     export default {
-        components:{
-            baseFooter
-        },
         data () {
             return {
-                slideList:[],
-                jmList:[],
-                fpList:[],
-                djList:[],
-                xqList:[],
-                pfList:[{},{},{}],
-                dgList:[{},{},{}],
-                gcwList:[{},{},{}],
+                slideList: [],
+                topList: [],
+                xqList: [],
+                videoList: [],
+                newsList: [],
+                qaList: [],
                 fileRoot:config.fileRoot+'/',
             }
+        },
+        computed: {
+          isLogin() {
+            return localStorage.token
+          }
         },
         mounted(){
             this.$nextTick(()=>{
@@ -190,7 +165,7 @@
         },
         methods:{
             init(){
-                // 获取推荐
+                // 获取推荐滚动列表
                 let resSlide = articleService.articlePage(1,5);
                 if (resSlide && resSlide.status == "success") {
                     let res = resSlide.recordPage.list;
@@ -230,14 +205,54 @@
 
                     }
                 }
-                // 获取揭秘
-                let resJm = articleService.articlePage(1,6,1);
-                if (resJm && resJm.status == "success") {
-                    let res = resJm.recordPage.list;
-                    // console.log(res)
+
+                // 获取置顶
+                articleService._getTodayArticle().then(res => {
+                  // console.log(res)
+                  let _res = res.list
+                  for (let i = 0,len = _res.length; i < len; i++) {
+                    let temp = _res[i]
+                    // 获取封面图
+                    if (temp.type !== 3) {
+                        articleFileService.getFileByArticle(temp.id,data=>{
+                            if (data && data.status  == "success" && data.result.filelist.length) {
+                              temp.image = this.fileRoot + ( temp.type === 1 ? data.result.filelist[0].url : data.result.filelist[0].thumbnail)
+                            }
+                        })
+                    }else{
+                        temp.image = this.$Tool.extractImg(temp.content,1)[0]
+                    }
+                  }
+                  this.topList = _res
+                })
+
+                // 获取视频
+                articleService.articleVideoPage(1,6,'',2,res => {
+                  let _res = res.recordPage.list
+                  this.videoList = _res
+                  for (let i = 0,len = _res.length; i < len; i++) {
+                    let temp = _res[i]
+                    // 获取封面图
+                    if (temp.type !== 3) {
+                        articleFileService.getFileByArticle(temp.id,data=>{
+                            if (data && data.status  == "success" && data.result.filelist.length) {
+                                1 === temp.type ? this.$set(this.videoList[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.videoList[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
+                            }
+                        })
+                    } else {
+                        this.videoList[i].image = this.$Tool.extractImg(temp.content,1)[0]
+                    }
+                  }
+                  // console.log(this.videoList)
+                })
+
+                // 获取资讯
+                let resNews = articleService.articlePage(1,10,'',1);
+                if (resNews && resNews.status == "success") {
+                    let res = resNews.recordPage.list;
                     for (let i = 0,len = res.length; i < len; i++){
                         let temp = res[i];
-                        this.jmList.push({
+                        this.newsList.push({
                             title:temp.title,// 获取文章标题
                             id:temp.id// 获取文章id
                         });
@@ -245,96 +260,34 @@
                         if (temp.type !== 3) {
                             articleFileService.getFileByArticle(temp.id,data=>{
                                 if (data && data.status == "success" && data.result.filelist.length) {
-                                    1 === temp.type ? this.$set(this.jmList[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.jmList[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
+                                    1 === temp.type ? this.$set(this.newsList[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.newsList[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
                                 }
                             })
                         }else{
-                            this.jmList[i].image = this.$Tool.extractImg(temp.content,1)[0]
+                            this.newsList[i].image = this.$Tool.extractImg(temp.content,1)[0]
                         }
                         // 获取评论数量
                         articleCommentService.getArticleCommentCount(temp.id,data=>{
-                            data && data.status == "success" && (this.jmList[i].commentNum = this.$Tool.numConvertText(data.result.count));
+                            data && data.status == "success" && (this.newsList[i].commentNum = this.$Tool.numConvertText(data.result.count));
                         })
                         // 获取阅读量
                         readHistoryService.getReadCount(temp.id,data=>{
-                            data && data.status == "success" && (this.jmList[i].readNum = this.$Tool.numConvertText(data.count));
+                            data && data.status == "success" && (this.newsList[i].readNum = this.$Tool.numConvertText(data.count));
                         })
                         // 获取发布时间
-                        this.jmList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
+                        this.newsList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
                         userService.getUserById(temp.author,data=>{
-                            data && data.status == "success" && (this.jmList[i].publisher = data.result.user.username);
+                            data && data.status == "success" && (this.newsList[i].publisher = data.result.user.username);
                         });
-
-                    }
-                    // console.log(this.jmList)
-                }
-                // 获取防骗
-                let resFp = articleService.articlePage(1,8,2);
-                if (resFp && resFp.status == "success") {
-                    let res = resFp.recordPage.list;
-                    for (let i = 0,len = res.length; i < len; i++){
-                        let temp = res[i];
-                        this.fpList.push({
-                            title:temp.title,// 获取文章标题
-                            id:temp.id// 获取文章id
-                        });
-                        // 获取封面图
-                        if (temp.type !== 3) {
-                            articleFileService.getFileByArticle(temp.id,data=>{
-                                if (data && data.status == "success" && data.result.filelist.length) {
-                                    try {
-                                        1 === temp.type ? this.$set(this.fpList[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.fpList[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
-                                    }catch (e) {
-
-                                    }
-                                }
-                            })
-                        }else{
-                            this.fpList[i].image = this.$Tool.extractImg(temp.content,1)[0]
-                        }
-                        // 获取评论数量
-                        articleCommentService.getArticleCommentCount(temp.id,data=>{
-                            data && data.status == "success" && (this.fpList[i].commentNum = this.$Tool.numConvertText(data.result.count));
-                        })
-                        // 获取发布时间
-                        this.fpList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
-                        userService.getUserById(temp.author,data=>{
-                            data && data.status == "success" && (this.fpList[i].publisher = data.result.user.username);
-                        });
-
-                    }
-                }
-                // 获取打假
-                let resDj = articleService.articlePage(1,5,3);
-                if (resDj && resDj.status == "success") {
-                    let res = resDj.recordPage.list;
-                    for (let i = 0,len = res.length; i < len; i++){
-                        let temp = res[i];
-                        this.djList.push({
-                            title:temp.title,// 获取文章标题
-                            id:temp.id// 获取文章id
-                        });
-                        // 获取封面图
-                        if (temp.type !== 3) {
-                            articleFileService.getFileByArticle(temp.id,data=>{
-                                if (data && data.status == "success" && data.result.filelist.length) {
-                                    1 === temp.type ? this.$set(this.djList[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.djList[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
-                                }
-                            })
-                        }else{
-                            this.djList[i].image = this.$Tool.extractImg(temp.content,1)[0]
-                        }
-                        // 获取发布时间
-                        this.djList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
                         // 获取用户头像&昵称
                         userService.getUserById(temp.author,data=>{
-                            data && data.status == "success" && (this.djList[i].publisher = data.result.user.username);
+                            data && data.status == "success" && (this.newsList[i].publisher = data.result.user.username) && (this.newsList[i].header = this.$Tool.headerImgFilter(data.result.user.imageurl));
                         });
 
                     }
                 }
                 // 获取寻亲
-                let resXq = articleService.articlePage(1,8,4);
+                let resXq = articleService.articlePage(1,5,4);
                 if (resXq && resXq.status == "success") {
                     let res = resXq.recordPage.list;
                     for (let i = 0,len = res.length; i < len; i++){
@@ -344,19 +297,7 @@
                             id:temp.id,// 获取文章id
                             desc:temp.content//提取描述
                         });
-                        //提取描述
-                        /*console.log(temp.content)
-                        let arr = temp.content.match(/\W+/g),
-                            desc = '';
-                        if (arr) {
-                            for (let j = 0; j < arr.length; j++) {
-                                desc += arr[j];
-                                if (desc.length > 36) {
-                                    break;
-                                }
-                            }
-                            this.xqList[i].desc = desc.substring(0,36) + '...';
-                        }*/
+
                         // 获取评论数量
                         articleCommentService.getArticleCommentCount(temp.id,data=>{
                             data && data.status == "success" && (this.xqList[i].commentNum = this.$Tool.numConvertText(data.result.count));
@@ -387,94 +328,20 @@
 
                     }
                 }
-                // 获取普法
-                let resPf = articleService.articlePage(1,5,5);
-                if (resPf && resPf.status == "success") {
-                    this.pfList = [];
-                    let res = resPf.recordPage.list;
-                    for (let i = 0,len = res.length; i < len; i++){
-                        let temp = res[i];
-                        this.pfList.push({
-                            title:temp.title,// 获取文章标题
-                            id:temp.id// 获取文章id
-                        });
-                        // 获取封面图
-                        if (temp.type !== 3) {
-                            articleFileService.getFileByArticle(temp.id,data=>{
-                                if (data && data.status == "success" && data.result.filelist.length) {
-                                    1 === temp.type ? this.$set(this.pfList[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.pfList[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
-                                }
-                            })
-                        }else{
-                            this.pfList[i].image = this.$Tool.extractImg(temp.content,1)[0]
-                        }
-                        // console.log(this.pfList[i].image)
-                        // 获取发布时间
-                        this.pfList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
-                        userService.getUserById(temp.author,data=>{
-                            data && data.status == "success" && (this.pfList[i].publisher = data.result.user.username);
-                        });
 
-                    }
-                }
-                // 获取打工
-                let resDg = articleService.articlePage(1,8,6);
-                if (resDg && resDg.status == "success") {
-                    this.dgList = [];
-                    let res = resDg.recordPage.list;
-                    for (let i = 0,len = res.length; i < len; i++){
-                        let temp = res[i];
-                        this.dgList.push({
-                            title:temp.title,// 获取文章标题
-                            id:temp.id// 获取文章id
-                        });
-                        // 获取封面图
-                        if (temp.type !== 3) {
-                            articleFileService.getFileByArticle(temp.id,data=>{
-                                if (data && data.status == "success" && data.result.filelist.length) {
-                                    1 === temp.type ? this.$set(this.dgList[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.dgList[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
-                                }
-                            })
-                        }else{
-                            this.dgList[i].image = this.$Tool.extractImg(temp.content,1)[0]
-                        }
-                        // 获取发布时间
-                        this.dgList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
-                        userService.getUserById(temp.author,data=>{
-                            data && data.status == "success" && (this.dgList[i].publisher = data.result.user.username);
-                        });
-
-                    }
-                }
-                // 获取广场舞
-                let resGwc = articleService.articlePage(1,5,7);
-                if (resGwc && resGwc.status == "success") {
-                    this.gcwList = [];
-                    let res = resGwc.recordPage.list;
-                    for (let i = 0,len = res.length; i < len; i++){
-                        let temp = res[i];
-                        this.gcwList.push({
-                            title:temp.title,// 获取文章标题
-                            id:temp.id// 获取文章id
-                        });
-                        // 获取封面图
-                        if (temp.type !== 3) {
-                            articleFileService.getFileByArticle(temp.id,data=>{
-                                if (data && data.status == "success" && data.result.filelist.length) {
-                                    1 === temp.type ? this.$set(this.gcwList[i],'image',this.fileRoot + data.result.filelist[0].url) : this.$set(this.gcwList[i],'image',this.fileRoot + data.result.filelist[0].thumbnail)
-                                }
-                            })
-                        }else{
-                            this.gcwList[i].image = this.$Tool.extractImg(temp.content,1)[0]
-                        }
-                        // 获取发布时间
-                        this.gcwList[i].publishtime = this.$Tool.publishTimeFormat(temp.publishtime);
-                        userService.getUserById(temp.author,data=>{
-                            data && data.status == "success" && (this.gcwList[i].publisher = data.result.user.username);
-                        });
-
-                    }
-                    // console.log(this.gcwList)
+                // 获取问答
+                let resQa = interService.getQuestionPage(1,10);
+                if (resQa && resQa.status == "success") {
+                  let res = resQa.recordPage.list
+                  this.qaList = res
+                  for (let i = 0,len = res.length; i < len; i++) {
+                    let temp = res[i];
+                    // 获取用户头像&昵称
+                    userService.getUserById(temp.userid,data=>{
+                        data && data.status == "success" && (this.qaList[i].publisher = data.result.user.username) && (this.qaList[i].header = this.$Tool.headerImgFilter(data.result.user.imageurl));
+                    });
+                  }
+                  // console.log(this.qaList)
                 }
             },
             /**
@@ -505,6 +372,44 @@
         margin-right: 5px;
         vertical-align: text-top;
     }
+    .slide-img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .slide-desc {
+        width: 100%;
+        height: 80px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 0 5px;
+        background-color: rgba(0, 0, 0, .5);
+        .slide-title {
+            line-height: 45px;
+            font-size: 20px;
+            color: #efece5;
+        }
+        .slide-tip {
+            color: #efece5;
+            .slide-left {
+                font-size: 12px;
+                span {
+                    margin-right: 10px;
+                }
+            }
+            .slide-right {
+                transform: scale(.9);
+                span {
+                    margin-right: 20px;
+                    .iconfont {
+                        margin-right: 3px;
+                    }
+                }
+            }
+        }
+    }
     .wrap-left {
         width: 850px;
         .banner-top {
@@ -515,44 +420,7 @@
             width: 600px;
             position: relative;
             background-color: #6b6b6b;
-            .slide-img {
-                display: block;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-            .slide-desc {
-                width: 100%;
-                height: 80px;
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                padding: 0 5px;
-                background-color: rgba(0, 0, 0, .5);
-                .slide-title {
-                    line-height: 45px;
-                    font-size: 20px;
-                    color: #efece5;
-                }
-                .slide-tip {
-                    color: #efece5;
-                    .slide-left {
-                        font-size: 12px;
-                        span {
-                            margin-right: 10px;
-                        }
-                    }
-                    .slide-right {
-                        transform: scale(.9);
-                        span {
-                            margin-right: 20px;
-                            .iconfont {
-                                margin-right: 3px;
-                            }
-                        }
-                    }
-                }
-            }
+            
         }
         .top-news {
             width: 200px;
@@ -566,7 +434,7 @@
                     object-fit: cover;
                 }
                 .title {
-                    overflow: hidden;
+                    .ellipsis-line;
                 }
             }
         }
@@ -592,16 +460,17 @@
                 }
                 .expose-list {
                     .expose-img {
-                        width: 155px;
-                        height: 105px;
                         float: left;
                         margin-right: 10px;
-                        img {
-                            display: block;
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                        }
+                    }
+                    .three {
+                      display: flex;
+                      justify-content: space-between;
+                    }
+                    .img {
+                        width: 155px;
+                        height: 105px;
+                        object-fit: cover;
                     }
                     .expose-desc {
                         .title {
@@ -669,41 +538,47 @@
     .wrap-right {
         width: 300px;
         margin-left: 50px;
-        /* .report{
-            width: 100%;
-            height: 95px;
-            margin-bottom: 20px;
-            img{
-                display: block;
-                width: 100%;
-                height: 100%;
+        .logined {
+            background: #eee;
+            text-align: center;
+            padding: 30px 0;
+            .publish {
+                display: inline-block;
+                width: 50%;
+                font-size: 16px;
+                &:first-child {
+                  border-right: 1px solid #ddd;
+                  color: @currentColor;
+                }
+                &:last-child {
+                  color: #09f;
+                }
+                .iconfont {
+                  font-size: 18px;
+                  margin-right: 5px;
+                  vertical-align: middle;
+                }
             }
-        } */
+        }
         .column-title {
           line-height: 40px;
         }
         .icon {
           margin-left: 5px;
-          background: @currentColor;
+          background: @mainColor;
         }
-        .side-title{
+        .slide-desc {
             width: 100%;
-            line-height: 32px;
-            position: relative;
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: 1px;
-            text-align: center;
-            background: linear-gradient(@basicColor,#f89a1e);
-            .iconfont {
-                width: 17px;
-                display: block;
-                position: absolute;
-                left: 50%;
-                margin-left: -7px;
-                bottom: -15px;
-                font-size: 13px;
-                cursor: default;
+            height: 50px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding: 0 5px;
+            background-color: rgba(0, 0, 0, .5);
+            .slide-title {
+                line-height: 45px;
+                font-size: 16px;
+                color: #efece5;
             }
         }
         .side-content{
@@ -716,7 +591,7 @@
                     padding-top: 0;
                 }
                 &:last-child{
-                    padding-bottom: 0;
+                    // padding-bottom: 0;
                     border-bottom: none;
                 }
                 .side-userInfo{
@@ -752,6 +627,7 @@
                 }
                 .title1{
                     line-height: 24px;
+                    padding-bottom: 5px;
                 }
                 .side-desc{
                     font-size: 15px;

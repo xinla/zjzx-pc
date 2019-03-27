@@ -1,8 +1,8 @@
-
+import request from '@/utils/request'
 import commonUtil from '@/utils/commonUtil'
+
 const controller = '/zjzx-article/article';
 const service ={}
-
 const userid = localStorage.getItem('id');
 const token = localStorage.getItem('token');
 
@@ -137,7 +137,7 @@ service.deleteArticleById = function(articleid){
 	return resDelete;
 }
 //文章推荐
-service.recommendArticle = function(articleid){
+service.recommendArticle = function(){
 	var params = {
 	};
 
@@ -146,9 +146,20 @@ service.recommendArticle = function(articleid){
 	return resMap;
 }
 //获取置顶文章
-service.getTodayArticle = function(articleid){
+service._getTodayArticle = function () {
+	return request({
+		url: controller + '/getTodayArticle'
+	})
+}
+
+service.getTodayArticle = function(call){
 	var params = {
 	};
+
+	if (call) {
+	 	commonUtil.ajax(controller+'/getTodayArticle',params,call);
+	 	return;
+	 }
 
 	var resMap = commonUtil.ajaxAsync(controller+'/getTodayArticle',params);
 
