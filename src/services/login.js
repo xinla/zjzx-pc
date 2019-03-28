@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const controller = '/zjzx-login/login'
+const controller = '/zjzx-user/login'
 export default {
 
 	/**
@@ -11,7 +11,7 @@ export default {
 	loginByMobile(mobile, code) {
 		return request({
 			url: controller + '/loginByMobile',
-			params: { mobile, code }
+			params: { mobile, code, device:'pc' }
 		})
 	},
 
@@ -43,9 +43,9 @@ export default {
 			url: controller + '/loginByQQ',
 			params: { 
 				qq_openid: user.qq_openid,
+				qq_unionid: user.qq_unionid,
 				qq_nikname: user.qq_nikname,
 				qq_image: user.qq_image,
-				qq_unionid: user.qq_unionid,
 				device: 'pc'
 		  }
 		})
@@ -56,9 +56,9 @@ export default {
 	 * @param  {[type]} user [description]
 	 * @return {[type]}      [description]
 	 */
-	loginByQQ (user) {
+	loginByXl (user) {
 		return request({
-			url: controller + '/loginByQQ',
+			url: controller + '/loginByXl',
 			params: { 
 				xl_openid: user.xl_openid,
 				xl_nikname: user.xl_nikname,
@@ -70,13 +70,13 @@ export default {
 
 	/**
 	 * 用户退出
-	 * @param  {logid:"登录日志id" //  user. logid token:"令牌", userid:"用户id"} user [description]
+	 * @param  {''} token [令牌]
 	 * @return {[type]}      [description]
 	 */
-	logOut(user) {
+	logOut(token) {
 		return request({
 			url: controller + '/logOut',
-			params: user
+			params: { token }
 		})
 	},
 	

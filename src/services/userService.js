@@ -1,8 +1,8 @@
 import commonUtil from '@/utils/commonUtil'
 import request from '@/utils/request'
-const controller = '/zjzx-user/user';
-const service ={}
 
+const controller = '/zjzx-user/user'
+const service = {}
 const token = localStorage.getItem('token');
 const userid =  localStorage.getItem('id');
 

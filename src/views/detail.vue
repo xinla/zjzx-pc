@@ -3,19 +3,8 @@
 		<div class="mask-current" v-show="ifLoad">
 			<loading-main></loading-main>
 		</div>
-		<div class="loveCiew" style="margin: 20px;" v-if="noId">
-			<p class="red">爱心提示：</p>
-			<p>
-      诈骗在中国已涉及到各行各业，高超的诈骗手段让人防不胜防！
-      全国每年累计被诈骗金额超过3000亿，许多人被骗得倾家荡产，甚至家破人亡！有毒有害食品层出不穷，假冒伪劣产品泛滥成灾，严重伤害了国人的身体健康，拐卖妇女儿童屡禁不止。
-			</p>
-			<p>我们对此深恶痛绝，鉴于此，遂开创了这个平台！</p>
-			<p>
-			我们希望你能通过直击真相的平台了解到有关方面的知识和技能，懂得如何更好地保护自己和家人，并能够把这个平台推荐和分享给您身边的亲朋好友，让他们尽早的远离欺骗和伤害。
-			</p>
-			<p>我们相信，你的一次举手之劳，可能就会挽救一个家庭甚至一个美丽的生命！</p>
-			<p class="red">直击真相：多一个人看到，就少一个人受骗！</p>
-		</div>
+		<BaseLoveClew v-if="noId" />
+		
 		<div class="detail" v-else>
 			<section class="content-wrap" v-if="!proFail1">
 				<h1 class="article-title">{{ article.title }}</h1>
@@ -59,37 +48,16 @@
 						免责声明：直击真相爱心平台，仅为有正能量和社会价值的信息提供其发布与展示，如有侵权，请及时联系我们删除，谢谢您的支持！
 					</div>
 				</div>
-                <div class="love-tip">
-                    <p class="red">爱心提示：</p>
-                    <p>诈骗在中国已涉及到各行各业，高超的诈骗手段让人防不胜防！
-                        全国每年累计被诈骗金额超过3000亿，许多人被骗得倾家荡产，甚至家破人亡！有毒有害食品层出不穷，假冒伪劣产品泛滥成灾，严重伤害了国人的身体健康，拐卖妇女儿童屡禁不止。</p>
-                </div>
-                <collapse-transition>
-                    <div class="love-tip" v-show="isActive">
-                        <p>我们对此深恶痛绝，鉴于此，遂开创了这个平台！</p>
-                        <p>
-                            我们希望你能通过直击真相的平台了解到有关方面的知识和技能，懂得如何更好地保护自己和家人，并能够把这个平台推荐和分享给您身边的亲朋好友，让他们尽早的远离欺骗和伤害。
-                        </p>
-                        <p>我们相信，你的一次举手之劳，可能就会挽救一个家庭甚至一个美丽的生命！</p>
-                        <p class="red">直击真相：多一个人看到，就少一个人受骗！</p>
-                    </div>
-                </collapse-transition>
-                <div class="love-toggle" @click="handleToggle">
-                    {{toggleText}}
-                    <i class="iconfont" :class="arrowIcon ? 'icon-shang' : 'icon-xia'"></i>
-                </div>
+
+				<BaseLoveClew/>
+
+				<div style="padding: 20px 0;color: #ccc;width: 50px;margin-left: auto;" @click="handleReport(1)">
+					<i class="iconfont icon-warning-circle"></i>
+					<span>举报</span>
+				</div>
 			</section>
 			<prompt-blank v-if="proFail1" :mes="failMes1"></prompt-blank>
-			<ul class="share-wrap">
-				<li class="share-text"> 分享至 </li>
-				<li class="share-list iconfont icon-wechat" @mouseover="share('wechat')" @mouseout="share('wechat')">
-					<canvas class="qr-code" v-if="isWechatCode" ref="QRCode"></canvas>
-				</li>
-				<li class="share-list iconfont icon-qq" @click="share('qq')"></li>
-				<li class="share-list iconfont icon-kongjian" @click="share('qzone')"></li>
-				<li class="share-list iconfont icon-weibo" @click="share('sina')"></li>
-				<!-- <li ><canvas ref="QRCode"></canvas></li> -->
-			</ul>
+			
 			<ul class="article-change clearfix" v-if="!detailType">
 				<li class="item" @click="handleFabulous(1)" :class="{'likeActive':likeStatus}">
 					<like :likeStatus="likeStatus"></like>
@@ -97,16 +65,20 @@
 				</li>
 				<li class="item" @click="handleCollect(id)">
 					<i class="iconfont" :class="{'icon-not-collection':collectToggle.notcollect,'icon-collected':collectToggle.collected}"></i>
-					<span>收藏</span>
+					收藏
 				</li>
-				<!-- <li class="item">
-					<i class="iconfont icon-lajixiang"></i>
-					<span>不喜欢</span>
-				</li> -->
-				<div class="item" @click="handleReport(1)">
-					<i class="iconfont icon-warning-circle"></i>
-					<span>举报</span>
-				</div>
+				<li class="fr">
+					<ul class="share-wrap">
+						<li class="share-text"> 分享至 </li>
+						<li class="share-list iconfont icon-wechat" @mouseover="share('wechat')" @mouseout="share('wechat')">
+							<canvas class="qr-code" v-if="isWechatCode" ref="QRCode"></canvas>
+						</li>
+						<li class="share-list iconfont icon-qq" @click="share('qq')"></li>
+						<li class="share-list iconfont icon-kongjian" @click="share('qzone')"></li>
+						<li class="share-list iconfont icon-weibo" @click="share('sina')"></li>
+						<!-- <li ><canvas ref="QRCode"></canvas></li> -->
+					</ul>
+				</li>
 			</ul>
 
 			<ul class="article-menu" v-else>
@@ -224,6 +196,7 @@
 <script>
 import config from '@/assets/configs/config'
 import like from '@/components/like'
+import BaseLoveClew from '@/components/BaseLoveClew'
 import QRCode from 'qrcode'
 // import memberList from '@/components/common/memberList'
 import listUtil from '@/utils/listUtil'
@@ -238,20 +211,18 @@ import articleCommentService from '@/services/article_commentService'
 import articleCollectService from '@/services/articleCollectService'
 import messageService from '@/services/messageService'
 import transmitService from '@/services/transmitService'
-import collapseTransition from "@/utils/elTransition"
+// import collapseTransition from "@/utils/elTransition"
 
 export default {
 	components:{
 		like,
-        collapseTransition
+		BaseLoveClew
 	},
 	data(){
 		return {
 			// badgeShow:false,
             arrowIcon:false,
-            isActive:false,
             collectIcon:false,
-            toggleText:'展开',
 			sourceShow:false,
 			reportToggle:true,
 			reportShow:false,
@@ -404,26 +375,35 @@ export default {
 			isUnfold:false
 		}
 	},
+	watch:{
+		'$route'(to,from){
+			this.id = to.params.id;
+			// debugger
+		},
+		id(){
+			// debugger
+			this.isWechatCode = false;
+			this.ifLoad = true;
+			$(".detail").scrollTop(0);
+			setTimeout(()=>{
+				this.pageNum1 = 1;
+				this.init();
+				this.ifLoad = false;
+			},200)
+		}
+	},
 	mounted(){
 		this.id = this.$route.params.id;
+		// debugger
 		// this.detailType = this.$route.query.detailType || 0;
 		// this.$nextTick(()=>{
 		// 	this.init();
 		// })
 	},
 	methods:{
-        handleToggle(){
-	      this.isActive = !this.isActive;
-	      if(this.isActive){
-	          this.toggleText="收起";
-	          this.arrowIcon = true;
-          }else{
-	          this.toggleText = "展开"
-              this.arrowIcon = false;
-          }
-        },
 		init(){
-			if (!this.id) {
+			// debugger
+			if (!parseInt(this.id)) {
 				// this.$message({
 		  //         message: '获取出错，请返回！',
 		  //         center: true
@@ -451,11 +431,11 @@ export default {
           let audioArr = audioStr.split(',');
           this.audioSrc = audioArr;
 				}*/
-				if(this.article.sourceurl == null) {
+				/*if(this.article.sourceurl == null) {
 					this.sourceShow = false;
 				}else{
 					this.sourceShow = true;
-				}
+				}*/
 			} else {
 				this.proFail1 = true;
 			}
@@ -1122,29 +1102,7 @@ export default {
 				$(e.target).parent().parent('.hot-footer').after(this.$refs.test);
 			}
 		},
-	},
-	watch:{
-		'$route'(to,from){
-			this.id = to.params.id;
-		},
-		id(){
-			// debugger
-			this.isWechatCode = false;
-			this.ifLoad = true;
-			$(".detail").scrollTop(0);
-			setTimeout(()=>{
-				this.pageNum1 = 1;
-				this.init();
-				this.ifLoad = false;
-			},200)
-		}
-	},
-	// beforeRouteEnter(to,from,next){
-	// 	next(vm=>{
-	// 		vm.id = to.query.id;
-	// 		vm.detailType = to.query.detailType || 0;
-	// 	})
-	// }
+	}
 }
 </script>
 
@@ -1161,11 +1119,10 @@ export default {
 		height: calc(100% - 1.5rem);
 		overflow: hidden;
 		overflow-y: auto;
-		padding: 0 .3rem .88rem .3rem;
+		padding: 0 0 .88rem;
 		background-color: #fff;
 		.content-wrap{
 			.article-title{
-        padding-top: .4rem;
         padding-bottom: .2rem;
 				font-size: .42rem;
 				line-height: .58rem;
@@ -1285,30 +1242,26 @@ export default {
 	.article-change{
 		border-bottom:.02rem solid @borderColor;
 		padding-bottom: .56rem;
-		// display: flex;
-		// justify-content: center;
-		text-align: right;
 		.item{
 			display: inline-block;
-			width: 60px;
-			// height: .64rem;
-			// line-height: .64rem;
-			// margin-right: .86rem;
-			// border: .02rem solid #d9d9d9;
-			// border-radius: .3rem;
-			text-align: center;
+	    width: 90px;
+	    text-align: center;
+	    background: @currentColor;
+	    padding: 5px 20px;
+	    vertical-align: middle;
+	    margin-right: 10px;
+	    border-radius: 10px;
+	    color: #fff;
 			&:last-child{
 				margin-right: 0;
 			}
 			.iconfont{
 				font-size: .32rem;
-				// color: #222;
 				padding-right: .03rem;
 			}
 			span{
 				vertical-align: top;
 				font-size: .24rem;
-				color: #222;
 			}
 		}
 	}
@@ -1351,7 +1304,7 @@ export default {
 	    height: 35px;
 	}
 	.input-commnet-content {
-	    border: 1px solid #888;
+	    border: 1px solid #ccc;
 	    width: 100%;
 	    text-indent: 6px;
 	}
@@ -1360,7 +1313,7 @@ export default {
 	    width: 100px;
 	    top: 0;
 	    right: 0;
-	    background: #333;
+	    background: #f5b443;
 	    color: #fff;
 	}
 	.comment-wrap{
@@ -1450,7 +1403,7 @@ export default {
 		color: #fc0;
 	}
 	.icon-not-collection{
-		color: #222;
+		// color: #222;
 	}
 	.article-tabBar {
 		width: 100%;
@@ -1525,23 +1478,15 @@ export default {
 		}
 	}
 	.share-wrap{
-		padding: .53rem .2rem;
 		text-align: center;
-		.share-text{
-			margin-bottom:5px;
-			&::before,&::after{
-				display: inline-block;
-				position: relative;
-				top: -3px;
-				content:"";
-				width: 40%;
-				border-top: 1px solid #ddd;
-				margin:0 10px;
-			}
+		.share-text {
+			color: #ddd;
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 15px;
 		}
 		.share-list{
 			position: relative;
-			background-color: #666;
 			display: inline-block;
 			color: #fff;
 			padding: 5px;
@@ -1574,6 +1519,18 @@ export default {
 				} */
 			// }
 		}
+			.icon-wechat {
+				background-color: #05cb02;
+			}
+			.icon-qq {
+				background-color: #1c85cf;
+			}
+			.icon-kongjian {
+				background-color: #f5bc32;
+			}
+			.icon-weibo {
+				background-color: #d03022;
+			}
 		.share-btn{
 			width: 100%;
 			height: 1rem;
@@ -1808,57 +1765,9 @@ export default {
 	.lg-preview-title{
 		display: none !important;
 	}
-	.loveCiew{
-		position: relative;
-		line-height: 30px;
-		text-indent: 2em;
-		color:#f36767;
-		overflow: hidden;
-	    height: 235px;
-	}
-    .love-tip{
-        p{
-            line-height: 30px;
-            text-indent: 2em;
-            color:#f36767;
-        }
-    }
-    .love-toggle{
-        width: 80px;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        margin: 10px auto;
-        letter-spacing: 3px;
-        cursor: pointer;
-        background: linear-gradient(@basicColor, #f8981f, #f98823);
-        color: #fff;
-        i{
-            margin-right: -6px;
-            font-size: 16px;
-        }
-
-    }
-	.loveCiew-unfold{
-		height: 45px;
-	}
-	.unfold-ciew{
-	    line-height: 30px;
-	    background: @deepMainColor;
-	    color: #fff;
-	    border-radius: 50px;
-        position: absolute;
-	    bottom: 0;
-	    right: 0;
-	    text-indent: initial;
-	    width: 50px;
-	}
-	.red{
-		color:#f00 !important;
-		font-weight: 600;
-	}
 	.c666{
 		color: #666;
+    padding: 10px 0;
 	}
 	.qr-code {
 	    position: absolute;

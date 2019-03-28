@@ -46,28 +46,31 @@ service.interceptors.response.use(res => {
 	if (data.status === 'success') {
 		return data
 	} else {
-    if (data.status === 401) {
-      MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '提示', {
-        confirmButtonText: '重新登录',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        router.push({name:'login'})
-      })
-    } else {
-      console.warn('err: ' + JSON.stringify(data)) // for debug
-      Message({
-        message: data,
-        type: 'error',
-        duration: 5 * 1000
-      })
-    }
+    console.warn('err: ' + JSON.stringify(data)) // for debug
+    Message({
+      message: data,
+      type: 'error',
+      duration: 5 * 1000
+    })
 		return Promise.reject('error')
 	}
 }, err => {
-  console.warn('err' + err)
-	MessageBox.alert('连接失败或未知错误 ' + err, '错误', { type: 'error', center: true })
-	return Promise.reject(err)
+  if (err.response.data.status == 401) {
+    MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '提示', {
+      confirmButtonText: '重新登录',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      localStorage.token = ''
+      router.push({name:'login'})
+    })
+  } else {
+    MessageBox.alert('连接失败或未知错误 ' + err, '错误', { type: 'error', center: true })
+  }
+  console.warn('err: ' + err)
+  console.warn('function: ' + err.config.url) // 出错接口
+  return Promise.reject(err)
+
 })
 
 export default service

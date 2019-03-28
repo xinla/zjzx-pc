@@ -4,11 +4,11 @@
     		公益寻亲：免费发布寻人寻亲信息，利用网络信息技术帮助失散人群，早日回家团圆。邮箱：2787064791@qq.com
     	</div>
 	    <div class="left fl" @scroll="loadMore">
-	    	<mit v-for="(item,index) in topList" :article="item" :key="index" ifTop=true></mit>
+	    	<mit v-for="(item,index) in topList" :article="item" :key="index + 'z'" :ifTop='true'></mit>
 	   		<mit v-for="(item,index) in arcList" :article="item" :key="index"></mit>
 	   		<div class="ac">loading...</div> 
 	    </div> 
-		<arcDetail class="right fr"></arcDetail> 
+			<arcDetail class="right fr"></arcDetail> 
     </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
 	},
 	data () {
 		return {
-			classify:-1,
+			classify:undefined,
 			arcList:[],
 			page:1,
 			lock:false,
@@ -38,6 +38,18 @@ export default {
 			topList:[]
 		}
 	},
+	watch:{
+		classify(){
+			this.$nextTick(()=>{
+				this.init();
+			})
+		}
+	},
+	/*beforeRouteEnter(to,from,next) {
+		next(vm => {
+			vm.classify = to.params.classify;
+		})
+	},*/
 	mounted () {
 		this.classify = this.$route.params.classify;
 		// this.$nextTick(()=>{
@@ -49,7 +61,7 @@ export default {
 			this.page = 1;
 			let resArticlePage;
 			try{
-				if(!this.classify || this.classify === '0'){
+				if(!parseInt(this.classify)){
 					this.topList = articleService.getTodayArticle().list;
                     resArticlePage = articleService.articlePage(this.page,15);
                     let temp = resArticlePage.recordPage.list,
@@ -153,32 +165,20 @@ export default {
 				this.lock = false;
 			}
 		},
-	},
-	watch:{
-		$route(to,from){
-			this.classify = to.params.classify;
-		},
-		classify(){
-			this.$nextTick(()=>{
-				this.init();
-			})
-		}
 	}
 }
 </script>
 <style lang="less">
 	.left,.right{
 		height: calc( 100vh - 50px );		
-		border: 1px solid #ddd;
 		overflow: auto;
 	}
 	.left{
 		width: 34%;
-		margin-right: 1%;
-		padding: 0 1%;
+		margin-right: 4%;
 	}
 	.right{
-		width: 65%;
+		width: 62%;
 	}
 	.xunqing{
         color: @deepMainColor;

@@ -72,7 +72,7 @@ export default {
 							qq_image:info.figureurl_1//:"qq头像地址"
 						}
 						// console.log(userparams)
-						userService.loginByQQ(userparams,_this.userInfoStore)
+						_this.$store.dispatch('loginByQQ', userparams)
 					});
 				}
 			})
@@ -121,8 +121,8 @@ export default {
 						wx_image:info.headimgurl,//:"微信头像地址"
 						wx_unionid:info.unionid,//:"微信uid"
 					}
-					console.log(userparams)
-					userService.loginByWx(userparams,_this.userInfoStore)
+					// console.log(userparams)
+					_this.$store.dispatch('loginByWx', userparams)
 				})
 			});
 			return;
@@ -169,49 +169,10 @@ export default {
 						// xl_unionid:info.unionid,//:"sinauid"
 					}
 					// debugger;
-					userService.loginByXl(userparams,_this.userInfoStore)
+					_this.$store.dispatch('loginByXl', userparams)
 					// console.log(userparams)
 				})
-
 			})
-		}
-	},
-	methods:{
-		/**
-		 * login callback 存储登录用户信息 
-		 * @param  {[Object]} data [服务器返回的登录结果]
-		 */
-		userInfoStore(data){
-			// debugger
-			if(data && data.status === "success") {
-				let user = data.result.user,
-				obj = {
-					token:data.result.token,
-					id:user.id,
-					logid:user.logid,
-					userImg:this.$Tool.headerImgFilter(user.imageurl),
-					userName:user.username,
-					userMobile:user.mobile,
-					inviteCode:user.invitecode
-				};
-				Object.assign(localStorage,obj)
-				this.$Tool.goPage({name: 'index',replace:true});
-				location.reload();
-			}
-			else if(data && data.status == "error") {
-				// this.tip.codeTip = data.result.tip;
-				// this.tip.active2 = true;
-				// this.tip.close2 = false;
-				// this.codeDesc = "";
-				setTimeout(()=>{
-					this.$message({
-					  message: '系统繁忙，请稍后重试！',
-					  center: true
-					});
-				},0)
-				// console.log("error")
-			}
-			// this.$vux.loading.hide();
 		}
 	}
 }

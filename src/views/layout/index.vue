@@ -19,28 +19,31 @@
                         </router-link>
                     </h1>
 
-                    <div class="nav-wrapper fl" :style="{width:isSwitch?'60%':'85%'}">
+                    <div class="nav-wrapper fl" :style="{width:isSwitch?'57%':'85%'}">
                         <nav class="nav">
                             <ul class="nav-list clearfix">
                                 <router-link
-                                    :to="{name:'listDetail',params:{classify:0,id:0}}"
+                                    :to="{name:'/'}"
                                     class="nav-item"
-                                    :class="{'current-nav':currentClassiftyCode == 0}"
                                     @click.native="currentClassiftyCode = 0"
                                     tag="li">
                                     首页
                                 </router-link>
                                 <router-link
+                                    v-for="(item,index) in navList"
                                     :to="{name:'listDetail',params:{classify:item.classifycode,id:0}}"
                                     class="nav-item"
                                     :class="{'current-nav':currentClassiftyCode == item.classifycode}"
-                                    v-for="(item,index) in navList"
                                     :key="index"
                                     @click.native="currentClassiftyCode = item.classifycode"
                                     tag="li">
                                     {{item.classifyname}}
                                 </router-link>
-                                <router-link to="download" class="nav-item">
+                                <router-link 
+                                    :to="{name:'download'}" 
+                                    class="nav-item"
+                                    @click.native="currentClassiftyCode = 0"
+                                    tag="li">
                                   下载App
                                 </router-link>
                             </ul>
@@ -59,7 +62,7 @@
                             </li>
                             <li class="login-item" v-else>
                                 <router-link :to="{name:'userCenter'}">
-                                    <img :src="userPhoto" class="userPhoto">
+                                    <img :src="userAvatar" class="userPhoto">
                                     <span class="username">{{userName}}</span>
                                 </router-link>
                                 <span class="login-quit" @click="signOut">退出登录</span>
@@ -72,7 +75,7 @@
         </header>
 
         <keep-alive>
-            <router-view class="main-view wrapper" :style="{marginTop:isSwitch?'156px':'20px'}" />
+            <router-view class="main-view wrapper" :key="$route.params.classify || $route.name" :style="{marginTop:isSwitch?'156px':'20px'}" />
         </keep-alive>
 
         <ul class="quick-wrap">
@@ -124,13 +127,25 @@
                 currentClassiftyCode:0,
                 keyword:'',
                 isLogin:false,
-                userName: '用户名',
-                userPhoto:"",
                 // 顶部样式切换开关
                 isSwitch: false,
             }
         },
-        mounted () {
+        watch:{
+            '$route'(to,from){
+                to.params.classify && (this.currentClassiftyCode = to.params.classify);
+            },
+        },
+        computed: {
+            userAvatar() {
+                return this.$store.state.userAvatar
+            },
+            userName() {
+                return this.$store.state.userName
+            }
+        },
+        mounted() {
+            this.$store.dispatch('getUserInfo')
             document.addEventListener('scroll', this.switchHeader)
             this.$nextTick(()=>{
                 // 获取栏目分类
@@ -148,8 +163,6 @@
                 if (!localStorage.getItem('token')) {
                     this.isLogin = false;
                 }else{
-                    this.userPhoto = localStorage.userImg;
-                    this.userName = localStorage.userName;
                     this.isLogin = true;
                 }
                 //获取最热关键字
@@ -176,12 +189,7 @@
                         type: 'warning',
                         center: true
                     }).then(()=>{
-                        this.$store.dispatch("userLogout");
-                        this.$Tool.goPage({name:"login",path: "/login"});
-                        this.$message({
-                            type: 'success',
-                            message: '退出成功!'
-                        });
+                        this.$store.dispatch("logOut")
                     });
                 }
             },
@@ -190,11 +198,6 @@
                 scrollTop >= 150 ? this.isSwitch = true : this.isSwitch = false
                 // console.log(scrollTop)
             }
-        },
-        watch:{
-            '$route'(to,from){
-                to.params.classify && (this.currentClassiftyCode = to.params.classify);
-            },
         }
     }
 </script>
@@ -251,7 +254,7 @@
         /* box-shadow: 0 2px 19px #9b9b9b; */
         .header-logo{
             overflow: hidden;
-            margin-right: 30px;
+            margin-right: 5px;
             a{
                 display: block;
             }
@@ -266,14 +269,14 @@
             .nav-list{
                 .nav-item{
                     float: left;
-                    width: 10%;
+                    width: 11%;
                     line-height: 50px;
                     text-align: center;
                     font-size: 15px;
                     color: #998760;
                     cursor: pointer;
                 }
-                .current-nav{
+                .current-nav,.router-link-active{
                     border-bottom: 2px solid #f39800;
                     color: @currentColor;
                 }
@@ -294,7 +297,7 @@
                         margin-left: 56px;
                     }
                     &:last-child{
-                        max-width: 200px;
+                        max-width: 150px;
                         margin-left: 0;
                     }
                     .line{
@@ -331,6 +334,7 @@
                 width: 250px;
                 height: 35px;
                 display: inline-block;
+                margin-right: 20px;
                 input{
                     width: 100%;
                     height: 100%;
@@ -348,7 +352,7 @@
         }
     }
     .main-view{
-        margin: 20px auto 0;
+        margin: 20px auto;
     }
     sup.download {
         font-size: 10px;

@@ -133,7 +133,7 @@ export default {
 		 * 登录
 		 * @return {[type]} [description]
 		 */
-		login(){
+		login() {
 			this.checkMobile();
 			if (this.errorTip) { return; }
 			if (this.verifyCode.length < 4) {
@@ -144,12 +144,20 @@ export default {
 				this.errorTip = '请同意用户协议';
 				return;
 			}
-			userService.loginByMobile(this.mobile,this.verifyCode,this.userInfoStore);
+			let loginForm = {
+				mobile: this.mobile,
+				verifyCode: this.verifyCode
+			}
+			this.$store.dispatch('login', loginForm)
+			loginService.loginByMobile(this.mobile, this.verifyCode).then(data => {
+				localStorage.token = data.token
+			})
+			
 		},
 		authLogin(type){
 			if (localStorage.getItem('token')) {
-		        this.$Tool.goPage({name: 'index',replace:true});
-		        location.reload();
+	        this.$Tool.goPage({name: 'index',replace:true});
+	        location.reload();
 		    }
 			let redirect_uri = encodeURIComponent('http://www.zjzx.xyz/#/member');
 			switch (type) {
@@ -163,42 +171,7 @@ export default {
 				window.open(`https://api.weibo.com/oauth2/authorize?client_id=273153298&response_type=code&redirect_uri=${redirect_uri}&state=zjzxSinaAuthorization`)
 			}
 		},
-		/**
-		 * 登录回调，本地存储用户信息
-		 * @param  {[type]} data [description]
-		 * @return {[type]}      [description]
-		 */
-		userInfoStore(data){
-			if(data && data.status === "success") {
-				// this.$vux.loading.hide();
-				let user = data.result.user,
-				obj = {
-					token:data.result.token,
-					id:user.id,
-					logid:user.logid,
-					userImg:this.$Tool.headerImgFilter(user.imageurl),
-					userName:user.username,
-					userMobile:user.mobile,
-					inviteCode:user.invitecode
-				};
-				Object.assign(localStorage,obj)
-				this.$Tool.goPage({name: 'index',replace:true});
-				location.reload();
-			}
-			else if(data && data.status == "error") {
-				// this.tip.codeTip = data.result.tip;
-				// this.tip.active2 = true;
-				// this.tip.close2 = false;
-				// this.codeDesc = "";
-				setTimeout(()=>{
-					this.$message({
-					  message: data.result.tip,
-					  center: true
-					});
-				},0)
-				// console.log("error")
-			}
-		},
+
 		checkMobile(){
 			if(!this.mobile || !this.$Tool.isPhoneNumber(this.mobile)) {
 				this.errorTip = "手机号有误";

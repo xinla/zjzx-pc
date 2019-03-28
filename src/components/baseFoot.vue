@@ -44,9 +44,8 @@
         position: absolute;
         left: 0;
         width: 100%;
-        height: 250px;
-        padding-top: 65px;
-        padding-bottom: 45px;
+        padding-top: 40px;
+        padding-bottom: 40px;
         background-color: #262626;
         .foot-list{
             display: flex;
