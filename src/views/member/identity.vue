@@ -2,12 +2,12 @@
 	<div class="identity-wrap">
 		<div class="authentication-wrap">
 			<div class="authentication-first">
-				<div class="authentication-item" @click="$Tool.goPage({name:'identityPerson',query:{title:'个人认证'}})">
+				<div class="authentication-item" @click="$Tool.goPage({name:'identityPerson'})">
 					<p class="title">身份认证</p>
 					<span class="desc">适用于个人用户真实身份的认证</span>
 					<i class="iconfont icon-arrow-right"></i>
 				</div>
-				<div class="authentication-item" @click="$Tool.goPage({name:'identityEenterprise',query:{title:'企业认证'}})">
+				<div class="authentication-item" @click="$Tool.goPage({name:'identityEenterprise'})">
 					<p class="title">企业认证</p>
 					<span class="desc">为企业品牌诚信加冕</span>
 					<i class="iconfont icon-arrow-right"></i>

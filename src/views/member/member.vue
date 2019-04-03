@@ -1,10 +1,9 @@
 <template></template>
 <script>
 import userService from '@/services/userService'
-import config from '@/assets/configs/config'
 
-const agency = config.successServer + '/zjzx-system/three/getThreeInfo'
-const agencyHttps = config.successServer + '/zjzx-system/three/getThreadInfoHttps'
+const agency = window.urls.successServer + '/zjzx-system/three/getThreeInfo'
+const agencyHttps = window.urls.successServer + '/zjzx-system/three/getThreadInfoHttps'
 
 export default {
 	mounted(){

@@ -1,4 +1,3 @@
-import config from '@/assets/configs/config'
 const tool = {
   //前往某一个页面
   goPage(p) {
@@ -105,7 +104,7 @@ const tool = {
   headerImgFilter(url){
     let reg = /^http/i;
     if (!reg.test(url)) {
-      url = url ? config.fileRoot + '/' + url : require('@/assets/images/user_head.jpg');
+      url = url ? window.urls.fileRoot + '/' + url : require('@/assets/images/user_head.jpg');
     }
     return url;
   },

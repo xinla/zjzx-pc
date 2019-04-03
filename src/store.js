@@ -16,6 +16,7 @@ class State {
         this.selectedPublishName = ''
         this.selectedPublishAddress =''
         this.blacklist = []
+        this.release = '' // 可选值:article,video,question
     }
 }
 
@@ -33,6 +34,7 @@ export default new Vuex.Store({
     mutations: {
         SetUserId(state, data) {
             state.userId = data
+            localStorage.id = data
         },
         SetUserMobile(state, data) {
             state.userMobile = data
@@ -61,6 +63,9 @@ export default new Vuex.Store({
         SetSelectedPublishAddress(state, data) {
             state.selectedPublishAddress = data
         },
+        SetRelease(state, data) {
+            state.release = data
+        }
     },
     actions: {
         setUserId({commit}, data) {
@@ -102,20 +107,25 @@ export default new Vuex.Store({
             })
         },
         getUserInfo({commit}) {
-          if (localStorage.token) {
-            userService.getCurentUser().then(data => {
-                let user = data.user
-                commit("SetUserId", user.id)
-                commit("SetUserMobile", user.mobile)
-                commit("SetInviteCode", user.invitecode)
-                commit("SetUserAvatar", GoTruth.$Tool.headerImgFilter(user.imageurl))
-                commit("SetUserName", user.username)
+            return new　Promise((resolve, reject) => {
+                if (localStorage.token) {
+                    userService.getCurentUser().then(data => {
+                    let user = data.user
+                    commit("SetUserId", user.id)
+                    commit("SetUserMobile", user.mobile)
+                    commit("SetInviteCode", user.invitecode)
+                    commit("SetUserAvatar", GoTruth.$Tool.headerImgFilter(user.imageurl))
+                    commit("SetUserName", user.username)
+                    resolve && resolve()
+                })
+              } else {
+                reject && reject()
+              }
             })
-          }
         },
         logOut({commit}) {
           debugger
-            loginService.logOut(localStorage.token).then(data => {
+            loginService.logOut().then(data => {
                 commit('LogOut')
                 window.GoTruth.$message({
                     type: 'success',

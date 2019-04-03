@@ -28,36 +28,59 @@
 				<img :src="fileRoot + ArticleFile[0].thumbnail">
 			</div>
 		</template>
+
 		<!-- 文章评论 -->
-		<div class="article-footer clearfix">
+		<div class="article-footer clearfix" v-if="!ifSelf">
 			<div class="fl">
 				<span class="stick" v-if="ifTop">置顶</span>
-				<span class="publisher oe" v-if="ifPublisher">{{publisher}}</span>
-				<!-- <span>{{commentNum}}评论</span> -->
+				<template v-if="!ifSelf">
+					<span class="publisher oe">{{publisher}}</span>
+				</template>
+				<span>{{commentNum}}评论</span>
 				<span>{{publishtime}}</span>
+				<span style="margin-left: 30px;" >
+					<i class="iconfont icon-read"></i>
+					<span>{{readNum}}</span>
+				</span>
 			</div>
 			<div class="fr article-remove" @click="$emit('delete',[article.id,whi,$event])" v-if="ifDel">
-				<i class="iconfont icon-remove"></i>
+				<i class="iconfont icon-close"></i>
 			</div>
 		</div>
+
+		<!-- 文章评论(作者视图) -->
+		<div class="article-footer self clearfix" v-else>
+			<div class="fl">
+				<span>{{publishtime}}</span>
+				<i class="iconfont icon-comment"></i>
+				<span>{{commentNum}}</span>
+				<i class="iconfont icon-read"></i>
+				<span>{{readNum}}</span>
+			</div>
+			<div class="fr article-remove" @click="$emit('delete',[article.id,whi,$event])" v-if="ifDel">
+				<i class="iconfont icon-close"></i>
+			</div>
+		</div>
+
 	</div>
 </template>
 <script>
-import config from '@/assets/configs/config'
 import articleFileService from '@/services/article_fileService'
 import articleCommentService from '@/services/article_commentService'
 import userService from '@/services/userService'
+import readHistoryService from '@/services/readHistoryService'
 import articleService from '@/services/articleService'
 
 export default {
 	data(){
 		return {
 	    ArticleFile:[],
-		commentNum:0,
-		publishtime:"",
-		fileRoot:config.fileRoot+'/',
-		publisher:"",
-		imgList:[],
+	    readNum: 0,
+			commentNum:0,
+			publishtime:"",
+			fileRoot:window.urls.fileRoot+'/',
+			publisher:"",
+			imgList:[],
 		}
 	},
 	props:{
@@ -68,15 +91,15 @@ export default {
 		whi:{
 			type:Number,
 		},
-		//判断是否为作者详情视图(真:为作者视图；假（空）:为浏览视图)
+		//
 		detailType:{
 			type:String,
 			default:"",
 		},
-		//判断是否显示发布人
-		ifPublisher:{
+		// 判断是否为作者详情视图(真:为作者视图；假（空）:为浏览视图)
+		ifSelf:{
 			type:Boolean,
-			default:true,
+			default:false,
 		},
 		ifDel:{
 			type:Boolean,
@@ -116,16 +139,22 @@ export default {
 					// console.log(this.ArticleFile)
 				}
 			});
-			if (this.ifPublisher && this.article.author) {
+			if (!this.ifSelf && this.article.author) {
 				userService.getUserById(this.article.author,data=>{
 					if (data && data.status == "success") {
 						this.publisher = data.result.user.username;
 					}
 				});
 			}
+			// 获取文章阅读数量
+			readHistoryService.getReadCount(this.article.id,data=>{
+				if (data && data.status == "success") {
+					this.readNum = this.$Tool.numConvertText(data.count);
+				}
+			});
 			// 获取文章评论数量
 			articleCommentService.getArticleCommentCount(this.article.id,data=>{
-				if (data.status == "success") {
+				if (data && data.status == "success") {
 					this.commentNum = this.$Tool.numConvertText(data.result.count);
 				}
 			});
@@ -136,7 +165,8 @@ export default {
 			}
 		},
 		goDetail(){
-			this.$router.push({ name:'listDetail',params:{id:this.article.id}})
+			// console.log(this.article.classify)
+			this.$router.push({ name:'listDetail',params:{classify:this.article.classify,id:this.article.id}})
 			/*if (!this.$store.state.isScolling) {
 				this.$Tool.goPage({ name:'detail',query:{id:this.article.id,detailType:this.detailType}})
 			}*/
@@ -241,6 +271,13 @@ export default {
 				border-radius: .08rem;
 				.iconfont{
 					font-size: .24rem;
+				}
+			}
+		}
+		.self {
+			.fl {
+				.iconfont {
+					margin:0 10px 0 100px;
 				}
 			}
 		}

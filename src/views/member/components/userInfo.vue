@@ -1,91 +1,59 @@
 <template>
     <div class="wrap">
         <div class="user-info wrapper">
-            <div class="user-bg">
-                <div class="user-fans user-public">
-                    <div class="user-position">
-                        <span class="fans-num">{{fansCount}}</span>
-                        <h4 class="fans-tit">粉丝</h4>
-                    </div>
+            <div class="user-desc-wrap">
+                <img class="user-head" :src="$Tool.headerImgFilter(user.imageurl)">
+                <div class="user-name-wrap">
+                    <span class="user-name">{{user.username}}</span>
+                    <span class="focus-btn" @click="handelFocus" v-if="!userId">
+                        {{focusState?'已关注':'+ 关注'}}
+                    </span>
+                    <!-- <div class="edit">
+                        编辑资料
+                    </div> -->
+                    <p class="user-desc">{{user.introduce}}</p>
                 </div>
-                <div class="user-focus user-public">
-                    <div class="user-position">
-                        <span class="focu-num">{{focusCount}}</span>
-                        <h4 class="focus-tit">关注</h4>
-                    </div>
-                </div>
+                
             </div>
-            <div class="user-desc">
-                <div class="user-head">
-                    <img :src="$Tool.headerImgFilter(user.imageurl)">
-                </div>
-                <span class="user-name">{{user.username}}</span>
-                <div class="focus-btn" @click="handelFocus" v-if="!userId">{{focusState?'已关注':'+ 关注'}}</div>
-                <div class="fabu-box" v-else>
-                    <div class="focus-btn fabu-btn" @click="handleOpenDialog(1)">
-                        <i class="iconfont icon-tuwen"></i>
-                        发布图文
-                    </div>
-                    <div class="focus-btn fabu-btn" @click="handleOpenDialog(2)">
-                        <i class="iconfont icon-shipin"></i>
-                        发布视频
-                    </div>
-                </div>
+            <div class="user-right">
+
+                <ul class="info common">
+                  <li class="li">
+                    <span class="num">{{focusCount}}</span>
+                    <p>关注</p>
+                  </li>
+                  <li class="li">
+                    <span class="num">{{fansCount}}</span>
+                    <p>粉丝</p>
+                  </li>
+                  <li class="li">
+                    <span class="num">0</span>
+                    <p>消息</p>
+                  </li>
+                </ul>
+                
+                <ul class="publish common">
+                  <li class="li" @click="handleOpenDialog('article')">
+                    <i class="iconfont icon-sketch"></i>
+                    <p>发布图文</p>
+                  </li>
+                  <li class="li" @click="handleOpenDialog('video')">
+                    <i class="iconfont icon-video"></i>
+                    <p>发布视频</p>
+                  </li>
+                  <li class="li" @click="handleOpenDialog('question')">
+                    <i class="iconfont icon-question"></i>
+                    <p>发布问答</p>
+                  </li>
+                </ul>
+
             </div>
+
         </div>
-        <transition enter-active-class="animated fadeIn" leave-active-class=" animated fadeOut">
-            <div class="release-dialog" v-show="dialogShow">
-                <div class="dialog-wrapper">
-                    <div class="dialog-header clearfix">
-                        <h4 class="dialog-tit fl">{{dialogTitle}}</h4>
-                        <i class="iconfont icon-close fr" @click="handleCloseDialog"></i>
-                    </div>
-                    <div class="dialog-body">
-                        <el-form ref="form" :model="record" label-width="80px">
-                            <el-form-item label="标题">
-                                <el-input v-model="record.title" placeholder="请输入标题" maxlength="50" ref="titleRef"></el-input>
-                            </el-form-item>
-                            <el-form-item label="类型">
-                                <el-select v-model="record.classify" placeholder="请选择类型" ref="typeRef">
-                                    <el-option :label="item.classifyname" :value="item.classifycode" v-for="item in classifyList"></el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item label="内容" v-show="dialogDescShow">
-                                <el-input type="textarea" v-model="record.content" placeholder="请输入内容" maxlength="500" ref="descRef"></el-input>
-                            </el-form-item>
-                            <div class="dialog-upload clearfix">
-                                <transition-group  enter-active-class="animated fadeInLeft" leave-active-class=" animated fadeOutRight">
-                                    <div class="dialog-thumbnail fl" v-for="(item,index) in record_file" :key="index">
-                                        <div class="dialog-mask">
-                                            <i class="iconfont icon-lajixiang" @click="handleRemoveThumbnail(index)"></i>
-                                        </div>
-                                        <div class="dialog-img" v-if="isType">
-                                            <img :src="fileRoot + item.url" alt="">
-                                        </div>
-                                        <div class="dialog-img aa" v-else>
-                                            <img :src="fileRoot + item.thumbnail" alt="">
-                                        </div>
-                                    </div>
-                                </transition-group>
-                                <div class="dialog-add fl" v-show="recordShow">
-                                    <label for="upImg"></label>
-                                    <i class="iconfont icon-add"></i>
-                                    <input type="file" id="upImg" :accept="accept" multiple @change="uploadFile" style="display: none;">
-                                </div>
-                            </div>
-                        </el-form>
-                    </div>
-                    <div class="dialog-footer">
-                        <el-button type="danger" @click.native="handleCloseDialog">取消</el-button>
-                        <el-button type="primary" @click.native="handlePublish">发布</el-button>
-                    </div>
-                </div>
-            </div>
-        </transition>
+
     </div>
 </template>
 <script>
-    import config from '@/assets/configs/config'
     import articleService from '@/services/articleService'
     import followService from '@/services/followService'
     import userService from '@/services/userService'
@@ -93,15 +61,21 @@
     import classifyService from '@/services/article_classifyService'
     export default {
         name: "userInfo",
+        props: {
+            userId:{
+                type: [Number, String],
+                required: true,
+                default: 0
+            },
+        },
         data(){
             return{
                 classifyList:[],
                 fansCount:0,
                 focusCount:0,
-                userId: 0,
                 user:{},
                 dialogShow:false,
-                fileRoot:config.fileRoot +'/',
+                fileRoot:window.urls.fileRoot +'/',
                 focusState: false,
                 record:{
                     title:"",
@@ -120,33 +94,36 @@
                 accept:"",
             }
         },
+        computed:{
+          isType(){
+              return this.record.type == 1;
+          },
+          loginUserId() {
+            return this.$store.state.userId
+          }
+        },
+        watch: {
+            userId() {
+                this.init();
+            }
+        },
         mounted(){
-            this.$route.query.userId ? this.userId = this.$route.query.userId : this.userId = localStorage.id;
             this.$nextTick(()=>{
                 this.init();
             });
         },
-        computed:{
-          isType(){
-              return this.record.type == 1;
-          }
-        },
         methods:{
             init(){
-                // 判断用户是否登录
-                if (localStorage.id && localStorage.id == this.userId) {
-                    this.user = {
-                        imageurl:localStorage.userImg,
-                        username:localStorage.userName
-                    }
-                }else{
-                    // 获取用户信息
-                    userService.getUserById(this.userId,(data)=>{
-                        if(data && data.status == "success") {
-                            this.user = data.result.user;
-                        }
-                    });
+                if (!this.userId) {
+                    return
                 }
+                userService.getUserById(this.userId,(data)=>{
+                    if(data && data.status == "success") {
+                        this.user = data.result.user;
+                        // console.log(this.user.introduce)
+                    }
+                })
+
                 // 获取粉丝数量
                 followService.getUserVermicelliCount(this.userId,(data)=>{
                     if(data && data.status == "success") {
@@ -211,256 +188,53 @@
             },
             //弹出发布弹框
             handleOpenDialog(type){
-                this.dialogShow = true;
-                if(type == 1){
-                    this.dialogTitle = "发布图文";
-                    this.record.type = 1;
-                    this.dialogDescShow = true;
-                    this.accept = "image/*";
-                }
-                else if(type == 2) {
-                    this.dialogTitle = "发布视频";
-                    this.record.type = 2;
-                    this.dialogDescShow = false;
-                    this.accept = "video/*";
-                }
-
+              this.$store.commit('SetRelease', type)
             },
-            //隐藏发布弹框
-            handleCloseDialog(){
-                this.dialogShow = false;
-                this.record.title = "";
-                this.record.classify = "";
-                this.record.content = "";
-                this.record_file = [];
-                this.recordShow = true;
-            },
-
-            // 上传图片
-            uploadFile(e){
-                let file = e.target.files[0];
-                if(!file){return;}
-                if(this.record.type == 1 && !this.$Tool.checkPic(file.name)) {
-                    this.$message({
-                        message: '格式错误',
-                        center: true,
-                        type:"error"
-                    });
-                    return;
-                }
-                if(this.record.type == 2 && !this.$Tool.checkVideo(file.name)) {
-                    this.$message({
-                        message: '格式错误',
-                        center: true,
-                        type:"error"
-                    });
-                    return;
-                }
-
-                let param = new FormData(); //创建form对象
-                param.append('file',file,file.name);//通过append向form对象添加数据
-
-                if(this.record.type == 1) {
-                    fileService.uploadPic(param,(data) =>{
-                       let obj = {};
-                       obj.url = data.result.url;
-                       obj.filename = data.result.filename;
-                       obj.type = 1;
-                       this.record_file.push(obj);
-                       if(this.record_file.length >= 8){
-                           this.recordShow = false;
-                       }else{
-                           this.recordShow = true;
-                       }
-                    });
-                }
-                else if(this.record.type == 2) {
-                    fileService.uploadVideo(param, (data) => {
-                        let obj = {};
-                        obj.url = data.result.url;
-                        obj.filename = data.result.filename;
-                        obj.type = 2;
-                        obj.thumbnail = data.thumbnail;
-                        this.record_file.push(obj);
-                        this.recordShow = false;
-
-                    });
-                }else{
-                    this.$message({
-                        message: '出现意外错误',
-                        center: true,
-                        type:"error"
-                    });
-                }
-            },
-            //删除上传缩略图
-            handleRemoveThumbnail(item){
-                this.$confirm('确认删除?', '', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.record_file.splice(item,1);
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                    this.recordShow = true;
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
-            },
-
-            // 发布文章
-            handlePublish(){
-                if(this.record.type == 1) {
-                    if(!this.record.title) {
-                        this.$message({
-                            message: '请输入文章标题',
-                            type:"warning"
-                        });
-                        this.$refs.titleRef.focus();
-                        return;
-                    }
-                    if(!this.record.classify){
-                        this.$message({
-                            message: '请选择文章类型',
-                            type:"warning"
-                        });
-                        this.$refs.typeRef.focus();
-                        return;
-                    }
-                    if(!this.record.content) {
-                        this.$message({
-                            message: '请输入文章内容',
-                            type:"warning"
-                        });
-                        this.$refs.descRef.focus();
-                    }
-                }else if(this.record.type == 2) {
-                    if(!this.record.title) {
-                        this.$message({
-                            message: '请输入视频标题',
-                            type:"warning"
-                        });
-                        this.$refs.titleRef.focus();
-                        return;
-                    }
-                    if(!this.record.classify){
-                        this.$message({
-                            message: '请选择视频类型',
-                            type:"warning"
-                        });
-                        this.$refs.typeRef.focus();
-                    }
-                }
-
-                if(!this.$Tool.checkInput(this.record.title)) {
-                    this.record.title = this.$Tool.replaceNo(this.record.title);
-                    this.$message({
-                        message: '标题含有非法字符，已为您删除',
-                        type:"error"
-                    });
-                    return;
-                }
-                this.record.author = Number(localStorage.id || 0);
-
-                let data;
-                if(this.record.type == 1 || this.record.type == 2) {
-                    data = articleService.publishArticle(this.record, this.record_file);
-                    if(data && data.status == "success") {
-                        this.$message({
-                            message: '发布成功',
-                            type: 'success'
-                        });
-                        this.dialogShow = false;
-                        this.record_file =[];
-                        this.record.title = "";
-                        this.record.classify = "";
-                        this.record.content = "";
-                        this.record.show = true;
-                    }else{
-                        this.$message({
-                            message: '发布失败，请重新发布',
-                            type: 'error'
-                        });
-                    }
-                }
-            }
         },
     }
 </script>
 
 <style lang="less" scoped>
-    .user-bg{
+    .user-info {
         position: relative;
-        width: 100%;
-        height: 251px;
-        background: url("../../../assets/images/user-bg.jpg") 0 0 no-repeat;
-        background-size: cover;
-        .user-public{
-            width: 38%;
-            position: absolute;
-            bottom: 12px;
-            color: #030303;
-            .user-position{
-                display: inline-block;
-                width: 56px;
-                text-align: center;
-                span{
-                    letter-spacing: 1px;
-                    font-size: 16px;
-                }
-                h4{
-                    letter-spacing: 2px;
-                    font-size: 18px;
-                }
-            }
-        }
-        .user-fans{
-            left: 0;
-            text-align: right;
-        }
-        .user-focus{
-            right: 0;
-            text-align: left;
-        }
-
+        overflow: initial;
     }
-    .user-desc{
+    .user-desc-wrap{
         position: relative;
-        top: -55px;
-        padding-bottom: 10px;
+        padding:155px 0 10px;
         border: 1px solid #e8e8e8;
         border-top: none;
         border-radius: 0 0 8px 8px;
-        text-align: center;
+        background: #fff url("../../../assets/images/user_bg.png") 0 0 no-repeat;
+        box-shadow: 0px 14px 12px 2px #e8e8e8;
         .user-head{
             width: 111px;
             height: 111px;
-            margin: 0 auto;
-            border: 8px solid #fff;
+            margin: 0 20px 0 35px;
             border-radius: 50%;
-            img{
-                display: block;
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-            }
+            float: left;
+            position: relative;
+            top: -65px;
         }
         .user-name{
             display: inline-block;
             line-height: 44px;
-            font-size: 24px;
+            font-size: 22px;
+        }
+        .user-desc {
+            font-size: 18px;
+            color: #ddd;
+        }
+        .edit {
+            float: right;
+            margin-right: 30px;
+            border-radius: 10px;
+            border: 1px solid #0099ff;
+            padding: 8px 20px;
+            color: #0099ff;
         }
         .focus-btn{
-            width: 118px;
-            height: 38px;
-            margin: 0 auto;
-            line-height: 38px;
+            padding: 5px 10px;
             border-radius: 10px;
             font-size: 16px;
             letter-spacing: 1px;
@@ -630,9 +404,102 @@
             }
 
         }
-
-
     }
+
+    .user-right {
+        position: absolute;
+        top: 265px;
+        right: 10px;
+        width: 410px;
+        .common {
+          text-align: center;
+          margin-bottom: 30px;
+          p{
+            margin-top: 5px;
+          }
+        }
+        .info {
+          background: #fff;
+          padding: 25px 0;
+          .li {
+            display: inline-block;
+            padding: 0 35px;
+            border-right: 1px solid #ddd;
+            font-size: 18px;
+            &:last-child {
+              border: 0;
+            }
+            .num {
+              font-size: 20px;
+            }
+          }
+        }
+        .publish {
+          .li {
+            display: inline-block;
+            padding: 0px 25px;
+          }
+          .iconfont {
+            font-size: 56px;
+          }
+        }
+        .side-title {
+          width: 100%;
+          line-height: 32px;
+          position: relative;
+          font-size: 18px;
+          color: #fff;
+          letter-spacing: 1px;
+          text-align: center;
+          background: #ccc;
+          border-radius: 5px 5px 0 0;
+        }
+        .side-content {
+          padding: 15px 10px;
+          border: 1px solid #ded;
+          .side-item {
+            margin-bottom: 28px;
+            cursor: pointer;
+            .side-user {
+              .side-userPhoto {
+                display: block;
+                width: 36px;
+                height: 36px;
+                margin-right: 12px;
+                border-radius: 50%;
+              }
+              .name {
+                width: 200px;
+                max-width: 200px;
+                line-height: 36px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
+            .side-tit {
+              padding: 8px 0;
+              line-height: 28px;
+              font-size: 18px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              color: #222;
+              text-align: left;
+              margin-bottom: 0;
+            }
+            .side-footer {
+              font-size: 12px;
+              color: #262626;
+              span {
+                margin-right: 16px;
+              }
+            }
+          }
+        }
+      }
 </style>
 <style lang="less">
     .el-tabs__item{

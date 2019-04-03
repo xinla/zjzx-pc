@@ -194,7 +194,6 @@
 </template>
 
 <script>
-import config from '@/assets/configs/config'
 import like from '@/components/like'
 import BaseLoveClew from '@/components/BaseLoveClew'
 import QRCode from 'qrcode'
@@ -244,7 +243,7 @@ export default {
 			userId:localStorage.id,
 			id:0,//文章id =>article.id
 			detailType:0,
-			fileRoot:config.fileRoot+'/',
+			fileRoot:window.urls.fileRoot+'/',
 			focusState:false,
 			article:{
 				id:Number,
@@ -378,6 +377,7 @@ export default {
 	watch:{
 		'$route'(to,from){
 			this.id = to.params.id;
+			console.log(this.$route.to,this.$route.to)
 			// debugger
 		},
 		id(){
@@ -825,7 +825,7 @@ export default {
 		    function creatQRCode(){
 		      	// 生成的二维码内容，添加变量
 				let canvas = this.$refs.QRCode,
-					href = config.share + '/#/detail?id=' + this.id;
+					href = window.urls.share + '/#/detail?id=' + this.id;
 		        QRCode.toCanvas(canvas, href, function (error) {
 		        // if (error) console.error(error);
 		        })

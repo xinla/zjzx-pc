@@ -44,7 +44,7 @@
 				<th></th>
 				<td>
 					<input type="checkbox" :class="{'error-border':error.agreement}" v-model="agreement">
-					认证即代表您同意并遵守<router-link to='/'>《真相号注册协议》</router-link>
+					认证即代表您同意并遵守<router-link to='/agreement'>《真相号注册协议》</router-link>
 				</td>
 			</tr>
 			<tr>
@@ -57,7 +57,6 @@
 	</div>
 </template>
 <script>
-import config from '@/assets/configs/config'
 import fileService from '@/services/fileService'
 import persionauthService from "@/services/persionauthService"
 export default{
@@ -70,7 +69,7 @@ export default{
 				cardimageup:'',
 				cardimagedn:''
 			},
-			fileRoot:config.fileRoot +'/',
+			fileRoot:window.urls.fileRoot +'/',
 			agreement:false,
 			error:{
 				realname:'',
@@ -80,12 +79,7 @@ export default{
 			}
 		}
 	},
-	mounted(){
-		this.init();
-	},
 	methods:{
-		init(){
-		},
 		/**
 		 * [uploadFile description]
 		 * @param  {[type]} type 1：正面 ，2：反面

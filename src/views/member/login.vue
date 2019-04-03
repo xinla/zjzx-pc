@@ -28,7 +28,7 @@
 					<input type="checkbox" v-model="isAgree">
 					我已经阅读并同意<router-link to='/agreement'>《直击真相用户协议》</router-link>
 				</li>
-				<li class="login-li ac" @click="login()">
+				<li class="login-li ac cp" @click="login()">
 					登录
 				</li>
 			</ul>

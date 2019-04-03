@@ -1,17 +1,21 @@
 <template>
-	<keep-alive>
-    <router-view/>
-	</keep-alive>
+	<div id="app">
+		<keep-alive>
+	    <router-view v-if="!$route.meta.notKeepAlive"/>
+		</keep-alive>
+	  <router-view v-if="$route.meta.notKeepAlive"/>
+
+	  <the-release v-if="this.$store.state.userId"/>
+
+	</div>
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-
-    }
-  }
-}
+	export default {
+		components: {
+		  TheRelease: () => import('@/components/release')
+		}
+	}
 </script>
 <style lang="less">
 html{

@@ -38,23 +38,25 @@ export default {
 			topList:[]
 		}
 	},
-	watch:{
-		classify(){
-			this.$nextTick(()=>{
-				this.init();
-			})
-		}
-	},
 	/*beforeRouteEnter(to,from,next) {
 		next(vm => {
 			vm.classify = to.params.classify;
 		})
+	},
+	activated() {
+		this.classify = this.$route.params.classify;
+	},
+	watch: {
+		classify() {
+			this.init();
+		}
 	},*/
 	mounted () {
 		this.classify = this.$route.params.classify;
-		// this.$nextTick(()=>{
-		// 	this.init();
-		// })
+		this.$nextTick(()=>{
+			this.init();
+		})
+		// console.log(1)
 	},
 	methods:{
 		init(){
@@ -168,7 +170,7 @@ export default {
 	}
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 	.left,.right{
 		height: calc( 100vh - 50px );		
 		overflow: auto;

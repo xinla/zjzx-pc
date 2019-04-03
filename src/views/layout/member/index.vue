@@ -1,31 +1,39 @@
 <template>
-    <div class="wrap">
-        <div class="header wrapper clearfix">
-            <div class="header-logo fl">
-                <router-link :to="{name:'index'}" @click.native="currentClassiftyCode = 0">
-                    <img src="@/assets/images/logo1.png" alt="直击真相">
-                </router-link>
-            </div>
+	<div class="member-wrap">
+        <div class="wrap">
+            <div class="header wrapper clearfix">
+                <div class="header-logo fl">
+                    <router-link :to="{name:'index'}" @click.native="currentClassiftyCode = 0">
+                        <img src="@/assets/images/logo1.png" alt="直击真相">
+                    </router-link>
+                </div>
 
-            <ul class="header-right fr clearfix">
-                <router-link :to="{path:'login'}" class="item" tag="li" v-if="noLogin">登录</router-link>
-                <router-link :to="{path:'login'}" class="item" tag="li" v-if="noLogin">注册</router-link>
-                <li class="item" v-if="logined">
-                    <img :src="userPhoto">
-                    <span class="username">{{username}}</span>
-                </li>
-                <li class="item item-quit" @click="signOut">退出登录</li>
-                <li class="item">反馈</li>
-                <li class="item">投诉</li>
-            </ul>
-            <div class="search-input fr">
-                <input type="search" v-model.trim="keyword" placeholder="双十一打折的背后">
-                <div class="search-icon">
-                    <i class="iconfont icon-search" @click="search"></i>
+                <ul class="header-right fr clearfix">
+                    <router-link :to="{path:'login'}" class="item" tag="li" v-if="noLogin">登录</router-link>
+                    <router-link :to="{path:'login'}" class="item" tag="li" v-if="noLogin">注册</router-link>
+                    <template v-if="logined">
+                        <li class="item">
+                            <img :src="userPhoto">
+                            <span class="username">{{username}}</span>
+                        </li>
+                        <li class="item item-quit" @click="signOut">退出</li>
+                        <router-link :to="{name: 'identity'}" class="item" tag="li">申请认证</router-link>
+                    </template>
+                    <!-- <li class="item">反馈</li> -->
+                    <!-- <li class="item">投诉</li> -->
+                </ul>
+                <div class="search-input fr">
+                    <input type="search" v-model.trim="keyword" placeholder="双十一打折的背后">
+                    <div class="search-icon">
+                        <i class="iconfont icon-search" @click="search"></i>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <router-view class="router-view"/>
+
+	</div>
 </template>
 
 <script>
@@ -55,15 +63,16 @@
                    this.classifyList = Object.freeze(JSON.parse(localStorage.classify));
                }
             });
-            if(!localStorage.id) {
-                this.noLogin = true;
-                this.logined = false;
-            }else{
+
+            this.$store.dispatch('getUserInfo').then(res => {
                 this.noLogin = false;
                 this.logined = true;
-                this.username = localStorage.userName;
-                this.userPhoto = localStorage.userImg;
-            }
+                this.username = this.$store.state.userName;
+                this.userPhoto = this.$store.state.userAvatar;
+            }, err => {
+                this.noLogin = true;
+                this.logined = false;
+            })
         },
         methods:{
             search(){
@@ -92,6 +101,12 @@
 </script>
 
 <style lang="less" scoped>
+    .member-wrap {
+        background: @bgColor;
+    }
+    .router-view {
+        padding-top:30px;
+    }
     .wrap{
         background-color: #262626;
         box-shadow:0 2px 19px #9b9b9b;
@@ -116,9 +131,6 @@
                     &:last-child{
                         margin-right: 0;
                     }
-                }
-                .item-quit{
-                    color: #ec414d;
                 }
             }
                 .search-input{

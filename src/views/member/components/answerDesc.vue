@@ -59,7 +59,7 @@
                     <span>今天，你遇到了什么问题呢？</span>
                     <div class="question-btn" @click="handleShowDialog">我要提问</div>
                 </div>
-                <div class="answer-side">
+                <<!-- div class="answer-side">
                     <div class="answer-side-title">
                         最新问答
                     </div>
@@ -77,27 +77,23 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
-        <question-dialog :show="showDialog" @cancel="handleCancelDialog"></question-dialog>
     </div>
 </template>
 
 <script>
-    import config from '@/assets/configs/config'
     import listUtil from '@/utils/listUtil'
     import interService from '@/services/interlocutionService'
     import praiseService from '@/services/praiseService'
     import userService from '@/services/userService'
-    import questionDialog from "@/components/questionDialog"
     export default {
         name: "answerDesc",
-        components: {questionDialog},
         data(){
             return {
                 showDialog:true,
-                fileRoot: config.fileRoot + '/',
+                fileRoot: window.urls.fileRoot + '/',
                 userId: localStorage.id,
                 wendaList:[],
                 imgList:[],
@@ -186,9 +182,6 @@
             },
             handleShowDialog(){
               this.showDialog = true;
-            },
-            handleCancelDialog(){
-              this.showDialog = false;
             },
             // 监听问题列表滚动
             loadMoreQuestion(e){

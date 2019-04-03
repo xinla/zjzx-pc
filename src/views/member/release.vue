@@ -69,8 +69,6 @@
 </template>
 
 <script>
-import config from '@/assets/configs/config'
-// import mapUtil from '@/services/util/mapUtil'
 import mapService from '@/services/mapService'
 import fileService from '@/services/fileService'
 import articleService from '@/services/articleService'
@@ -82,7 +80,7 @@ export default{
 			optionShow:false,
 			defaultVal:null,
 			defaultType:'请选择分类',
-			fileRoot:config.fileRoot +'/',
+			fileRoot:window.urls.fileRoot +'/',
 	        classifyList:[],
 	        push:[],
 	        //实际发布位置

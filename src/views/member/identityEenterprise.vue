@@ -65,7 +65,7 @@
 					</label>
 					<div class="error-font">{{error.companylicence}}</div>
 					<p class="tip">
-						请上传最新营业执照正面照。资质信息无残缺。<a href="/companyinfo_template.jpeg">查看示例</a>
+						请上传最新营业执照正面照。资质信息无残缺。<a href="/img/companyinfo_template.jpg">查看示例</a>
 					</p>
 				</td>
 			</tr>
@@ -79,7 +79,7 @@
 					</label>
 					<div class="error-font">{{error.missiveauth}}</div>
 					<p class="tip">
-						下载填写<a href="/头条认证公函.docx">《企业认证申请公函》</a>，并加盖公章。上传清晰无残缺加盖公章的公函扫描件。<a href="/2018_toutiao_renzheng_gonghan.jpeg">查看示例</a>
+						下载填写<a href="/img/2019_zhijizhenxiang_renzhenggonghan.docx">《企业认证申请公函》</a>，并加盖公章。上传清晰无残缺加盖公章的公函扫描件。<a href="/img/2019_zhijizhenxiang_renzhenggonghan.jpg">查看示例</a>
 					</p>
 				</td>
 			</tr>
@@ -160,9 +160,9 @@
 				<th></th>
 				<td>
 					<input type="checkbox" :class="{'error-border':error.agreement}" v-model="agreement">
-					认证即代表您同意<router-link to='/'>《真相号注册协议》</router-link>
-					<p class="tip">提交认证申请前请阅读<router-link to='/'>《企业认证协议》</router-link>及<router-link to='/'>《头条企业认证审核标准》</router-link>，提交后即默认您遵守行业准入规则，禁入行业或虚假资质申请认证无法退还审核服务费。<br>
-					如有企业认证相关的疑问或产品问题请将头条号/用户名、申请认证的公司名称、截图发送至renzheng@bytedance.com，一个工作日反馈。</p>
+					认证即代表您同意<router-link to='/agreement'>《真相号注册协议》</router-link>
+					<p class="tip">提交认证申请前请阅读<router-link to='/agreement'>《企业认证协议》</router-link>及<router-link to='/agreement'>《真相号企业认证审核标准》</router-link>，提交后即默认您遵守行业准入规则，禁入行业或虚假资质申请认证无法退还审核服务费。<br>
+					如有企业认证相关的疑问或产品问题请致电唯一客服电话：400-1106768。</p>
 				</td>
 			</tr>
 			<tr>
@@ -175,30 +175,29 @@
 	</div>
 </template>
 <script>
-import config from '@/assets/configs/config'
 import fileService from '@/services/fileService'
 import companyauthService from "@/services/companyauthService"
 export default{
 	data(){
 		return {
 			identity:{
-				username:localStorage.username,
-				userid:0,
-				authmsg:'',
-				companyname:'',
-				creditcode:'',
-				industrytype:'',
-				companylicence:'',
-				missiveauth:'',
-				otheraptitude:'',
-				corporatename:'',
-				corporatemobile:'',
-				corporateemail:'',
-				ynbill:true,
-				invitecode:'',
+				username: this.$store.state.userName,
+				userid: 0,
+				authmsg: '',
+				companyname: '',
+				creditcode: '',
+				industrytype: '',
+				companylicence: '',
+				missiveauth: '',
+				otheraptitude: '',
+				corporatename: '',
+				corporatemobile: '',
+				corporateemail: '',
+				ynbill: true,
+				invitecode: '',
 				// ynagree:''
 			},
-			fileRoot:config.fileRoot +'/',
+			fileRoot:window.urls.fileRoot +'/',
 			agreement:false,
 			error:{
 				// authmsg:'',
@@ -218,12 +217,12 @@ export default{
 			}
 		}
 	},
-	mounted(){
-		this.init();
+	watch: {
+		'$store.state.userName'(val) {
+			this.identity.username = val
+		}
 	},
 	methods:{
-		init(){
-		},
 		/**
 		 * [uploadFile description]
 		 * @param  {[type]} type 1：正面 ，2：反面

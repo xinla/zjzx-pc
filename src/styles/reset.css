@@ -1,5 +1,5 @@
 @charset "utf-8";
-@import url('//at.alicdn.com/t/font_1110539_ji7sof5wc.css');
+@import url('//at.alicdn.com/t/font_1110539_t881konap3a.css');
 * { -webkit-box-sizing: border-box;box-sizing: border-box;}
 .icon {
    width: 1em; height: 1em;
@@ -98,9 +98,7 @@ input:-ms-input-placeholder,textarea:-ms-input-placeholder,input::-webkit-input-
 }
 /* pc 外体框架 */
 .wrapper{
-  /*position: relative;*/
   max-width: 1300px;
-  /*min-width: 1200px;*/
   width: 1220px;
   margin: 0 auto;
   padding: 0 10px;

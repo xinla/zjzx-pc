@@ -70,13 +70,11 @@ export default {
 
 	/**
 	 * 用户退出
-	 * @param  {''} token [令牌]
 	 * @return {[type]}      [description]
 	 */
-	logOut(token) {
+	logOut() {
 		return request({
 			url: controller + '/logOut',
-			params: { token }
 		})
 	},
 	

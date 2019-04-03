@@ -183,7 +183,6 @@ service.updateUser2 = function(user) {
 		return request({
 			url: controller + '/updateUser2',
 			params: { 
-				token,
 				record: user
 		  }
 		})

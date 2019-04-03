@@ -6,7 +6,7 @@
                 <div class="banner-top">
                     <div class="banner fl">
                         <carousel height="341px">
-                            <carousel-item v-for="(item,index) in slideList" :key="index" v-if="item.image" @click.native="goDetail(0,item.id)">
+                            <carousel-item v-for="(item,index) in slideList" :key="index" v-if="item.image" @click.native="goDetail(item.classify,item.id)">
                                 <img class="slide-img" :src="item.image">
                                 <div class="slide-desc">
                                     <h3 class="slide-title oe">{{item.title}}</h3>
@@ -26,7 +26,7 @@
                         </carousel>
                     </div>
                     <ul class="fr top-news">
-                        <li class="li" v-for="(item,index) in topList" v-if="index<2" :key="index" @click="goDetail(1,item.id)">
+                        <li class="li" v-for="(item,index) in topList" v-if="index<2" :key="index" @click="goDetail(item.classify,item.id)">
                             <div class="img-wrap">
                               <img class="img" :src="item.image" :alt="item.title">
                             </div>
@@ -40,8 +40,9 @@
                             <i class="icon"></i>推荐视频
                         </h4>
                         <ul class="cheat-list">
-                            <li class="cheat-item" v-for="(item,index) in videoList" :key="index" @click="goDetail(2,item.id)">
+                            <li class="cheat-item" v-for="(item,index) in videoList" :key="index" @click="goDetail(item.classify,item.id)">
                                 <div class="cheat-img" v-if="item.image">
+                                    <i class="iconfont icon-video cc"></i>
                                     <img :src="item.image">
                                 </div>
                                 <div class="cheat-desc">
@@ -55,7 +56,7 @@
                             <i class="icon"></i>最新资讯
                         </h4>
                         <ul class="expose-list">
-                            <li class="cheat-item" v-for="(item,index) in newsList" :key="index" @click="goDetail(1,item.id)">
+                            <li class="cheat-item" v-for="(item,index) in newsList" :key="index" @click="goDetail(item.classify,item.id)">
                               <!-- 单图 -->
                                 <div class="expose-img" v-if="item.image">
                                    <img class="img" :src="item.image" >
@@ -87,11 +88,11 @@
             </div>
             <div class="wrap-right fr">
                 <div class="logined" v-if="isLogin">
-                    <div class="publish">
+                    <div class="publish" @click="release('article')">
                       <i class="iconfont icon-bianji1"></i>
                       我要发布
                     </div>
-                    <div class="publish">
+                    <div class="publish" @click="release('question')">
                       <i class="iconfont icon-warning-circle"></i>
                       我要提问
                     </div>
@@ -102,7 +103,7 @@
                       寻人启事
                     </div>
                     <carousel indicator-position="outside" height="216px">
-                        <carousel-item v-for="(item,index) in xqList" :key="index" v-if="item.image" @click.native="goDetail(0,item.id)">
+                        <carousel-item v-for="(item,index) in xqList" :key="index" v-if="item.image" @click.native="goDetail(item.classify,item.id)">
                             <img class="slide-img" :src="item.image">
                             <div class="slide-desc">
                                 <h3 class="slide-title oe">{{item.title}}</h3>
@@ -116,7 +117,7 @@
                       问答专题
                     </div>
                     <ul class="side-list">
-                        <li class="side-item bfc-o" v-for="(item,index) in qaList" :key="index" @click="goDetail(0,item.id)">
+                        <li class="side-item bfc-o" v-for="(item,index) in qaList" :key="index" @click="goDetail('wenda',item.id)">
                             <div class="fl side-userInfo">
                                 <img class="side-userPhoto" :src="item.header">
                             </div>
@@ -134,7 +135,7 @@
 </template>
 
 <script>
-    import config from '@/assets/configs/config'
+    // import config from '@/assets/configs/config'
     import articleService from '@/services/articleService'
     import articleFileService from '@/services/article_fileService'
     import articleCommentService from '@/services/article_commentService'
@@ -150,7 +151,7 @@
                 videoList: [],
                 newsList: [],
                 qaList: [],
-                fileRoot:config.fileRoot+'/',
+                fileRoot:window.urls.fileRoot+'/',
             }
         },
         computed: {
@@ -254,7 +255,8 @@
                         let temp = res[i];
                         this.newsList.push({
                             title:temp.title,// 获取文章标题
-                            id:temp.id// 获取文章id
+                            id:temp.id,// 获取文章id
+                            classify: temp.classify
                         });
                         // 获取封面图
                         if (temp.type !== 3) {
@@ -295,7 +297,8 @@
                         this.xqList.push({
                             title:temp.title,// 获取文章标题
                             id:temp.id,// 获取文章id
-                            desc:temp.content//提取描述
+                            desc:temp.content,//提取描述
+                            classify: temp.classify
                         });
 
                         // 获取评论数量
@@ -330,7 +333,7 @@
                 }
 
                 // 获取问答
-                let resQa = interService.getQuestionPage(1,10);
+                let resQa = interService.getQuestionPage(1,13);
                 if (resQa && resQa.status == "success") {
                   let res = resQa.recordPage.list
                   this.qaList = res
@@ -351,7 +354,14 @@
              */
             goDetail(classify,id){
                 // this.$router.push({name:"listDetail",params:{classify,id,}});
+                if (classify === 'wenda') {
+                    this.$router.push({name:"answer",params:{classify,id,}});
+                    return
+                }
                 this.$router.push({name:"listDetail",params:{classify,id,}});
+            },
+            release(type) {
+                this.$store.commit('SetRelease', type)
             }
         }
     }
@@ -503,8 +513,13 @@
                 width: 280px;
                 .cheat-list {
                     .cheat-img {
+                        position: relative;
                         width: 100%;
                         height: 156px;
+                        .icon-video {
+                            font-size: 36px;
+                            color: #ddd;
+                        }
                         img {
                             display: block;
                             width: 100%;
@@ -546,6 +561,7 @@
                 display: inline-block;
                 width: 50%;
                 font-size: 16px;
+                cursor: pointer;
                 &:first-child {
                   border-right: 1px solid #ddd;
                   color: @currentColor;

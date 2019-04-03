@@ -8,7 +8,7 @@
                     <strong class="">直击真相</strong>
                     <div class="search">
                         <input type="text" class="search-input" v-model.trim="keyword" placeholder="请输入您要搜索的内容">
-                        <div class="search-button ac" @click="search">搜索</div>
+                        <div class="search-button ac cp" @click="search">搜索</div>
                     </div>
                 </div>
 
@@ -30,11 +30,11 @@
                                     首页
                                 </router-link>
                                 <router-link
-                                    v-for="(item,index) in navList"
-                                    :to="{name:'listDetail',params:{classify:item.classifycode,id:0}}"
                                     class="nav-item"
-                                    :class="{'current-nav':currentClassiftyCode == item.classifycode}"
+                                    v-for="(item,index) in navList"
                                     :key="index"
+                                    :to="{name:'listDetail',params:{classify:item.classifycode,id:0}}"
+                                    :class="{'current-nav':currentClassiftyCode == item.classifycode}"
                                     @click.native="currentClassiftyCode = item.classifycode"
                                     tag="li">
                                     {{item.classifyname}}
@@ -61,9 +61,9 @@
                                 <router-link :to="{name:'login'}" class="login-item">注册</router-link>
                             </li>
                             <li class="login-item" v-else>
-                                <router-link :to="{name:'userCenter'}">
-                                    <img :src="userAvatar" class="userPhoto">
-                                    <span class="username">{{userName}}</span>
+                                <router-link :to="{name:'publish',query:{userId:$store.state.userId}}">
+                                    <img :src="$store.state.userAvatar" class="userPhoto">
+                                    <span class="username">{{$store.state.userName}}</span>
                                 </router-link>
                                 <span class="login-quit" @click="signOut">退出登录</span>
                             </li>
@@ -74,8 +74,8 @@
             </div>
         </header>
 
+            <router-view class="main-view wrapper" :key="$route.params.classify" :style="{marginTop:isSwitch?'156px':'20px'}" />
         <keep-alive>
-            <router-view class="main-view wrapper" :key="$route.params.classify || $route.name" :style="{marginTop:isSwitch?'156px':'20px'}" />
         </keep-alive>
 
         <ul class="quick-wrap">
@@ -84,7 +84,7 @@
                 <i class="iconfont icon-go-top"></i>
             </a>
           </li>
-          <li class="li"><i class="iconfont icon-bianji"></i></li>
+          <li class="li" @click="$store.commit('SetRelease', 'article')"><i class="iconfont icon-bianji"></i></li>
           <li class="li">
             <img class="qrcode" src="../../assets/images/app-downlad-code.png" alt="下载直击真相APP">
             <h3>
@@ -136,14 +136,6 @@
                 to.params.classify && (this.currentClassiftyCode = to.params.classify);
             },
         },
-        computed: {
-            userAvatar() {
-                return this.$store.state.userAvatar
-            },
-            userName() {
-                return this.$store.state.userName
-            }
-        },
         mounted() {
             this.$store.dispatch('getUserInfo')
             document.addEventListener('scroll', this.switchHeader)
@@ -181,17 +173,14 @@
                 this.keyword && this.$Tool.goPage({name:'search',query:{keyword:this.keyword}})
             },
             signOut(){
-                let data = userService.logOut();
-                if(data && data.status == "success"){
-                    this.$confirm('退出登录, 是否继续?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning',
-                        center: true
-                    }).then(()=>{
-                        this.$store.dispatch("logOut")
-                    });
-                }
+                this.$confirm('退出登录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    center: true
+                }).then(()=>{
+                    this.$store.dispatch("logOut")
+                });
             },
             switchHeader() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;

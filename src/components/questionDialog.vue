@@ -44,14 +44,13 @@
 </template>
 
 <script>
-    import config from '@/assets/configs/config'
     import fileService from '@/services/fileService'
     import interService from '@/services/interlocutionService'
     export default {
         name: "questionDialog",
         data(){
             return{
-                fileRoot:config.fileRoot +'/',
+                fileRoot:window.urls.fileRoot +'/',
                 record:{},
                 record_file:[],
                 addShow:true

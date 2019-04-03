@@ -2,9 +2,9 @@
 	<div class="container">
 		<div class="wrapper">
 			<header class="top ac">
-				<strong class="logo"><router-link to='/index'>直击真相</router-link></strong>
-				<input type="text" class="search-input" v-model.trim="keyword" placeholder="直击真相">
-				<button type="button" class="search-button cp" @click="search">搜索</button>
+				<!-- <strong class="logo"><router-link to='/index'>直击真相</router-link></strong> -->
+				<input type="text" class="search-input" v-model.trim="keyword" placeholder="搜你想知道的">
+				<button type="button" class="search-button cp" @click="search">直击真相</button>
 			</header>
 			<div class="main">
 				<ul class="search-result">
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import config from '@/assets/configs/config'
 import searchService from '@/services/searchService'
 import articleService from '@/services/articleService'
 import articleFileService from '@/services/article_fileService'
@@ -42,12 +41,14 @@ export default {
 			// lock:false,
 			isLoad:false,
 			resultTip:'',
-			fileRoot:config.fileRoot+'/',
+			fileRoot:window.urls.fileRoot+'/',
 		}
 	},
 	mounted(){
 		this.keyword = this.$route.query.keyword;
-		this.search();
+		setTimeout(() => {
+			this.search();
+		})
 	},
 	methods:{
 		search(){
@@ -90,7 +91,7 @@ export default {
 						title:temp.title.replace(reg,`<span class="highlight">${this._keyword}</span>`),// 获取文章标题
 						id:temp.id// 获取文章id
 					});
-			        console.info(res[i].id)
+	        // console.info(res[i].id)
 					// 获取封面图
 					if (temp.type !== 3) {
 						articleFileService.getFileByArticle(temp.id,data=>{
@@ -154,11 +155,7 @@ export default {
 		background: #f5f5f5;
 		min-height: 1000px;
 	}
-	.wrapper{
-		width: 1000px;
-	}
 	.top{
-		padding-top: 40px;
 		line-height: 40px;
 		.search-input{
 			border: 1px solid @basicColor;
@@ -166,7 +163,7 @@ export default {
 			width: 60%;
 			line-height: inherit;
 			height: 40px;
-			text-indent: 5px;
+			text-indent: 10px;
 		}
 		.search-button{
 			// transform: translateX(-100%);

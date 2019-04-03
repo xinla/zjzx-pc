@@ -14,9 +14,13 @@ window.urls = urls
 //工具函数
 import Tool from '@/utils/methods'
 Vue.use(Tool);
-//文在动画loading
+//文字动画loading
 import LoadingMain from '@/components/loadingMain'
 Vue.component('LoadingMain',LoadingMain);
+// 
+/*import LoadingMain from '@/components/loadingMain'
+Vue.component('LoadingMain',LoadingMain);*/
+
 //element-ui
 import {
     Alert,

@@ -20,7 +20,7 @@
         name: "personalCenter",
         components: {BackTop, UserList, UserInfo, UserSearch, UserHeader,baseFooter},
         beforeRouteEnter(to,from,next){
-            if (!to.query.userId && !localStorage.id) {
+            if (!to.query.userId && !localStorage.token) {
                 alert('获取出错，请返回！')
                 /*  goTruth.$message({
                     message: '获取出错，请返回！',
